@@ -1,0 +1,470 @@
+wi3.makeExist("wi3.pagefillers.default");
+
+$(document).ready( function(){
+    // Make toolbar ready for use
+    wi3.pagefillers.default.edittoolbar.activeEditor = $("[contenteditable='true']");
+    jQuery.extend(wi3.pagefillers.default.edittoolbar.activeEditor, WysiHat.Commands);
+    //$("#pagefiller_default_edittoolbar").css("width", ($(document).width()-100) + "px"); // With fixed positions, there is never an x-overflow, so width: 100% with padding works, so this line is redundant
+    // Make all fields hoverable
+    wi3.pagefillers.default.edittoolbar.enableFieldActions($("[type=field]"));
+    // Catch all 'delete' and 'backspace' keys and disable them when they are about to delete a complete field...!
+    // Also, catch some control+key combinations
+    wi3.pagefillers.default.edittoolbar.controlKeyDown = false;
+    $(document).keydown(function (e) {
+        // Track some Control+key functions for e.g. saving (Control + s)
+        if (e.which == 17)
+        {
+            wi3.pagefillers.default.edittoolbar.controlKeyDown = true;
+        }
+        if (wi3.pagefillers.default.edittoolbar.controlKeyDown && e.which == 83) // Ctrl + 's' key
+        {
+            e.preventDefault();
+            wi3.pagefillers.default.edittoolbar.saveAllEditableBlocks();
+        }
+        
+        // Track delete and backspace events, and prevent those events from deleting fields
+        // backspace is code 8
+        // delete is code 46
+        if(e.which == 8 || e.which == 46)
+        {
+            // identify place of the cursor
+            var sel = rangy.getSelection();
+            var range = sel.rangeCount != 0 ? sel.getRangeAt(0) : null;
+            if (range) 
+            {   
+                // check whether the range is within a contenteditable=true area and NOT in contenteditable=false
+                var closest = $(range.startContainer).parent().closest("[contenteditable]");
+                if (closest.attr("contenteditable") == "true") // the closest element that has and contenteditable should be one with contentEditable=true
+                {
+                    var startContainer = range.startContainer; // is always a textNode
+                    var startOffset = range.startOffset;
+                    // For delete, check if we are at the END of the container, and have a field after that container (so we should prevent a delete)
+                    if (e.which == 46 && startOffset == $(startContainer).text().length && $(startContainer.nextSibling).attr("type") == "field")
+                    {
+                        e.preventDefault();
+                    }
+                    // For backspace, check if we are at the BEGINNING of the container, and have a field before that container (so we should prevent a delete)
+                    if (e.which == 8 && startOffset == 0 && $(startContainer.previousSibling).attr("type") == "field")
+                    {
+                        e.preventDefault();
+                    }
+                }
+            }
+        }
+    }).keyup(function (e) {
+        if (e.which == 17)
+        {
+            wi3.pagefillers.default.edittoolbar.controlKeyDown = false;
+        }
+    });
+});
+
+wi3.pagefillers.default.edittoolbar = {
+
+    getActiveEditor : function()
+    {
+        return wi3.pagefillers.default.edittoolbar.activeEditor;
+    },
+    
+    showPopup : function()
+    {
+        $("div[type=popup]").slideDown("fast");
+    },
+
+    hidePopup : function()
+    {
+        $("div[type=popup]").hide();
+    },
+    
+    saveAllEditableBlocks : function()
+    {
+        // insert the style-float and style-padding tags into the fields, since PHPQuery does not properly support the css() function 
+        $("[type=field]").each(function(counter) {
+            $(this).attr("style_padding", $(this).css("padding"));
+            $(this).attr("style_float", $(this).css("float"));
+            $(this).attr("style_width", $(this).css("width")); 
+        });
+        // send the complete html of the page to the server. The server will distill the editable blocks, and save them 
+        wi3.request("pagefiller_default_edittoolbar_ajax/savealleditableblocks", {pageid: $("#pagefiller_default_edittoolbar_pageid").text(), html:$("body").html()});
+    },
+    
+    showFormatblockPanel : function()
+    {
+        // Show the panel from which fields can be inserted
+        $("#pagefiller_default_edittoolbar_formatblockpanel").show();
+    },
+    
+    hideFormatblockPanel : function()
+    {
+        // Show the panel from which fields can be inserted
+        $("#pagefiller_default_edittoolbar_formatblockpanel").hide();
+    },
+    
+    formatblock : function(blocktype)
+    {
+        wi3.pagefillers.default.edittoolbar.getActiveEditor().formatblockSelection(blocktype);
+    },
+    
+    showInsertPanel : function()
+    {
+        // Show the panel from which fields can be inserted
+        $("#pagefiller_default_edittoolbar_insertpanel").show();
+    },
+    
+    hideInsertPanel : function()
+    {
+        // Show the panel from which fields can be inserted
+        $("#pagefiller_default_edittoolbar_insertpanel").hide();
+    },
+    
+    insertField : function(fieldtype)
+    {
+        // identify place where field should be added
+        var sel = rangy.getSelection();
+        var range = sel.rangeCount != 0 ? sel.getRangeAt(0) : null;
+        if (range) 
+        {   
+            // check whether the range is within a contenteditable=true area and NOT in contenteditable=false
+            var closest = $(range.startContainer).parent().closest("[contenteditable]");
+            if (closest.attr("contenteditable") == "true") // the closest element that has and contenteditable should be one with contentEditable=true
+            {
+                wi3.pagefillers.default.edittoolbar.insertFieldRange = range;
+                // Insert a field
+                var request = wi3.request("pagefiller_default_edittoolbar_ajax/insertfield", { pageid: $("#pagefiller_default_edittoolbar_pageid").text(), fieldtype:fieldtype, selectiontext: range.toString() });
+            }
+            else
+            {
+               // Well, just don't do anything
+            }
+        }
+    },
+    
+    insertFieldHtml : function(fieldid, html, replacetype)
+    {
+        // html is base64 encoded
+        html = $.base64.decode(html);
+        if (replacetype == "insertbefore")
+        {
+            // Insert the html before the selection
+            // Check whether the insert location is known
+            if (wi3.pagefillers.default.edittoolbar.insertFieldRange.startContainer)
+            {   
+                // insert html at the location
+                var start = $(wi3.pagefillers.default.edittoolbar.insertFieldRange.startContainer);
+                var parent = start.parent();
+                // Get the 'best' location to insert the field: before or after a word, not in the middle of a word
+                if (wi3.pagefillers.default.edittoolbar.insertFieldRange.startOffset == 0)
+                {
+                    // Caret is at start of textnode, that is perfect!
+                    var startbeforetext = start.text().substr(0, wi3.pagefillers.default.edittoolbar.insertFieldRange.startOffset);
+                    var startaftertext = start.text().substr(wi3.pagefillers.default.edittoolbar.insertFieldRange.startOffset);
+                }
+                else
+                {
+                    var spacelocation = start.text().indexOf(" ", wi3.pagefillers.default.edittoolbar.insertFieldRange.startOffset); // Find first space after
+                    if (spacelocation == -1)
+                    {
+                        // If there is no space after the caret position, then just go to the end of the container
+                        spacelocation = start.text().length;
+                    }
+                    var startbeforetext = start.text().substr(0, spacelocation);
+                    var startaftertext = start.text().substr(spacelocation);
+                }
+                
+                // replace selection
+                //wi3.pagefillers.default.edittoolbar.getActiveEditor().insertHTML(html);
+                start.replaceWith(startbeforetext + html + startaftertext); // the startbeforetext gets a line-break or something on the end??
+                
+                // This next section should ideally not happen, but we can not guarantee that all child-elements are spans
+                // If the parent of the field is an inline-element (<p>, <span> etc), we convert it to <div> while taking the existing metrics from the current parent
+                var tagname = parent.get(0).tagName;
+                // Recursively bubble to the top, until we encounter a block-level element (i.e. not P or SPAN)
+                while (tagname && (tagname == "P" || tagname == "SPAN"))
+                {
+                    var parent = changeTagName(parent, "div");
+                    tagname = parent.get(0).tagName;
+                }
+            }            
+        }
+        else if (replacetype == "insertafter")
+        {
+            // Insert the html after the selection
+            // Check whether the insert location is known
+            if (wi3.pagefillers.default.edittoolbar.insertFieldRange.endContainer)
+            {   
+                // insert html at the location
+                var end = $(wi3.pagefillers.default.edittoolbar.insertFieldRange.endContainer);
+                var parent = end.parent();
+                // Get the 'best' location to insert the field: before or after a word, not in the middle of a word
+                if (wi3.pagefillers.default.edittoolbar.insertFieldRange.endOffset == 0)
+                {
+                    // Caret is at start of textnode, that is perfect!
+                    var beforetext = end.text().substr(0, wi3.pagefillers.default.edittoolbar.insertFieldRange.endOffset);
+                    var aftertext = end.text().substr(wi3.pagefillers.default.edittoolbar.insertFieldRange.endOffset);
+                }
+                else
+                {
+                    var spacelocation = end.text().indexOf(" ", wi3.pagefillers.default.edittoolbar.insertFieldRange.endOffset); // Find first space after
+                    if (spacelocation == -1)
+                    {
+                        // If there is no space after the caret position, then just go to the end of the container
+                        spacelocation = end.text().length;
+                    }
+                    var beforetext = end.text().substr(0, spacelocation);
+                    var aftertext = end.text().substr(spacelocation);
+                }
+                
+                // replace selection
+                //wi3.pagefillers.default.edittoolbar.getActiveEditor().insertHTML(html);
+                end.replaceWith(beforetext + html + aftertext); // the startbeforetext gets a line-break or something on the end??
+                
+                // This next section should ideally not happen, but we can not guarantee that all child-elements are spans
+                // If the parent of the field is an inline-element (<p>, <span> etc), we convert it to <div> while taking the existing metrics from the current parent
+                var tagname = parent.get(0).tagName;
+                // Recursively bubble to the top, until we encounter a block-level element (i.e. not P or SPAN)
+                while (tagname && (tagname == "P" || tagname == "SPAN"))
+                {
+                    var parent = changeTagName(parent, "div");
+                    tagname = parent.get(0).tagName;
+                }
+            }            
+        }
+        else if (replacetype == "replace")
+        {
+            // Replace the current selection with the new html
+            
+            var startoffset = wi3.pagefillers.default.edittoolbar.insertFieldRange.startOffset;
+            var start = $(wi3.pagefillers.default.edittoolbar.insertFieldRange.startContainer);
+            var parent = start.parent();
+            // Remove old content
+            wi3.pagefillers.default.edittoolbar.insertFieldRange.deleteContents();
+            // Insert new content at the location
+            var startbeforetext = start.text().substr(0, startoffset);
+            var startaftertext = start.text().substr(startoffset);
+            
+            // replace selection
+            start.replaceWith(startbeforetext + html + startaftertext); // the startbeforetext gets a line-break or something on the end??
+            
+            // This next section should ideally not happen, but we can not guarantee that all child-elements are spans
+            // If the parent of the field is an inline-element (<p>, <span> etc), we convert it to <div> while taking the existing metrics from the current parent
+            var tagname = parent.get(0).tagName;
+            // Recursively bubble to the top, until we encounter a block-level element (i.e. not P or SPAN)
+            while (tagname && (tagname == "P" || tagname == "SPAN"))
+            {
+                var parent = changeTagName(parent, "div");
+                tagname = parent.get(0).tagName;
+            }
+        }
+        
+        // make the hover work that enables resizing, deletion etc
+        wi3.pagefillers.default.edittoolbar.enableFieldActions($("[fieldid=" + fieldid + "]"));
+    },
+    
+    enableFieldActions : function(jqueryobj)
+    {
+        jqueryobj = $(jqueryobj);
+        jqueryobj.bind("mouseenter", function(event) {
+            /*
+            $(this).attr("oldcssmargin",$(this).css("margin")); // save current margin value
+            if (isNaN(parseInt($(this).css("margin")))) 
+            { 
+                $(this).css("margin", "-10px");
+            }
+            else
+            {
+                $(this).css("margin", ( parseInt($(this).css("margin")) - 10) + "px");
+            }
+            $(this).css("border", "10px solid #fff");
+            
+            // Webkit has the problem of not taking the negative top-margin into account if the top-border is the same amount of px.
+            // Thus, margin -10 and border 10px does not work...
+            // A solution is to zoom in and out. Kind of weird, but it works...
+            if ($.browser.webkit)
+            {
+                $("body").css("zoom", "1.2");
+                setTimeout('$("body").css("zoom", "1");', 0); // doing a direct css(zoom,1) will somehow cause the renderer not to update the screen
+            }*/
+            
+            // Show shadow
+            $(this).css("-webkit-box-shadow", "0px 0px 10px #ccc");
+            $(this).css("-mozilla-box-shadow", "0px 0px 10px #ccc");
+            $(this).css("box-shadow", "0px 0px 10px #ccc");
+            
+            // Show the delete and placement buttons
+            $(this).find("[type=fieldbuttons]").show();
+            
+        }).bind("mouseleave", function(event) {
+            /*
+            $(this).css("border", "none");
+            $(this).css("margin", $(this).attr("oldcssmargin")); // Restore old margin value
+            if ($.browser.webkit) 
+            {
+                $("body").css("zoom", "1.2");
+                setTimeout('$("body").css("zoom", "1");', 0);
+            }
+            */
+            
+            // Hide shadow
+            $(this).css("-webkit-box-shadow", "none");
+            $(this).css("-mozilla-box-shadow", "none");
+            $(this).css("box-shadow", "none");
+            
+            // Hide the delete and placement buttons
+            $(this).find("[type=fieldbuttons]").hide();
+        });
+        // Find the buttons inside the fields and attach the proper actions to them 
+        jqueryobj.find("[type=fieldbuttons] [action=remove]").bind("click", function(event) {
+            wi3.pagefillers.default.edittoolbar.removeField($(this).closest("[type=field]").attr("fieldid"));
+        });
+        jqueryobj.find("[type=fieldbuttons] [action=align_floatleft]").bind("click", function(event) {
+            $(this).closest("[type=field]").css("width","").css("float", "left");
+        });
+        jqueryobj.find("[type=fieldbuttons] [action=align_floatright]").bind("click", function(event) {
+            $(this).closest("[type=field]").css("width","").css("float", "right");
+        });
+        jqueryobj.find("[type=fieldbuttons] [action=align_fullwidth]").bind("click", function(event) {
+            $(this).closest("[type=field]").css("float", "none").css("width", "100%");
+        });
+        jqueryobj.find("[type=fieldbuttons] [action=margin_0px]").bind("click", function(event) {
+            $(this).closest("[type=field]").css("padding", "0px");
+        });
+        jqueryobj.find("[type=fieldbuttons] [action=margin_20px]").bind("click", function(event) {
+            $(this).closest("[type=field]").css("padding", "20px");
+        });
+        jqueryobj.find("[type=fieldbuttons] [action=margin_40px]").bind("click", function(event) {
+            $(this).closest("[type=field]").css("padding", "40px");
+        });
+    },
+    
+    removeField : function(fieldid)
+    {
+        var request = wi3.request("pagefiller_default_edittoolbar_ajax/removefield", { pageid: $("#pagefiller_default_edittoolbar_pageid").text(), fieldid: fieldid, elementtext: $("[fieldid="+fieldid+"] [type=fieldcontent]").text() });
+    }
+};
+
+// The style functions and changetag function 
+// TODO: move this into a JQuery plugin
+function changeTagName(parent, newTagName)
+{
+    parent = $(parent);
+    // Fetch the style of the <p> or <span> element
+    var parentstyles = getStyles(parent);
+    var parentcomputedstyles = getComputedStyles(parent);
+    if (!newTagName.length) { newTagName = "div"; }
+    // replace <p> or <span> with an element newTagName (e.g. a <div>)
+    parent.replaceWith("<" + newTagName + " findmeback='findmeback'>" + parent.html() + "</" + newTagName + ">"); // replace the <p> or <span> with its contents
+    var wrap = $("[findmeback=findmeback]").removeAttr("findmeback");
+    // Set the style from the original element. Make sure to only include those styles that are actually different from the div element.
+    divstyles = getStyles(wrap);
+    var style = "";
+    // include the parent styles that are different
+    for(index in parentstyles)
+    {
+        if (parentstyles[index] != divstyles[index])
+        {
+            style += index + ": " + parentstyles[index] + "; ";
+        }
+    }
+    // Reset the div styles that are not found in the parent
+    // The reset happens by setting the value to the computed style of the original parent
+    for(index in divstyles)
+    {
+        if (!parentstyles[index])
+        {
+            style += index + ": " + parentcomputedstyles[index] + ";";
+        }
+    }
+    wrap.attr("style", style); // set all the markup from the p/span element to the div element
+    return wrap; // Return the new parent
+}
+
+function getComputedStyles(element)
+{
+    var styles= [];
+    var element = $(element).get(0);
+    // The DOM Level 2 CSS way
+    if ('getComputedStyle' in window) {
+        var cs= getComputedStyle(element, '');
+        if (cs.length!==0)
+        {
+            for (var i= 0; i<cs.length; i++)
+            {
+                styles[cs.item(i)] = cs.getPropertyValue(cs.item(i));
+            }
+        }
+        else // Opera workaround. Opera doesn't support `item`/`length` on CSSStyleDeclaration.
+        {
+            for (var k in cs)
+            {
+                if (cs.hasOwnProperty(k))
+                {
+                    styles[k] = cs[k];
+                }
+            }
+        }
+    // The IE way
+    } else if ('currentStyle' in element) {
+        var cs= element.currentStyle;
+        for (var k in cs)
+        {
+            styles[k] = cs[k];
+        }
+    }
+    return styles;
+}
+
+function getStyles(element)
+{
+    var element = $(element).get(0);
+    var rules = []; var count = 0;
+    // NOTE: it is impossible to read the 'default stylesheet' so it is best to include a reset.css to have access to the 'base' rules
+    // Get all the explicit stylesheets (including <style> declaratinos) and extract the matching rules
+    for (index in document.styleSheets)
+    {
+        localrules = [];
+        if (document.styleSheets[index].cssRules)
+        {
+            localrules = document.styleSheets[index].cssRules;
+        }
+        else if (document.styleSheets[index].rules)
+        {
+            localrules = document.styleSheets[index].rules;
+        }
+        // Loop through the local rules, and add them to the rules if the rule is meant for the element under study
+        for(i in localrules)
+        {
+            if (localrules[i].selectorText && localrules[i].selectorText.length)
+            {
+                var selector = localrules[i].selectorText;
+                // JQuery chokes on :: in the selector, so we need to remove those...
+                if (selector.indexOf("::") != -1) { continue; }
+                // http://stackoverflow.com/questions/2218296/jquery-check-if-jquery-object-contains-exact-dom-element
+                if ( $(selector).filter(function() { return this == element; }).length ) { // selector does match element 
+                    // Loop over the rules belonging to this selector, and add them to the rules array
+                    for(r=0; r < localrules[i].style.length; r++)
+                    {
+                        rules[localrules[i].style[r]] = localrules[i].style[localrules[i].style[r]];
+                    }
+                }
+            }
+        }
+    }
+    // Loop over the inline style and add those rules
+    var inlinestyle = $(element).attr("style");
+    if (inlinestyle && inlinestyle.length > 0) 
+    { 
+        var inlinerules = inlinestyle.split(";");
+        for(ir in inlinerules)
+        {
+            if (inlinerules[ir].length > 0)
+            {
+                var inlinerule = inlinerules[ir].split(":");
+                if (inlinerule.length == 2)
+                {
+                    rules[inlinerule[0]] = inlinerule[1];
+                }
+            }
+        }
+    }
+    return rules;
+}

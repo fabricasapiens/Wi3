@@ -1,0 +1,13 @@
+Gewijzigd tov Download van Jquery UI Themeroller
+
+Datepicker heeft z-index 1200 gekregen om boven fancybox uit te komen...!
+
+.ui-widget-content aangepast van 
+{ border: 1px solid #dddddd; background: #ffffff url(images/ui-bg_flat_75_ffffff_40x100.png) 50% 50% repeat-x; color: #444444; }
+naar
+{ background: #ffffff url(images/ui-bg_flat_75_ffffff_40x100.png) 50% 50% repeat-x; color: #444444; }
+
+.ui-widget-header aangepast van
+{ border: 1px solid #dddddd; background: #dddddd url(images/ui-bg_highlight-soft_50_dddddd_1x100.png) 50% 50% repeat-x; color: #444444; font-weight: bold; }
+naar
+{ border-bottom: 1px solid #dddddd; color: #444444; font-weight: bold; }

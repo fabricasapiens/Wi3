@@ -1,0 +1,15 @@
+php_flag safe_mode off
+php_flag safe_mode_gid off
+
+# Paginas zijn de enige bestanden die daadwerkelijk opgevraagd mogen worden
+Allow from all
+
+# Geen index van alle bestanden weergeven
+Options -Indexes
+
+# Als een plaatje niet bestaat op een bepaalde resolutie, dan dat plaatje aanmaken
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} \.(png|jpg|jpeg|gif|bmp).$ [NC]
+RewriteRule (.*) afbeelding.php/$1/ [L]

@@ -1,0 +1,36 @@
+html, body { padding: 0px; margin: 0px; font: 13px arial, verdana, sans-serif; background: #0b5aa3; background: #fff; }
+
+    #topshadow { position: absolute; left: 0px; top: 0px; height: 20px; width: 100%; background: url(../images/boven_schaduw.png) repeat-x; }
+    #lefttopcorner { position: absolute; left: 0px; top: 0px; width: 150px; height: 150px; background: url(../images/linksboven_schaduw.png) no-repeat; }
+    #righttopcorner { position: absolute; right: 0px; top: 0px; width: 150px; height: 150px; background: url(../images/rechtsboven_schaduw.png) no-repeat; }
+
+    a { border: none; text-decoration: none;  color: #0b5aa3;  }
+    
+    #content h1 { font-size: 22px; margin-bottom: 10px; color: #054272; }
+    #content h1 a { color: #054272; }
+    #content p { padding-bottom: 20px; }
+
+    #wrap { width: 1000px; margin: auto; }
+
+        #column { width: 1000px; }
+            
+            #top { height: 162px; width: 960px; width: 960px; padding-left: 20px; padding-right: 20px; background: url(../images/boven_achtergrond.png) no-repeat; background-position: 0px 0px; }
+            #top { overflow: auto; } /* To make the margins 'collapse', so that the margin of #navigation is calculated from this element, and not from the top of document. See http://www.w3.org/TR/CSS2/box.html#collapsing-margins */
+                #navigation { margin-top: 104px; margin-left: 21px; }
+                    #navigation ul li { float: left; }
+                    #navigation ul li a { display: block; color: #fff; font-size: 13px; padding: 10px; margin-right: 5px; }
+                    #navigation ul li a.active { background: #054272; }
+                        #navigation ul li ul { display: none; }
+            #middle { width: 1000px; background: url(../images/midden_achtergrond.png) repeat-y; }
+                #content { width: 900px;  padding-left: 50px; padding-top: 30px; padding-bottom: 20px; padding-right: 50px; background: url(../images/midden_boven.png) no-repeat; min-height: 350px; }
+                    #content #left { float: left; margin: 40px; width: 330px; min-height: 300px; color: #002f4b; font-size: 20px; }
+                    #content #right { float: right; background: #f3f3f3; margin: 40px; width: 410px; min-height: 300px; overflow: auto; }
+                        /* Welkom page */
+                        #content .sampleproject { width: 310px; margin: 20px; position: relative; }
+                        #content .sampleproject img { margin-right: 5px; border: 2px solid #000; }
+                        #content .sampleproject_link { position: absolute; top: 0px; left: 210px; padding-top: 35px; color: #054272; }
+                        /* Portfolio page */
+                        #content .portfolioproject { width: 920px; margin: 20px; position: relative; color: #000; text-align: justify; }
+                        #content .portfolioproject img { margin-right: 5px; border: 2px solid #000; }
+                        #content .portfolioproject a:link { font-size: 12px; }
+            #bottom { width: 960px;  padding-left: 20px; padding-right: 20px; padding-top: 20px; color: #bbb; min-height: 100px; background: url(../images/onder_achtergrond.png) no-repeat; }

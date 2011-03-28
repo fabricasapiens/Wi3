@@ -1,0 +1,7 @@
+RewriteEngine On
+
+# Prevent indexing and direct access to existing php files
+Options -Indexes
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteCond %{REQUEST_URI} .php$
+RewriteRule .* - [F]

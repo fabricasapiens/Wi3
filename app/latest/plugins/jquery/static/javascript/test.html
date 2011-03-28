@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src='jquery-1.4.2.min.js'></script>
+        <script>
+            function test() {
+                $("select").val("2");
+            }
+            setTimeout("test()",1000);
+        </script>
+    </head>
+    <body>
+        <select>
+            <option selected="selected">1</option>
+            <option>2</option>
+        </select>
+    </body>
+</html>

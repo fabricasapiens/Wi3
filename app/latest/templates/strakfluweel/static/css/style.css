@@ -1,0 +1,9 @@
+html, body { padding: 0px; margin: 0px; font: 13px arial, verdana, sans-serif; background: #0b5aa3; background: #fff; }
+
+#nav { width: 600px; padding: 20px; margin: auto; margin-top: 60px; background: #efefef; }
+#content { width: 600px; padding: 20px; margin: auto; margin-top: 10px; background: #efefef;  }
+
+h1 { font-size: 20px; margin-top: 10px; }
+h2 { font-size: 16px; margin-top: 5px; }
+p { margin-top: 5px; }
+
