@@ -34,7 +34,6 @@
         {
             // Load the data that is associated with this field 
             $data = Wi3::inst()->model->factory("site_array")->setref($field)->setname("data")->load();
-            echo Kohana::debug($data); exit;
             $destinationtype = $data->destinationtype;
             // Create URL based on the destinationtype
             if ($destinationtype == "url")
