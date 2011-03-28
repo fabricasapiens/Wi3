@@ -160,7 +160,11 @@
             }
             else
             {
-                $this->globalauth = Wi3_Auth_Global::instance();
+                // If user is in setup, then don't yet load Auth and Database instances, since they most probably don't yet exist
+                if (Request::instance()->controller != "setup")
+                {
+                    $this->globalauth = Wi3_Auth_Global::instance();
+                }
             }
             $this->acl = Wi3_ACL::instance();
             
