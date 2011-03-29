@@ -15,7 +15,7 @@ RewriteRule .* / [E=REDIRECTFROMVHOSTTOROOT:TRUE,L]
 ###
 # Now **FIRST** set the sitename; this is used within PHP to determine which site should be loaded
 ###
-SetEnv SITENAME fabricasapiens.nl
+SetEnv SITENAME demosite
 
 #### 
 # Site locations
@@ -24,17 +24,17 @@ SetEnv SITENAME fabricasapiens.nl
 # Direct access to the site files
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule _sitefiles/(.*) ../../../sites/fabricasapiens.nl/$1  [L]
+RewriteRule _sitefiles/(.*) ../../../sites/demosite/$1  [L]
 
 # Static site content
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule _static/(.*) ../../../sites/fabricasapiens.nl/data/static/$1  [L]
+RewriteRule _static/(.*) ../../../sites/demosite/data/static/$1  [L]
 
 # Uploads
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule _uploads/(.*) ../../../sites/fabricasapiens.nl/data/uploads/$1 [L]
+RewriteRule _uploads/(.*) ../../../sites/demosite/data/uploads/$1 [L]
 
 #### 
 # Special Wi3 controllers adminarea and superadminarea

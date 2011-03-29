@@ -2,7 +2,7 @@
 
 return array
 (
-	'site' => array
+	'global' => array
 	(
 		'type'       => 'mysql',
 		'connection' => array(
@@ -18,14 +18,40 @@ return array
 			 * Ports and sockets may be appended to the hostname.
 			 */
 			'hostname'   => 'localhost',
-			'database'   => 'eenwebsitemaken_'.Wi3::inst()->sitearea->site->databasesafename,
+			'database'   => 'wi3',
 			'username'   => 'root',
-			'password'   => 'athene87',
+			'password'   => 'r00tdb',
 			'persistent' => FALSE,
 		),
 		'table_prefix' => '',
 		'charset'      => 'utf8',
         'profiling'    => Kohana::$environment !== Kohana::PRODUCTION,
         'caching'    => Kohana::$environment === Kohana::PRODUCTION,
-	)
+	),
+	'alternate' => array(
+		'type'       => 'pdo',
+		'connection' => array(
+			/**
+			 * The following options are available for PDO:
+			 *
+			 * string   dsn         Data Source Name
+			 * string   username    database username
+			 * string   password    database password
+			 * boolean  persistent  use persistent connections?
+			 */
+			'dsn'        => 'mysql:host=localhost;dbname=kohana',
+			'username'   => 'root',
+			'password'   => 'r00tdb',
+			'persistent' => FALSE,
+		),
+		/**
+		 * The following extra options are available for PDO:
+		 *
+		 * string   identifier  set the escaping identifier
+		 */
+		'table_prefix' => '',
+		'charset'      => 'utf8',
+		'caching'      => FALSE,
+		'profiling'    => TRUE,
+	),
 );

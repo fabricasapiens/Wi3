@@ -48,7 +48,7 @@ For Wi3 to work,the app needs write access to four folders.
 - vhosts
 
 ### Routing to the cms ###
-In order to access wi3, you will need to make it accessible through an URL. Usually, this involves a .htaccess file that points to the Wi3 installation.
+In order to access wi3, you will need to make it accessible through a URL. Usually, this involves a .htaccess file that points to the Wi3 installation.
 
 You could do this by placing something along these lines in a .htaccess file in your www-root
 
@@ -59,26 +59,26 @@ RewriteRule (.*) /wi3/vhosts/%{HTTP_HOST}/httpdocs/$1/ [E=REDIRECTED:TRUE,L]
 
 The specific code above will only allow connections from http://127.0.0.1. This is desirable for testing environments. Of course, on a deployed server, you want to replace 127.0.0.1 with your actual hostname.
 
-As can be seen in the .htaccess file, all requests from 127.0.0.1 are routed to the /wi3/vhosts/127.0.0.1/ folder. This folder should exist, and should contain at least a 'log' and a 'httpdocs' subfolder. The 'httpdocs' folder should subsequently contain a .htaccess file that does the final routing to the proper places. See the file as included in the download for details.
+As can be seen in the .htaccess file, all requests from 127.0.0.1 are routed to the <code>/wi3/vhosts/127.0.0.1/</code> folder. This folder should exist, and should contain at least a 'log' and a 'httpdocs' subfolder. The 'httpdocs' folder should subsequently contain a .htaccess file that does the final routing to the proper places. See the file as included in the download for details.
 
 ### DB setup ###
 Congratulations, you have Wi3 working. Now we only need to get the Database up and running so the cms can do some actual work!
 
-First of all, edit the app/config/database.php to match your database setup. It is strongly advised to give Wi3 a dedicated database, and not a shared one!
+First of all, rename <code>app/config/database.php.example</code> into <code>app/config/database.php</code> and edit the file to match your database setup. It is strongly advised to give Wi3 a dedicated database, and not a shared one!
 
-Now, go to http://127.0.0.1/_wi3controllers/setup/. You will be presented with a bare interface to setup the first necessary tables. Simply click the links from top to bottom.
+Now, go to <code>http://127.0.0.1/_wi3controllers/setup/</code>. You will be presented with a bare interface to setup the first necessary tables. Simply click the links from top to bottom.
 
 Once you are done, you have enabled the 'superadmin' user and you can start managing sites!
 
 ### Creating a site ###
 PLEASE NOTE: The CMS is currently Dutch. There will be an english version later; in the meantime, you might be able to guess quite some words by mixing German with English...
 
-Point your browser to http://127.0.0.1/superadminarea and login with superadmin/superadmin. As you can see, there are no sites yet. Fill the top input with 'fabricasapiens.nl' (this is the site that the .htaccess in the 127.0.0.1 points to) and give it a title in the second input. Then set the select to 'ja' and click 'aanmaken'. The CMS will now create a site with standard logins.
+Point your browser to <code>http://127.0.0.1/superadminarea</code> and login with superadmin/superadmin. As you can see, there are no sites yet. Fill the top input with 'demosite' (this is the site that the .htaccess in the 127.0.0.1 points to) and give it a title (e.g. 'local demosite') in the second input. Then set the select to 'ja' and click 'aanmaken'. The CMS will now create a site along with a default admin  login.
 
 Congratulations, you now have everything working to log into the CMS and do some actual content managing!
 
 ### Editing Content ###
-Go to http://127.0.0.1/adminarea/ and login with admin/admin. This is the actual Wi3 CMS that users will see... The first tab is for managing pages, the second tab for managing content and the third tab for managing files. Go ahead and create a page. Now do an F5 refresh to show the page (this refresh is only required with the creation of the first page). Now click the 'inhoud' tab and see the magic of an HTML5 CMS! :-)
+Go to <code>http://127.0.0.1/adminarea/</code> and login with admin/admin. This is the actual Wi3 CMS that users will see... The first tab is for managing pages, the second tab for managing content and the third tab for managing files. Go ahead and create a page. Now do an F5 refresh to show the page (this refresh is only required with the creation of the first page). Now click the 'inhoud' tab and see the magic of an HTML5 CMS! :-)
 
 [ TODO: expand readme ]
 
