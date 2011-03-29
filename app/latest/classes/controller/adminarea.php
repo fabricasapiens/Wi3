@@ -125,15 +125,14 @@ class Controller_Adminarea extends Controller_ACL {
         if (isset($_FILES['file'])) {
             //add file
             $filename = basename( $_FILES['file']['name']);
-            $extensionpos = strrpos($filename, ".")+1;
-            if ($extensionpos > -1) {
-                $badexts = array("php", "phtml", "php3", "phps", "php4", "php5", "asp", "py", "pl", "jsp", "sh", "cgi", "shtml", "shtm", "phtml", "phtm");
-                //check for forbidden extensions
-                $ext = substr($filename, $extensionpos);
-                if (in_array(strtolower($ext), $badexts)) {
-                    $this->template->content->message = "Het toevoegen van bestanden met dit bestandstype (" . $ext . ") is niet toegestaan. Probeer het nog eens.";
-                    return;
-                }
+            // Usually, one would filter for forbidden extensions (or better: have a whitelist approach)
+            // With Wi3 however this is not necessary, since a .htaccess in the uploads directory prevents the execution of any script: it will disable the PHP parser for that dir.
+            // Consequently, it *is* very important to filter for .htaccess (and .gitignore while we're at it) files!
+            if (strtolower($filename) == ".htaccess" OR strtolower($filename) == ".gitignore")
+            {
+                $this->template->content = View::factory("adminarea/files");
+                $this->template->content->message = "Het toevoegen van .htaccess bestanden is niet toegestaan. Probeer het nog eens.";
+                return;
             }
             $target = Wi3::inst()->pathof->site. "data/uploads/" . basename($_FILES['file']['name']); 
             if (!file_exists(Wi3::inst()->pathof->site. "data/uploads")) {

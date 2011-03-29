@@ -3,7 +3,7 @@
 </div>
 <div class='portfolioproject'>
     <h1>Wi3</h1>
-    <p><a href='https://github.com/fabricasapiens.nl/wi3'>Github pagina</a></p>
+    <p><a href='https://github.com/fabricasapiens/wi3'>Github pagina</a></p>
     <div style='float: left;'>
        
     </div>
