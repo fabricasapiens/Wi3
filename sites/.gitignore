@@ -1,4 +1,5 @@
 *
 !.gitignore
-!demosite
-!demosite/*
+!/demosite
+!/demosite/*
+!/demosite/**/*
