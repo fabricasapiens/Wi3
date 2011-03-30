@@ -273,6 +273,38 @@ abstract class Sprig_MPTT extends Sprig
 		return Sprig_MPTT::factory($this->_model)->load($query, NULL);
 	}
 	
+	/** 
+    * Returns last root node
+    *
+    * @author: Willem Mulder
+    *
+    */
+    public function lastroot($scope = NULL)
+	{
+		if ($scope === NULL AND $this->loaded())
+		{
+			$scope = $this->{$this->scope_column};
+		}
+		elseif ($scope === NULL AND ! $this->loaded())
+		{
+			return FALSE;
+		}
+		
+		// The default sorting for some models is ASC, as stored in the $model->_sorting variable 
+		// Whenever there is a load() call on a those models, the _sorting will be added as order_by to the query
+		// Now, since we want DESC sorting, we cannot simply do ->order_by(.., DESC) on the query, since it will be overridden by the default when *that* gets added with order_by (flawed, yes, because it turns a default into an unchangable hard setting, but hard to fix since the Query Builder Properties are protected so it is impossible to check on existing order_bys and thus impossible to not override those with the 'default'... TODO: create a custom Query Builder and create method get_orderby() to extract current order)
+		// Thus, we unset the default sorting
+		$model = Sprig_MPTT::factory($this->_model);
+		$model->_sorting = FALSE;
+        
+        $query = DB::select()
+			->where($this->level_column, '=', '0')
+			->where($this->scope_column, '=', $scope)
+			->order_by($this->left_column, 'DESC');
+		
+		return $model->load($query, 1); // Limit results to 1
+	}
+	
 	/**
 	 * Returns the parent of the current node.
 	 *

@@ -85,16 +85,30 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
             //Wi3::inst()->cache->field_delete_all_wheresite(Wi3::$site);
             //#
             
-            $li = html::anchor("engine/content/" . $page->id, $page->longtitle);
-            echo json_encode(
-                Array(
-                    "alert" => "pagina is toegevoegd ",
-                    //"dom" => Array("append" => Array("#menu_pages" => "<li class='treeItem' id='treeItem_" . $page->id . "'><span>" . html::anchor("engine/content/" . $page->id, $page->title) . "</span></li>")),
-                    "scriptsafter" => Array(
-                        "adminarea.currentTree().addNode('treeItem_" . $page->id . "','" . addslashes($li) . "')",
+            if ($pageposition->lft == 1 AND $pageposition->rgt == 2)
+            {
+                // The new pageposition is the only pageposition there is. For the javascript menu to work properly, we need to reload the page.
+                echo json_encode(
+                    Array(
+                        "scriptsbefore" => Array(
+                            "reload" => "window.location.reload();"
+                        )
                     )
-                )
-            );
+                );
+            }
+            else
+            {
+                $li = html::anchor("engine/content/" . $page->id, $page->longtitle);
+                echo json_encode(
+                    Array(
+                        "alert" => "pagina is toegevoegd ",
+                        //"dom" => Array("append" => Array("#menu_pages" => "<li class='treeItem' id='treeItem_" . $page->id . "'><span>" . html::anchor("engine/content/" . $page->id, $page->title) . "</span></li>")),
+                        "scriptsafter" => Array(
+                            "adminarea.currentTree().addNode('treeItem_" . $page->id . "','" . addslashes($li) . "')",
+                        )
+                    )
+                );
+            }
         }
         
     }

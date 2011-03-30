@@ -493,7 +493,7 @@ $.fn.simpleTree = function(opt){
 			var temp_node = $("<span>").html('<li class="doc" id="'+id+'"><span>'+text+'</span></li>');
 			TREE.setTreeNodes(temp_node, false);
 			temp_node = temp_node.children();
-			$("ul", this).append(temp_node);
+			$("ul", this).first().append(temp_node);
 			dragNode_destination = (TREE.getSelected().attr("id") ? TREE.getSelected() : ROOT); //TREE.getSelected();
 			dragNode_source = $(temp_node);
 			TREE.moveNodeToFolder(dragNode_destination);

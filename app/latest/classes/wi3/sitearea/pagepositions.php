@@ -18,12 +18,13 @@ class Wi3_Sitearea_Pagepositions extends Wi3_Base
         if (isset($properties["under"]))
         {
             $existingpage->id = $properties["under"];
+            $existingpage->load();
         }
         else
         {
-            $existingpage->lft = 1;
+            // Get the last root page. The new page will be inserted after it.
+            $existingpage = $existingpage->lastroot(1); // Scope 1
         }
-        $existingpage->load();
         if ($existingpage->loaded())
         {
             if (isset($properties["under"]))
@@ -32,7 +33,7 @@ class Wi3_Sitearea_Pagepositions extends Wi3_Base
             }
             else
             {
-                $newpage = Wi3::inst()->model->factory("site_pageposition")->insert_as_prev_sibling($existingpage);
+                $newpage = Wi3::inst()->model->factory("site_pageposition")->insert_as_next_sibling($existingpage);
             }
         }
         else

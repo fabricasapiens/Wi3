@@ -109,7 +109,7 @@
                 //
                 // First, Include the whole site-tree in the find_file() function
                 Kohana::modules(Kohana::modules() + array("site" => APPPATH . "../../sites/" . $sitename . "/")); // Because Kohana uses include_once() this will only init the new module, without double-including the others
-                // Load the sitedatabase config. It will be fetched from the sites//sitename/config folder since the sites/sitename is now in the Kohana find_file paths
+                // Load the sitedatabase config. It will be fetched from the sites/sitename/config folder since the sites/sitename is now in the Kohana find_file paths
                 $siteconfig = Kohana::config('sitedatabase')->site;
                 // Set up a site database connection, to be used by the site-based-models like Site_Page, Site_User, File etc
                 $this->sitearea->database = Wi3_Database::instance("site", $siteconfig);

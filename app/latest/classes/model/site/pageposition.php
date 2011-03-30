@@ -10,7 +10,7 @@ class Model_Site_Pageposition extends Sprig_MPTT
     
 	protected $_title_key = 'id';
 
-	protected $_sorting = array('lft' => 'asc');
+	protected $_sorting = array('lft' => 'asc'); // Default to Ascending sorting
 
 	protected function _init()
 	{

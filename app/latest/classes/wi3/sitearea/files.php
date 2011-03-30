@@ -120,7 +120,10 @@ class Wi3_Sitearea_Files extends Wi3_Base
                 $file = Wi3::inst()->model->factory("site_file", array("id"=> $file))->load();
             }
             // TODO: delete all possible resized versions of images!
-            unlink(Wi3::inst()->pathof->site . "data/uploads/" . $file->filename);
+            if (file_exists(Wi3::inst()->pathof->site . "data/uploads/" . $file->filename))
+            {
+                unlink(Wi3::inst()->pathof->site . "data/uploads/" . $file->filename);
+            }
             // Deleting a node in a tree will delete its descendants as well
             $file->delete();
             //echo View::factory("profiler/stats");
