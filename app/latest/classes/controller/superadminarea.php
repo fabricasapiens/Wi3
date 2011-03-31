@@ -84,7 +84,7 @@ class Controller_Superadminarea extends Controller_ACL {
             // Set the local site temporarily the same as the global site, so that the DB config can fetch i.e. name etc from that
             Wi3::inst()->sitearea->site = $site;
             // Now try to create a dedicated database for this site
-            Wi3::inst()->database->create_database("eenwebsitemaken_".$site->databasesafename);
+            Wi3::inst()->database->create_database("wi3_".$site->databasesafename);
             // Second create a folder with config files etc
                 // TODO: folder for now is assumed. 
             // Third, load the available database-config file for this specific site

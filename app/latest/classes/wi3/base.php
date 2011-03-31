@@ -1,7 +1,10 @@
-<?php
+<?php defined('SYSPATH') or die('No direct script access.');
 
+    // Class makes sure that extending objects have the instance() function (and its alias inst())
+    // That return an instance of the object. Instances can be given names, and constructparameters
     class Wi3_Base
     {
+        // Object and array that keep the instances of this class
         public static $_instances = Array();
         public static $_instance;
         

@@ -26,6 +26,8 @@ Installation
 #### Disclaimer ####
 Please note that Fabrica Sapiens cannot be held responsible for anything that results from the following instructions. Moreover, while this setup should also work on Windows and Mac, it is not tested thoroughly on those platforms!
 
+Also, it is the plan to make the installation process easier for newcomers!
+
 ### Downloading and unpacking ###
 Basically, there are two options to get Wi3: via a Git client, or via the Github web-interface.
 
@@ -73,7 +75,7 @@ Congratulations, you have Wi3 working. Now we only need to get the Database up a
 
 First of all, rename <code>app/config/database.php.example</code> into <code>app/config/database.php</code> and edit the file to match your database setup. It is strongly advised to give Wi3 a dedicated database, and not a shared one! 
 
-Also note that Wi3 requires a root DB account, because it creates a new DB for every site. Separate databases make it easier to move (export/import) complete sites around.
+Although the config in <code>app/config/database.php</code> uses an existing DB, Wi3 will create another separate database for every new site you enable. Wi3 will use a site-specific database-config for that, as found in <code>sites/[sitename]/config/database.php</code>. For the demosite, rename <code>sites/demosite/config/database.php.example</code> into <code>sites/demosite/config/database.php</code> and edit the file so that the user is valid. Do *not* change the databasename. Note that Wi3 requires a DB account that has the privileges to indeed create the desired database! 
 
 Now, go to <code>http://127.0.0.1/_wi3controllers/setup/</code>. You will be presented with a bare interface to setup the first necessary tables. Simply click the links from top to bottom.
 
