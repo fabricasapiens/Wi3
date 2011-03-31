@@ -1,0 +1,562 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.0 r9654"
+   sodipodi:docname="routing.svg"
+   inkscape:export-filename="/var/www/eenwebsitemaken.com/docs/routing.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs4">
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Lend"
+       style="overflow:visible;">
+      <path
+         id="path3787"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;marker-start:none;"
+         transform="scale(0.8) rotate(180) translate(12.5,0)" />
+    </marker>
+    <filter
+       id="filter3765"
+       inkscape:label="Drop shadow"
+       width="1.5"
+       height="1.5"
+       x="-.25"
+       y="-.25">
+      <feGaussianBlur
+         id="feGaussianBlur3767"
+         in="SourceAlpha"
+         stdDeviation="4"
+         result="blur" />
+      <feColorMatrix
+         id="feColorMatrix3769"
+         result="bluralpha"
+         type="matrix"
+         values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0.5 0 " />
+      <feOffset
+         id="feOffset3771"
+         in="bluralpha"
+         dx="0"
+         dy="0"
+         result="offsetBlur" />
+      <feMerge
+         id="feMerge3773">
+        <feMergeNode
+           id="feMergeNode3775"
+           in="offsetBlur" />
+        <feMergeNode
+           id="feMergeNode3777"
+           in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="1"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="332.98677"
+     inkscape:cy="763.17962"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1680"
+     inkscape:window-height="974"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Laag 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <text
+       xml:space="preserve"
+       style="font-size:32px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+       x="296.4906"
+       y="64.362183"
+       id="text2985"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan2987"
+         x="296.4906"
+         y="64.362183"
+         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell Medium">http://127.0.0.1</tspan></text>
+    <rect
+       style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:3.20000005;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter3765);enable-background:accumulate"
+       id="rect2995"
+       width="602.85712"
+       height="137.14285"
+       x="70.618683"
+       y="161.50504"
+       ry="17.142857" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="m 372.04724,91.50504 0,47.14286"
+       id="path3779"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-size:32px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+       x="90"
+       y="197.21931"
+       id="text4225"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4227"
+         x="90"
+         y="197.21931"
+         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell Medium">.htaccess in root</tspan><tspan
+         sodipodi:role="line"
+         x="90"
+         y="222.21931"
+         id="tspan4231"
+         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell Medium" /><tspan
+         sodipodi:role="line"
+         x="90"
+         y="247.21931"
+         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell Medium"
+         id="tspan4239">Should point to [wi3folder]/vhosts/[http_host]/httpdocs</tspan><tspan
+         sodipodi:role="line"
+         x="90"
+         y="272.2193"
+         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell Medium"
+         id="tspan4237">Let's assume /wi3/vhosts/127.0.0.1/httpdocs</tspan></text>
+    <rect
+       ry="17.142857"
+       y="399.36218"
+       x="70.618683"
+       height="160"
+       width="602.85712"
+       id="rect4243"
+       style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:3.20000005;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter3765);enable-background:accumulate" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4245"
+       d="m 372.04724,329.36218 0,47.14286"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text4247"
+       y="435.07645"
+       x="90"
+       style="font-size:32px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+       xml:space="preserve"><tspan
+         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell Medium"
+         y="435.07645"
+         x="90"
+         id="tspan4249"
+         sodipodi:role="line">.htaccess in /wi3/vhosts/127.0.0.1/httpdocs</tspan><tspan
+         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell Medium"
+         id="tspan4251"
+         y="460.07645"
+         x="90"
+         sodipodi:role="line" /><tspan
+         id="tspan4255"
+         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell Medium"
+         y="485.07645"
+         x="90"
+         sodipodi:role="line">Sets the desired sitename (as environment variable) and </tspan><tspan
+         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell Medium"
+         y="510.07642"
+         x="90"
+         sodipodi:role="line"
+         id="tspan4259">reroutes to either [wi3folder]/app/somewhere or to an </tspan><tspan
+         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell Medium"
+         y="535.07642"
+         x="90"
+         sodipodi:role="line"
+         id="tspan4261">uploaded file in [wi3folder]/sites/[sitename]/data/uploads/</tspan></text>
+    <rect
+       style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:3.20000005;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter3765);enable-background:accumulate"
+       id="rect4267"
+       width="295.38504"
+       height="55.936867"
+       x="70.618683"
+       y="664.36218"
+       ry="17.142857" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="m 192.04724,590.07647 0,47.14286"
+       id="path4269"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-size:32px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+       x="90"
+       y="698.64789"
+       id="text4283"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="90"
+         y="698.64789"
+         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell Medium"
+         id="tspan4309">wi3</tspan><tspan
+         sodipodi:role="line"
+         x="90"
+         y="723.64789"
+         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell Medium"
+         id="tspan4311" /></text>
+    <rect
+       ry="17.142857"
+       y="664.36218"
+       x="430.61868"
+       height="214.79695"
+       width="242.85712"
+       id="rect4325"
+       style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:3.20000005;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter3765);enable-background:accumulate" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4327"
+       d="m 552.04724,590.07647 0,47.14286"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text4329"
+       y="698.64789"
+       x="450"
+       style="font-size:32px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+       xml:space="preserve"><tspan
+         id="tspan4339"
+         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell Medium"
+         y="698.64789"
+         x="450"
+         sodipodi:role="line">upload</tspan><tspan
+         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell Medium"
+         y="723.64789"
+         x="450"
+         sodipodi:role="line"
+         id="tspan4359" /><tspan
+         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell Medium"
+         y="748.64789"
+         x="450"
+         sodipodi:role="line"
+         id="tspan4361">Will simply return the</tspan><tspan
+         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell Medium"
+         y="773.64789"
+         x="450"
+         sodipodi:role="line"
+         id="tspan4382">requested file from </tspan><tspan
+         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell Medium"
+         y="798.64789"
+         x="450"
+         sodipodi:role="line"
+         id="tspan4384">the uploads folder. </tspan><tspan
+         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell Medium"
+         y="823.64789"
+         x="450"
+         sodipodi:role="line"
+         id="tspan4386">Files can be uploaded </tspan><tspan
+         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell Medium"
+         y="848.64789"
+         x="450"
+         sodipodi:role="line"
+         id="tspan4388">via the adminarea.</tspan><tspan
+         id="tspan4341"
+         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell Medium"
+         y="873.64789"
+         x="450"
+         sodipodi:role="line" /><tspan
+         id="tspan4343"
+         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell Medium"
+         y="898.64789"
+         x="450"
+         sodipodi:role="line" /></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:1, 6;stroke-dashoffset:0"
+       d="m 35.355339,109.36702 653.568701,0"
+       id="path4390"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-size:32px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+       x="611.14227"
+       y="96.235062"
+       id="text4392"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4394"
+         x="611.14227"
+         y="96.235062"
+         style="font-size:16px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;fill:#b3b3b3;font-family:Cantarell;-inkscape-font-specification:Cantarell Medium">browser</tspan></text>
+    <path
+       inkscape:connector-curvature="0"
+       id="path4415"
+       d="m 35.355339,614.44329 653.568701,0"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:1, 6;stroke-dashoffset:0" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text4417"
+       y="601.31134"
+       x="611.14227"
+       style="font-size:32px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+       xml:space="preserve"><tspan
+         style="font-size:16px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;fill:#b3b3b3;font-family:Cantarell;-inkscape-font-specification:Cantarell Medium"
+         y="601.31134"
+         x="611.14227"
+         id="tspan4419"
+         sodipodi:role="line">site dev</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:1, 6;stroke-dashoffset:0"
+       d="m 35.355339,971.0271 653.568701,0"
+       id="path4437"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-size:32px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+       x="611.14227"
+       y="957.8952"
+       id="text4439"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4441"
+         x="611.14227"
+         y="957.8952"
+         style="font-size:16px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;fill:#b3b3b3;font-family:Cantarell;-inkscape-font-specification:Cantarell Medium">wi3 dev</tspan></text>
+    <rect
+       ry="17.142857"
+       y="808.8952"
+       x="70.618683"
+       height="127.36544"
+       width="126.20882"
+       id="rect4511"
+       style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:3.20000005;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter3765);enable-background:accumulate" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4513"
+       d="m 133.72309,742.6095 0,47.14286"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text4544"
+       y="841.36218"
+       x="90"
+       style="font-size:32px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+       xml:space="preserve"><tspan
+         id="tspan4548"
+         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell Medium"
+         y="841.36218"
+         x="90"
+         sodipodi:role="line">static file</tspan><tspan
+         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell Medium"
+         y="866.36218"
+         x="90"
+         sodipodi:role="line"
+         id="tspan4552">from e.g.</tspan><tspan
+         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell Medium"
+         y="891.36218"
+         x="90"
+         sodipodi:role="line"
+         id="tspan4554">jquery or</tspan><tspan
+         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell Medium"
+         y="916.36218"
+         x="90"
+         sodipodi:role="line"
+         id="tspan4558">templates</tspan><tspan
+         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell Medium"
+         y="941.36218"
+         x="90"
+         sodipodi:role="line"
+         id="tspan4556" /></text>
+    <rect
+       style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:3.20000005;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter3765);enable-background:accumulate"
+       id="rect4560"
+       width="153.48294"
+       height="127.36544"
+       x="214.06035"
+       y="808.8952"
+       ry="17.142857" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="m 290.80182,742.6095 0,47.14286"
+       id="path4562"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-size:32px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+       x="233.44167"
+       y="841.36218"
+       id="text4564"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="233.44167"
+         y="841.36218"
+         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell Medium"
+         id="tspan4596">a sitepage or</tspan><tspan
+         sodipodi:role="line"
+         x="233.44167"
+         y="866.36218"
+         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell Medium"
+         id="tspan4602">any page in</tspan><tspan
+         sodipodi:role="line"
+         x="233.44167"
+         y="891.36218"
+         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell Medium"
+         id="tspan4608">adminarea</tspan><tspan
+         sodipodi:role="line"
+         x="233.44167"
+         y="916.36218"
+         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell Medium"
+         id="tspan4590" /></text>
+    <image
+       y="988.27106"
+       x="33.418774"
+       id="image4620"
+       xlink:href="data:image/png;base64,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
+dr02EKgtlgAAAABJRU5ErkJggg==
+"
+       height="47.42857"
+       width="47.648148" />
+    <text
+       xml:space="preserve"
+       style="font-size:36.08673477px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+       x="94.663651"
+       y="1007.6283"
+       id="text4623"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4625"
+         x="94.663651"
+         y="1007.6283"
+         style="font-size:11.27710438px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell Medium">routing process for wi3</tspan><tspan
+         sodipodi:role="line"
+         x="94.663651"
+         y="1021.7247"
+         style="font-size:11.27710438px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell Medium"
+         id="tspan4627">https://github.com/fabricasapiens/wi3</tspan></text>
+  </g>
+</svg>
