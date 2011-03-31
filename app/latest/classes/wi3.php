@@ -197,6 +197,12 @@
             return $ret;
         }
         
+        public function unixpath($path)
+        {
+            // resolve symbolic links, and convert forward slashes to backslashes
+            return realpath(str_replace(DIRECTORY_SEPARATOR, "/", $path));
+        }
+        
     }
     
 ?>
