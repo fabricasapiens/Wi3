@@ -52,12 +52,19 @@ In order to access wi3, you will need to make it accessible through a URL. Usual
 
 You could do this by placing something along these lines in a .htaccess file in your www-root
 
-<code>
-RewriteCond %{SERVER_NAME} ^127.0.0.1$ [NC]
-RewriteRule (.*) /wi3/vhosts/%{HTTP_HOST}/httpdocs/$1/ [E=REDIRECTED:TRUE,L]
-</code>
+    RewriteEngine On 
+    
+    RewriteCond %{SERVER_NAME} ^127.0.0.1$ [NC]
+    RewriteRule (.*) /wi3/vhosts/%{HTTP_HOST}/httpdocs/$1/ [E=REDIRECTED:TRUE,L]
 
-The specific code above will only allow connections from http://127.0.0.1. This is desirable for testing environments. Of course, on a deployed server, you want to replace 127.0.0.1 with your actual hostname.
+The specific code above will only allow connections from http://127.0.0.1 and point it to the 127.0.0.1 vhost folder. This is desired for local development. On a deployed server, you want to change 127.0.0.1 with your actual hostname.
+
+Note that the above .htaccess will not allow connections from http://localhost! If you want http://localhost to work along with http://127.0.0.1, you should make a vhost folder named 'localhost' and change the .htaccess into something like this
+
+    RewriteEngine On 
+    RewriteRule (.*) /wi3/vhosts/%{HTTP_HOST}/httpdocs/$1/ [E=REDIRECTED:TRUE,L]
+
+This guide however assumes access from http://127.0.0.1.
 
 As can be seen in the .htaccess file, all requests from 127.0.0.1 are routed to the <code>/wi3/vhosts/127.0.0.1/</code> folder. This folder should exist, and should contain at least a 'log' and a 'httpdocs' subfolder. The 'httpdocs' folder should subsequently contain a .htaccess file that does the final routing to the proper places. See the file as included in the download for details.
 
