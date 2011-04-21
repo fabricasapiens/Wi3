@@ -155,8 +155,8 @@ class Controller_Superadminarea extends Controller_ACL {
         try 
         {
             $site->delete(); // The cascading deletion of the corresponding URLs happens in the model itself
-            // Now try to create a dedicated database for this site
-            Wi3::inst()->database->delete_database("eenwebsitemaken_".str_replace(".", "_", $_POST["name"])); // Gives a 'database-safe' representation of the sitename (i.e. without dots if it is a domain-name)
+            // TODO: get the databasename from the databaseconfig
+            Wi3::inst()->database->delete_database("wi3_".str_replace(".", "_", $_POST["name"])); // Gives a 'database-safe' representation of the sitename (i.e. without dots if it is a domain-name)
         }
         catch(Exception $e) 
         {

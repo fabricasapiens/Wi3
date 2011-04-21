@@ -59,14 +59,12 @@ Creating sites is currently not very easy, and a clean user-interface for this i
 
 1. Ensure that the correct files reside on disk in the <code>sites</code> folder. The <code>demosite</code> site will already be there and serves as an example.
 2. Ensure that the database-settings for the site are correct. This is important because Wi3 will create another separate database for every new site you enable. Wi3 will use a site-specific database-config for that, as found in <code>sites/[sitename]/config/database.php</code>. For the <code>demosite</code> site, rename <code>sites/demosite/config/database.php.example</code> into <code>sites/demosite/config/database.php</code> and edit the file so that the database user is valid. Do **not change** the databasename. Note that Wi3 requires a DB account that has the privileges to indeed create the desired database!
-3. Create a site through the superadminarea.
-
-As you can see, there are no sites yet. Fill the top input with 'demosite'. The top input will be used to get the correct site in the <code>sites</code> folder. In the second input, give the site a title (e.g. 'local demosite' but anything works). Then set the select to 'ja' and click 'aanmaken'. The CMS will now create a site along with a default admin login.
+3. Enable the site through the superadminarea. As you can see at your first visit in the superadminarea, there are no sites yet. To create one for the demosite, fill the top input with 'demosite'. The top input will be used to get the correct site in the <code>sites</code> folder. In the second input, give the site a title (e.g. 'local demosite' but anything works). Then set the select to 'ja' and click 'aanmaken'. The CMS will now create a site along with a default admin login.
 
 Congratulations, you now have everything working to log into the CMS and do some actual content managing!
 
 ### Editing Content ###
-Go to <code>http://127.0.0.1/adminarea/</code> and login with admin/admin. This is the actual Wi3 CMS that users will see... The first tab is for managing pages, the second tab for managing content and the third tab for managing files. Go ahead and create a page. Now do an F5 refresh to show the page (this refresh is only required with the creation of the first page). Now click the 'inhoud' tab and see the magic of an HTML5 CMS! :-)
+For the demosite, go to the folder that contains wi3, and append <code>/adminarea/</code> to the URL. An example could be <code>http://localhost/wi3/adminarea/</code>. You can login with the default combination of admin/admin. This is the actual Wi3 CMS that users will see... The first tab is for managing pages, the second tab for managing content and the third tab for managing files. Go ahead and create a page. Now click the 'inhoud' tab and see the magic of an HTML5 CMS! :-)
 
 [ TODO: expand readme ]
 
