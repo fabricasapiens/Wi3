@@ -384,6 +384,8 @@
         }
         savesetupconfig($setupconfig);
         
+        // If the setup continues from step 5 without doing the above processing for step 4, we still need to fetch the URL of the current wi3 installation
+        $url = (strpos($_SERVER["SERVER_PROTOCOL"], "HTTPS")>0?"https":"http") . "://" . $_SERVER["HTTP_HOST"] . "/" . truepath($_SERVER["REQUEST_URI"] . "/../");
     }
     
     // Display menu
