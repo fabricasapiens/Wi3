@@ -32,8 +32,6 @@ Installation
 #### Disclaimer ####
 Please note that Fabrica Sapiens cannot be held responsible for anything that results from the following instructions. Moreover, while this setup should also work on Windows and Mac, it is not tested thoroughly on those platforms!
 
-Also, it is the plan to make the installation process easier for newcomers!
-
 ### Downloading and unpacking ###
 Basically, there are two options to get Wi3: via a Git client, or via the Github web-interface.
 
@@ -47,50 +45,21 @@ git clone git://github.com/fabricasapiens/Wi3.git
 </code>
 Now rename the 'fabricasapiens-Wi3-somename' folder to 'wi3'. 
 
-### File permissions ###
-For Wi3 to work,the app needs write access to four folders. 
+### Setup ###
+Point your browser to the Wi3 folder and append "/setup/" to the end of the URL. An example URL could be <code>http://localhost/wi3/setup/</code>. The installation will walk you through a few steps, after which all important settings are done.
 
-- app/latest/logs
-- app/latest/cache
-- sites
-- vhosts
-
-### Routing to the cms ###
-In order to access wi3, you will need to make it accessible through a URL. Usually, this involves a .htaccess file that points to the Wi3 installation.
-
-You could do this by placing something along these lines in a .htaccess file in your www-root
-
-    RewriteEngine On 
-    
-    RewriteCond %{SERVER_NAME} ^127.0.0.1$ [NC]
-    RewriteRule (.*) /wi3/vhosts/%{HTTP_HOST}/httpdocs/$1/ [E=REDIRECTED:TRUE,L]
-
-The specific code above will only allow connections from http://127.0.0.1 and point it to the 127.0.0.1 vhost folder. This is desired for local development. On a deployed server, you want to change 127.0.0.1 with your actual hostname.
-
-Note that the above .htaccess will not allow connections from http://localhost! If you want http://localhost to work along with http://127.0.0.1, you should make a vhost folder named 'localhost' and change the .htaccess into something like this
-
-    RewriteEngine On 
-    RewriteRule (.*) /wi3/vhosts/%{HTTP_HOST}/httpdocs/$1/ [E=REDIRECTED:TRUE,L]
-
-This guide however assumes access from http://127.0.0.1.
-
-As can be seen in the .htaccess file, all requests from 127.0.0.1 are routed to the <code>/wi3/vhosts/127.0.0.1/</code> folder. This folder should exist, and should contain at least a 'log' and a 'httpdocs' subfolder. The 'httpdocs' folder should subsequently contain a .htaccess file that does the final routing to the proper places. See the file as included in the download for details.
-
-### DB setup ###
-Congratulations, you have Wi3 working. Now we only need to get the Database up and running so the cms can do some actual work!
-
-First of all, rename <code>app/config/database.php.example</code> into <code>app/config/database.php</code> and edit the file to match your database setup. It is strongly advised to give Wi3 a dedicated database, and not a shared one! 
-
-Although the config in <code>app/config/database.php</code> uses an existing DB, Wi3 will create another separate database for every new site you enable. Wi3 will use a site-specific database-config for that, as found in <code>sites/[sitename]/config/database.php</code>. For the demosite, rename <code>sites/demosite/config/database.php.example</code> into <code>sites/demosite/config/database.php</code> and edit the file so that the user is valid. Do *not* change the databasename. Note that Wi3 requires a DB account that has the privileges to indeed create the desired database! 
-
-Now, go to <code>http://127.0.0.1/_wi3controllers/setup/</code>. You will be presented with a bare interface to setup the first necessary tables. Simply click the links from top to bottom.
-
-Once you are done, you have enabled the 'superadmin' user and you can start managing sites!
+On the last step, click on the link that will take you to the superadmin area.
 
 ### Creating a site ###
-PLEASE NOTE: The CMS is currently Dutch. There will be an english version later; in the meantime, you might be able to guess quite some words by mixing German with English...
+PLEASE NOTE: While the setup is both Dutch and English, the CMS is currently only in Dutch. There will be an english version later; in the meantime, you might be able to guess quite some words by mixing German with English...
 
-Point your browser to <code>http://127.0.0.1/superadminarea</code> and login with superadmin/superadmin. As you can see, there are no sites yet. Fill the top input with 'demosite' (this is the site that the .htaccess in the 127.0.0.1 points to) and give it a title (e.g. 'local demosite') in the second input. Then set the select to 'ja' and click 'aanmaken'. The CMS will now create a site along with a default admin  login.
+Creating sites is currently not very easy, and a clean user-interface for this is the first thing on the todo list. There are basically three steps:
+
+1. Ensure that the correct files reside on disk in the <code>sites</code> folder. The <code>demosite</code> site will already be there and serves as an example.
+2. Ensure that the database-settings for the site are correct. This is important because Wi3 will create another separate database for every new site you enable. Wi3 will use a site-specific database-config for that, as found in <code>sites/[sitename]/config/database.php</code>. For the <code>demosite</code> site, rename <code>sites/demosite/config/database.php.example</code> into <code>sites/demosite/config/database.php</code> and edit the file so that the database user is valid. Do **not change** the databasename. Note that Wi3 requires a DB account that has the privileges to indeed create the desired database!
+3. Create a site through the superadminarea.
+
+As you can see, there are no sites yet. Fill the top input with 'demosite'. The top input will be used to get the correct site in the <code>sites</code> folder. In the second input, give the site a title (e.g. 'local demosite' but anything works). Then set the select to 'ja' and click 'aanmaken'. The CMS will now create a site along with a default admin login.
 
 Congratulations, you now have everything working to log into the CMS and do some actual content managing!
 
