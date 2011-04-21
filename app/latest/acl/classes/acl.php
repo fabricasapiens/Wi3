@@ -14,7 +14,7 @@
 class ACL extends Wi3_Base
 {
 	/**
-	 * All rules that apply to certain users
+	 * All rules that apply to certain roles
      * Objects that are structured like
      * ->resource
 	 * 
@@ -118,9 +118,8 @@ class ACL extends Wi3_Base
 				}
 			}
             
-			// User is logged in, check his own rules
-			$rules = self::_get_rules($user);
-			
+			// User is logged in, check the rules that apply to this user (based on the roles he has)
+			$rules = self::_get_userrules($user);
 			foreach ($rules as $rule)
 			{
 				if ($rule->allows_access_to($resource, $action))
@@ -200,13 +199,27 @@ class ACL extends Wi3_Base
 	 * @param 	bool		[optional] Force reload from DB default FALSE
 	 * @return 	array
 	 */
-	protected static function _get_rules($user, $force_load = FALSE)
+	protected static function _get_userrules($user, $force_load = FALSE)
 	{
-        if ($user instanceof Model_Auth_User) // CHANGED: Model_User to more generic Model_Auth_User 
+        // Get the roles and loop over them, while adding them to the overall rulelist
+        $roles = $user->roles;
+        $rules = Array();
+        foreach($roles as $role)
         {
-            $user = $user->username;
+            $rules = Arr::merge($rules, self::_get_rules($role->name));
         }
-		return isset(self::$_rules[$user]) ? self::$_rules[$user] : array();
+		return $rules;
+	}
+	
+	/**
+	 * Get all rules that apply to role
+	 * 
+	 * @param 	rolename 	$role
+	 * @return 	array
+	 */
+	protected static function _get_rules($role)
+	{
+		return isset(self::$_rules[$role]) ? self::$_rules[$role] : array();
 	}
 	
 	protected static $_resources;

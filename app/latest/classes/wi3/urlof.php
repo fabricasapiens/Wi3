@@ -108,7 +108,7 @@
             {
                 $controller = Wi3::inst()->routing->controller;
             }
-            if ($controller == "adminarea")
+            if ($controller == "adminarea" OR $controller == "superadminarea")
             {
                 return $this->baseurl . $controller . "/";
             }
@@ -120,7 +120,8 @@
         
         public function action($controller, $action = NULL)
         {
-            // If just $controller is set, then in fact only the action is set, and the controller is assumed to be the current one
+            // If just $controller is filled, the user means action($action)
+            // We assume that the controller is the current controller
             if ($action === NULL) 
             {
                 $action = $controller;

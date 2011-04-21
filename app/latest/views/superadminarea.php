@@ -19,7 +19,7 @@
 
     <div id='container'>
         <div id='navigation'>
-            <p><a href='<?php echo Wi3::inst()->urlof->controller("superadminarea"); ?>'>superadmin beheer</a> <a href='<?php echo Wi3::inst()->urlof->controller("setup"); ?>'>globale database setup</a> <a href='<?php echo Wi3::inst()->urlof->action("logout"); ?>'>uitloggen</a></p>
+            <p><a href='<?php echo Wi3::inst()->urlof->controller("superadminarea"); ?>'>superadmin beheer</a> <a href='<?php echo Wi3::inst()->urlof->action("logout"); ?>'>uitloggen</a></p>
         </div>
         <div id='content'>
             <?php if (isset($content)) { echo $content; } else { echo View::factory("superadminarea/dashboard"); } ?>

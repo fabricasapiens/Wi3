@@ -31,6 +31,15 @@
             // Load session handler
             $this->session = Session::instance();
             
+            // Determine language
+            $lang = Cookie::get('lang', 'nl-nl');
+            if(!in_array($lang, array('nl-nl', 'en-us'))) {
+               // check the allowed languages, and force the default
+               $lang = 'nl-nl';
+            }
+            // set the target language
+            i18n::lang($lang);
+            
             // Load wi3-kohana-specific functions
             $this->kohana = new Wi3_Kohana;
             

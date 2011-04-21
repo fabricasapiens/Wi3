@@ -5,6 +5,12 @@ Wi3
 
 Wi3 is a modern and flexible HTML5 CMS that focuses on a great experience for end-users, designers and developeres alike.
 
+More specifically, these are the intended use-cases
+
+- **End-users** have an extremely visual and simple experience while editing their site. They can browse around the site as usual and can click on any editable part to alter existing contents or to add new.
+- **Designers** have the freedom to simply use HTML templates and any CSS or Javascript to style their pages. Beautiful templates are planned to be sold in an in-cms template-store.
+- **Developers** can easily write 'components' like a webshop, gallery or maybe fancy 3D rotating page title that can easily be dropped onto a page. Well-working components are planned to be sold in an in-cms component-store.
+
 ### License ###
 The Wi3 CMS is free and open source, and is meant to be like that for all future. 
 

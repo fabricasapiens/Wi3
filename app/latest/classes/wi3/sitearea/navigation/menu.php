@@ -32,12 +32,12 @@
                 // If there is a previous pageposition, we can check if we went up or down in the tree
                 if ($prevpageposition != NULL)
                 {
-                    if ($pageposition->{$prevpageposition->level_column} > $prevpageposition->{$prevpageposition->level_column})
+                    if ($pageposition->{$pageposition->level_column} > $prevpageposition->{$prevpageposition->level_column})
                     {
                         // Going a level deeper
                         echo "<ul>";
                     }
-                    else if ($pageposition->{$prevpageposition->level_column} < $prevpageposition->{$prevpageposition->level_column})
+                    else if ($pageposition->{$pageposition->level_column} < $prevpageposition->{$prevpageposition->level_column})
                     {
                         // Going a level up, or maybe even more than 1 level 
                         // Find out how many levels we go up and close every level properly
