@@ -3,6 +3,8 @@ Wi3
 
 #### HTML5 CMS ####
 
+!(Wi3 Logo)[https://github.com/fabricasapiens/Wi3/raw/v0.8/docs/wi3_logo_blue%20on%20white_100x70.png]
+
 Wi3 is a modern and flexible HTML5 CMS that focuses on a great experience for end-users, designers and developeres alike.
 
 More specifically, these are the intended use-cases
