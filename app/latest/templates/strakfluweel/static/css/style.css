@@ -1,9 +1,15 @@
-html, body { padding: 0px; margin: 0px; font: 13px arial, verdana, sans-serif; background: #0b5aa3; background: #fff; }
+html, body { padding: 0px; margin: 0px; font: 13px arial, verdana, sans-serif; background: #4e0800 url(../images/template_background.png) repeat-x; }
 
-#nav { width: 600px; padding: 20px; margin: auto; margin-top: 60px; background: #efefef; }
-#content { width: 600px; padding: 20px; margin: auto; margin-top: 10px; background: #efefef;  }
+/* include overflow:hidden to prevent the wrap to 'implement' the margins and paddings from the first child-element */
+#wrap { width: 1000px; margin: auto; margin-top: 0px; background: #fff url(../images/template.png) no-repeat; min-height: 1000px; overflow: hidden; } 
+    #nav { padding: 20px; margin-top: 67px; }
+        #nav li { display: block; float: left; }
+            #nav li a { display: block; padding: 10px; border: none; text-decoration: none; font-size: 15px; }
+            #nav li a.active { border-bottom: 7px solid #9dcdff; text-shadow: -1px -1px 1px rgba(255,255,255,0.8); }
+    #content { padding: 50px; margin-top: 0px; }
 
-h1 { font-size: 20px; margin-top: 10px; }
+h1 { font-size: 24px; margin-top: 10px; }
+h2 { font-size: 20px; margin-top: 5px; }
 h2 { font-size: 16px; margin-top: 5px; }
 p { margin-top: 5px; }
 

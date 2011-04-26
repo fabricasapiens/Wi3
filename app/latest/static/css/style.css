@@ -45,9 +45,6 @@
 	    #loginform_content input#loginform_button { float: right; width: 100px; margin-top: 5px; }
 	#loginform_copyright { position: absolute; top: 154px; left: 55px; font-size: 10px; color: #aaa; }
 	
-	
-	
-	
 	/*
     /----------------------------------------------------
     / navigation, status and content
@@ -59,7 +56,7 @@
 	#wi3logo { position: absolute; left: 20px; top: 13px; background: url("../images/wi3_logo_blue on white_60x42.png") no-repeat; width: 60px; height: 42px; text-align: right; color: #fff; padding-right: 80px; padding-top: 10px; }
 	
 	#navigation { position: absolute; width: 650px; left: 100px; z-index: 10; text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.8); }
-	#navigation li { display: block; float: left; background: #fff; padding: 26px; margin-right: 10px; height: 20px; overflow: hidden; line-height: 20px; }
+	#navigation li { display: block; float: left; background: #fff; padding: 26px; margin-right: 10px; height: 19px; overflow: hidden; line-height: 20px; }
 	#navigation a { color: #555; border: none; text-decoration: none; font-size: 18px; }
 	#navigation li.active { background: #eee; }
 	#navigation li.active a { color: #1891ff; }
@@ -72,10 +69,10 @@
         #wi3_ajax_menu { display: inline; position: relative; }
         #wi3_ajax_menu #wi3_ajax_indicator { display: inline; background: url(../images/ajax-loader.png) no-repeat; padding-left: 20px; border-right: 2px solid #aaa; margin-right: 10px; padding-right: 10px;}
         #wi3_ajax_menu #wi3_ajax_indicator.working { background: url(../images/ajax-loader.gif) no-repeat; }
-	    #wi3_ajax_menu #wi3_notification_top, #wi3_ajax_menu #wi3_notification_bottom { position: absolute; left: 0px; display: none; background: #fff; border: 4px solid #ccc; top: 36px; width: 160px; padding: 20px; height: 40px; text-align: center;}
+	    #wi3_ajax_menu #wi3_notification_top, #wi3_ajax_menu #wi3_notification_bottom { position: absolute; left: 0px; display: none; background: #fff; border: 2px solid #22242B; border-top: none; top: 44px; width: 160px; padding: 20px; height: 40px; text-align: center; color: #1891FF; }
 	
 	#content { position: absolute; left: 0px; top: 85px; width: 960px; padding: 20px; padding-top: 15px; background: #eee; border-top: 1px solid #fff; border-bottom: 1px solid #000; box-shadow: 0px 0px 20px rgba(0, 0, 0, 1);  min-height: 600px; }
-    #content.contentpage { height: 4px; min-height: 0px; width: 1000px; overflow: hidden; padding: 0px; }
+    #content.contentpage { height: 0px; min-height: 0px; width: 1000px; overflow: hidden; padding: 0px; }
 	    #content h1 { color: #1891ff; }
 	    #content h1, #content h2, #content h3 { text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.8); }
 		#copyright { font-size: 10px; color: #aaa; margin-top: 15px; }
@@ -179,7 +176,8 @@
 	#wi3_add_file td { padding-left: 10px; padding-bottom: 5px; }
 	
 	#menu_pagesettings, #files_filesettings, #users_usersettings { position: absolute; left: 620px; width: 360px; top: 100px; }
-	#menu_pagesettings label, #files_filesettings label, #users_usersettings label { float: left; width: 200px; }
+	#menu_pagesettings h2, #files_filesettings h2, #users_usersettings h2 { margin-bottom: 5px; }
+	#menu_pagesettings label, #files_filesettings label, #users_usersettings label { float: left; width: 200px; line-height: 20px; }
 	#menu_pagesettings input, #files_filesettings input, #users_usersettings input { width: 300px; }
 	#menu_pagesettings #page_visibility { width: 20px; }
 	#menu_pagesettings td, #users_usersettings td { padding-right: 10px; padding-bottom: 5px; }
@@ -191,7 +189,7 @@
     /----------------------------------------------------
     */
 	#content.editcontent { display: none; }
-	#adminarea_content_iframedivs{ margin-top: 90px; }
+	#adminarea_content_iframedivs{ margin-top: 82px; }
 	#adminarea_content_divisionbar { left: 0px; top:0px; width: 100%; height: 20px; background: #22242b url(../imjages/schaduw.png) repeat-x; }
 	#wi3_edit_iframe { width: 100%; }	
 	#files_file_list { 

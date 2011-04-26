@@ -11,10 +11,10 @@
             parent::__construct();
             
             //load JQuery UI
-            $this->javascript('jquery-ui-1.8.7.custom.min.js'); 
+            $this->javascript('jquery-ui-1.8.12.custom.min.js'); 
             
             //load the UI css as well
-            $this->css("jquery_ui_flick/jquery-ui-1.8.7.custom.css");
+            $this->css("jquery_ui/jquery-ui-1.8.12.custom.css");
             
         }
         

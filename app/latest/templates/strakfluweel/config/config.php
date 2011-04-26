@@ -7,7 +7,7 @@
         "templateview" => Wi3::inst()->pathof->app."templates/strakfluweel/template.php",
         "dropzones" => Array("main"),
         "preview" => Array(
-            "imageurl" => Wi3::inst()->urlof->appfiles."templates/strakfluweel/static/images/rood.png",
+            "imageurl" => Wi3::inst()->urlof->appfiles."templates/strakfluweel/static/images/template_preview.png",
             "dropzones" => Array
             (
                 "main" => Array 

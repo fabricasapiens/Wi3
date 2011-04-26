@@ -74,8 +74,7 @@
        y1="79.362152"
        x2="324"
        y2="465.36343"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(0,56)" />
+       gradientUnits="userSpaceOnUse" />
     <filter
        id="filter4086"
        inkscape:label="Blueprint"
@@ -98,8 +97,8 @@
      inkscape:pageopacity="1"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="429.55929"
-     inkscape:cy="751.48014"
+     inkscape:cx="165.77218"
+     inkscape:cy="711.48014"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -126,42 +125,28 @@
      id="layer1"
      transform="translate(0,-52.362153)">
     <rect
-       style="color:#000000;fill:#9dc2ff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.50000000000000000;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-       id="rect3108"
-       width="1004"
-       height="233"
-       x="0"
-       y="52.362152" />
+       style="color:#000000;fill:#d40000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:3.20000005;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect4008"
+       width="1003.1614"
+       height="162.99994"
+       x="-565.12286"
+       y="310.13968"
+       transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,0,0)" />
     <rect
-       y="-368.36215"
-       x="0"
-       height="83"
-       width="1004"
-       id="rect3886"
-       style="color:#000000;fill:#43ff6a;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.50000000000000000;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-       transform="scale(1,-1)" />
-    <rect
-       style="color:#000000;fill:#4e0800;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.50000000000000000;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-       id="rect3888"
-       width="1004"
-       height="743"
-       x="0"
-       y="368.36215" />
-    <rect
-       style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:3.20000004999999987;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;opacity:0.86513158"
-       id="rect4056"
-       width="960"
-       height="525"
-       x="20"
-       y="176.36215" />
-    <rect
-       style="color:#000000;fill:url(#linearGradient4054);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2.84731698;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter3975);enable-background:accumulate"
+       style="color:#000000;fill:url(#linearGradient4054);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2.84731698000000000;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter3975);enable-background:accumulate"
        id="rect2985"
        width="960"
        height="50"
        x="20"
-       y="132.78581"
+       y="76.785812"
        ry="7" />
+    <rect
+       style="opacity:0.93067591000000005;color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:3.20000004999999987;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;"
+       id="rect4056"
+       width="960"
+       height="600"
+       x="20"
+       y="150.36215" />
     <rect
        style="opacity:1;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#b91717;stroke-width:3.20000004999999987;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
        id="rect3125"
@@ -170,17 +155,5 @@
        x="-397"
        y="135"
        transform="translate(0,52.362153)" />
-    <text
-       xml:space="preserve"
-       style="font-size:32px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
-       x="32"
-       y="104.36215"
-       id="text3890"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan3892"
-         x="32"
-         y="104.36215"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Star Jedi;-inkscape-font-specification:Star Jedi">Logo</tspan></text>
   </g>
 </svg>
