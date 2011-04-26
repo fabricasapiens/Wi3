@@ -73,6 +73,7 @@ class Controller_Adminarea extends Controller_ACL {
     public function action_content()
     {
         $this->setview("adminarea");
+        $this->template->contentclass = "contentpage";
         $this->template->navigation = View::factory("adminarea/navigation");
         $this->template->status= View::factory("adminarea/status");
         

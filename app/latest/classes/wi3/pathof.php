@@ -26,6 +26,11 @@
             Wi3::inst()->pathof->site = APPPATH . "../../sites/" . Wi3::inst()->sitearea->site->name . "/";
         }
         
+        public function site($name)
+        {
+            return Wi3::inst()->truepath(APPPATH . "../../sites/" . $name . "/");
+        }
+        
         public static function fill_page_paths() 
         {
             Wi3::$pathof->pagetemplate = Wi3::$pathof->sitetemplates = Wi3::$pathof->wi3templates = Wi3::$pathof->site . "page_templates/";

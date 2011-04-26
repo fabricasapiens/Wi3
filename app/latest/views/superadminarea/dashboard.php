@@ -1,12 +1,13 @@
 <h1>Nieuwe site aanmaken</h1>
 <form method='POST' action='<?php echo Wi3::inst()->urlof->action('createsite');?>'>
-    <label>naam/map</label><input name='name'></input><br />
-    <label>titel</label><input name='title'></input><br />
-    <label>actief </label><select name='active'><option value='0'>nee</option><option value='1'>ja</option></select>
-    <button>aanmaken</button>
+    <input class='rightside' name='name'></input><label>naam/map</label><br />
+    <input class='rightside' name='title'></input><label>titel</label><br />
+    <label>actief </label><select class='rightside' name='active'><option value='0'>nee</option><option value='1'>ja</option></select>
+    <br />
+    <button>Aanmaken</button>
 </form>
 
-<h1>Site beheer</h1>
+<h1>Bestaande sites</h1>
 <?php 
 
     // The , FALSE parameter sets no limit to the amount of records loaded
@@ -14,18 +15,21 @@
     foreach($sites as $site) 
     {
     
-?>
-<h2><?php echo $site->title." (".$site->name.")"; ?></h2>
-<form method='POST' action='<?php echo Wi3::inst()->urlof->action(($site->active ? "deactivatesite" : "activatesite"));?>'>
-    <input type='hidden' name='name' value='<?php echo $site->name; ?>'></input>
-    <button><?php echo ($site->active ? "deactiveren" : "activeren"); ?></button>
-</form>
-<form method='POST' action='<?php echo Wi3::inst()->urlof->action('deletesite');?>'>
-    <input type='hidden' name='name' value='<?php echo $site->name; ?>'></input>
-    <button>verwijderen</button> <strong>LET OP: </strong>Dit verwijdert de complete site, inclusief databases en bestanden!
-</form>
+        ?>
+        <div class='topbottomborderedbox'>
+            <h2><?php echo $site->title; ?></h2>
+            <p>Map: <span class='rightside'><?php echo Wi3::inst()->pathof->site($site->name); ?></span></p> 
+            <form method='POST' action='<?php echo Wi3::inst()->urlof->action(($site->active ? "deactivatesite" : "activatesite"));?>'>
+                <input  type='hidden' name='name' value='<?php echo $site->name; ?>'></input>
+                <label>Status van site</label><div style='display: inline-block;' class='rightside'> <?php echo ($site->active ? "actief" : "niet actief"); ?> <button><?php echo ($site->active ? "deactiveren" : "activeren"); ?></button></div>
+            </form>
+            <form method='POST' action='<?php echo Wi3::inst()->urlof->action('deletesite');?>'>
+                <input type='hidden' name='name' value='<?php echo $site->name; ?>'></input>
+                <label>Verwijderen</label><div style='display: inline-block;' class='rightside'><button>verwijderen</button> <strong>LET OP: </strong>Dit verwijdert de complete site, inclusief databases en bestanden!</div>
+            </form>
+        </div>
 
-<?php
+        <?php
 
     }
     

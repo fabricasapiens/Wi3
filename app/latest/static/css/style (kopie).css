@@ -7,7 +7,7 @@
     /----------------------------------------------------
     */
 	html { }
-	body { font: 13px verdana, arial, verdana; color: #000; background: #22242b;  }
+	body { font: 13px verdana, arial, verdana; color: #555; }
 	
 	.color1 { color: #ffaf25; } /* yellow */
 	.color2 { color: #383a49; } /* grey blue */
@@ -15,20 +15,12 @@
 	
 	p, form, ul, ol { padding-bottom: 15px; }
 	
-	h1 { font-size: 24px; font-weight: bold; margin-bottom: 10px; color: #383a49; }
+	h1 { font-size: 18px; margin-bottom: 10px; color: #383a49; }
 	h2 { font-size: 14px; margin-bottom: 5px; color:#383a49; }
 	
 	.bold { font-weight: bold; }
 	
 	.hidden { display: none; }
-	
-	.rightside { position: absolute; left: 150px; }
-	
-	input, select, button { padding: 5px; }
-	label { line-height: 36px; }
-	
-	.borderedbox { border: 1px solid #ccc; padding: 20px; }
-	.topbottomborderedbox { border-top: 1px solid #ccc; border-bottom: 1px solid #ccc; padding: 20px 0px; }
 	
 	/* width of actual content is 960px, container is 1000px to enable for fitting in the 1000px width background */
 	#container { width: 1000px; position: absolute; left:50%; top: 0px; margin-left: -500px; background: #FFF; }
@@ -45,39 +37,37 @@
 	    #loginform_content input#loginform_button { float: right; width: 100px; margin-top: 5px; }
 	#loginform_copyright { position: absolute; top: 154px; left: 55px; font-size: 10px; color: #aaa; }
 	
-	
-	
+	/*
+    /----------------------------------------------------
+    / wi3 ajax indicator
+    /----------------------------------------------------
+    */
+    #wi3_ajax_menu { display: inline; position: relative; }
+    #wi3_ajax_menu #wi3_ajax_indicator { display: inline; background: url(../images/ajax-loader.png) no-repeat; padding-left: 20px; border-right: 2px solid #aaa; margin-right: 10px; padding-right: 10px;}
+    #wi3_ajax_menu #wi3_ajax_indicator.working { background: url(../images/ajax-loader.gif) no-repeat; }
+	#wi3_ajax_menu #wi3_notification_top, #wi3_ajax_menu #wi3_notification_bottom { position: absolute; left: 0px; display: none; background: #fff; border: 4px solid #ccc; top: 36px; width: 160px; padding: 20px; height: 40px; text-align: center;}
 	
 	/*
     /----------------------------------------------------
-    / navigation, status and content
+    / navigation and content
     / z-index 10 to always keep the navigation and ajax notifications above the content
     /----------------------------------------------------
     */
-	#navigationandstatus { position: absolute; top: 15px; left: 0px; width: 1000px; height: 70px; background: #fff; z-index: 10; }
+	#navigationandstatus { position: absolute; top: 0px; left: 0px; background: #fff url(../images/top.png); width: 1000px; height: 70px; z-index: 10; }
 	
-	#wi3logo { position: absolute; left: 20px; top: 13px; background: url("../images/wi3_logo_blue on white_60x42.png") no-repeat; width: 60px; height: 42px; text-align: right; color: #fff; padding-right: 80px; padding-top: 10px; }
+	#navigation { position: absolute; left: 160px; top: 10px; width: 650px; z-index: 10;  }
+	#navigation li { float: left; padding: 6px; margin-right: 10px; height: 20px; line-height: 20px; opacity: 0.8; font-size: 18px; }
+	#navigation a { color: #555; border: none; text-decoration: none; }
+	#navigation li.active { height: 24px; height: 24px; /* opacity: 0.7; */
+		/* filter: alpha(opacity = 70); */ /* IE */
+	}
+	#navigation li.active a { font-weight: bold; color: #ffaf25; }
 	
-	#navigation { position: absolute; width: 650px; left: 100px; z-index: 10; text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.8); }
-	#navigation li { display: block; float: left; background: #fff; padding: 26px; margin-right: 10px; height: 20px; overflow: hidden; line-height: 20px; }
-	#navigation a { color: #555; border: none; text-decoration: none; font-size: 18px; }
-	#navigation li.active { background: #eee; }
-	#navigation li.active a { color: #1891ff; }
-	
-	#status { position: absolute; right: 30px; top: 27px; color: #999; width: 350px; text-align: right; }
+	#status { position: absolute; right: 40px; top: 18px; color: #999; width: 350px; text-align: right; }
 	#status li { float: right; }
-	#status a { color: #1891ff; border: none; text-decoration: none; }
+	#status a { color: #777; border: none; text-decoration: none; }
 	
-        /* wi3 ajax indicator */
-        #wi3_ajax_menu { display: inline; position: relative; }
-        #wi3_ajax_menu #wi3_ajax_indicator { display: inline; background: url(../images/ajax-loader.png) no-repeat; padding-left: 20px; border-right: 2px solid #aaa; margin-right: 10px; padding-right: 10px;}
-        #wi3_ajax_menu #wi3_ajax_indicator.working { background: url(../images/ajax-loader.gif) no-repeat; }
-	    #wi3_ajax_menu #wi3_notification_top, #wi3_ajax_menu #wi3_notification_bottom { position: absolute; left: 0px; display: none; background: #fff; border: 4px solid #ccc; top: 36px; width: 160px; padding: 20px; height: 40px; text-align: center;}
-	
-	#content { position: absolute; left: 0px; top: 85px; width: 960px; padding: 20px; padding-top: 15px; background: #eee; border-top: 1px solid #fff; border-bottom: 1px solid #000; box-shadow: 0px 0px 20px rgba(0, 0, 0, 1);  min-height: 600px; }
-    #content.contentpage { height: 4px; min-height: 0px; width: 1000px; overflow: hidden; padding: 0px; }
-	    #content h1 { color: #1891ff; }
-	    #content h1, #content h2, #content h3 { text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.8); }
+	#content { position: absolute; left: 20px; top: 70px; width: 960px; padding-top: 20px; background: #fff; }
 		#copyright { font-size: 10px; color: #aaa; margin-top: 15px; }
 	
 	/*
@@ -114,10 +104,9 @@
 	    background: url('../images/crystal/30/trashcan_empty.png') no-repeat; 
 	    background-position: 10px 10px; 
 	    padding-left: 40px;
-	    left: 620px;
+	    left: 600px;
 	    width: 320px;
-		border: 1px solid #1891ff;
-		box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+		border: 1px solid #ddd;
 	}
 	#wi3_prullenbak #prullenbak_onder 
     { 
@@ -127,12 +116,10 @@
 	
 	#wi3_add_pages 
 	{
-	    width: 550px; 
-	    border: 1px solid #1891ff;
+	    width: 550px; border: 1px solid #ddd;
 	    background: url('../images/crystal/30/page.png') no-repeat;
 	    background-position: 10px 10px;
 	    padding-left: 40px; 
-	    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
 	}
 	#wi3_add_pages a { border: none; text-decoration: none; display: block; margin: 15px; }
 	
@@ -147,7 +134,6 @@
 		overflow: hidden;
 		width: 500px;	
 		padding-left: 70px;
-		box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
 	}
 	
 	#wi3_add_user { width: 600px; }
@@ -178,7 +164,7 @@
 	
 	#wi3_add_file td { padding-left: 10px; padding-bottom: 5px; }
 	
-	#menu_pagesettings, #files_filesettings, #users_usersettings { position: absolute; left: 620px; width: 360px; top: 100px; }
+	#menu_pagesettings, #files_filesettings, #users_usersettings { position: absolute; left: 600px; width: 360px; top: 100px; }
 	#menu_pagesettings label, #files_filesettings label, #users_usersettings label { float: left; width: 200px; }
 	#menu_pagesettings input, #files_filesettings input, #users_usersettings input { width: 300px; }
 	#menu_pagesettings #page_visibility { width: 20px; }
@@ -192,8 +178,9 @@
     */
 	#content.editcontent { display: none; }
 	#adminarea_content_iframedivs{ margin-top: 90px; }
-	#adminarea_content_divisionbar { left: 0px; top:0px; width: 100%; height: 20px; background: #22242b url(../imjages/schaduw.png) repeat-x; }
-	#wi3_edit_iframe { width: 100%; }	
+	#adminarea_content_divisionbar { left: 0px; top:0px; width: 100%; height: 20px; background: #ffffff url(../images/schaduw.png) repeat-x; }
+	#wi3_edit_iframe { width: 100%; }
+	
 	#files_file_list { 
 	    border: 10px solid #ffff00;
 	    padding: 10px;
@@ -401,5 +388,15 @@
     {
 	    background: url(../images/tree/collapsable.gif) no-repeat -17px 0 #ffffff;
     }
-    
+
+
+	
+	/*
+    /----------------------------------------------------
+    / tinymce
+    /----------------------------------------------------
+    */
+	.mce_opslaan { background-position: -480px -20px; }
+	
+	
 	

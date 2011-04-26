@@ -8,7 +8,7 @@
     </div>";
 
     if (isset(Wi3::inst()->sitearea->auth->user)) {
-        echo "Ingelogd als <strong>" . Wi3::inst()->sitearea->auth->user->username . "</strong>. [" . html::anchor(Wi3::inst()->urlof->action("logout"), "Log uit") . "]";
+        echo "Ingelogd als <strong>" . Wi3::inst()->sitearea->auth->user->username . "</strong>. [" . html::anchor(Wi3::inst()->urlof->action("logout"), "uitloggen") . "]";
     } else {
         echo "Niet ingelogd.";
     }

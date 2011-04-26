@@ -208,8 +208,46 @@
         
         public function unixpath($path)
         {
-            // resolve symbolic links, and convert forward slashes to backslashes
-            return realpath(str_replace(DIRECTORY_SEPARATOR, "/", $path));
+            // convert forward slashes to backslashes
+            $path = str_replace(DIRECTORY_SEPARATOR, "/", $path);
+            // return path without .. and . parts
+            return Wi3::inst()->truepath($path);
+        }
+        
+        // Return a nice path without .. and .
+        /**
+         * This function is to replace PHP's extremely buggy realpath().
+         * @param string The original path, can be relative etc.
+         * @return string The resolved path, it might not exist.
+         */
+        public function truepath($path)
+        {
+            // attempts to detect if path is relative in which case, add cwd
+            if(strpos($path,':')===false && (strlen($path)==0 || $path{0}!='/'))
+            {
+                $absolute = false;
+                $path=getcwd().DIRECTORY_SEPARATOR.$path;
+            }
+            else 
+            {
+                $absolute = true;
+            }
+            // resolve path parts (single dot, double dot and double delimiters)
+            $path = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $path);
+            $parts = array_filter(explode(DIRECTORY_SEPARATOR, $path), 'strlen');
+            $absolutes = array();
+            foreach ($parts as $part) {
+                if ('.'  == $part) continue;
+                if ('..' == $part) {
+                    array_pop($absolutes);
+                } else {
+                    $absolutes[] = $part;
+                }
+            }
+            $path=($absolute?"/":"") . implode(DIRECTORY_SEPARATOR, $absolutes);
+            // if file exists and it is a link, use readlink to resolves links
+            //if(file_exists($path) && linkinfo($path)>0)$path=readlink($path);
+            return $path;
         }
         
     }

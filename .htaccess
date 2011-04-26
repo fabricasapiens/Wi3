@@ -11,4 +11,4 @@ RewriteRule .* - [F,L]
 # Reroute to setup or superadminarea if URL points exactly to this folder with no extra URL-appendices
 RewriteCond %{SERVER_NAME} ^127.0.0.1$ [OR]
 RewriteCond %{SERVER_NAME} ^localhost$ [NC]
-RewriteRule .* vhosts/127.0.0.1/httpdocs/$0 [E=REDIRECTED:TRUE,L]
+RewriteRule .* vhosts/127.0.0.1/httpdocs/$0/ [E=REDIRECTED:TRUE,L]

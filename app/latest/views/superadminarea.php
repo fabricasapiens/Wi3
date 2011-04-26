@@ -18,8 +18,16 @@
 <body>
 
     <div id='container'>
-        <div id='navigation'>
-            <p><a href='<?php echo Wi3::inst()->urlof->controller("superadminarea"); ?>'>superadmin beheer</a> <a href='<?php echo Wi3::inst()->urlof->action("logout"); ?>'>uitloggen</a></p>
+        <div id='navigationandstatus'>
+            <div id='wi3logo'></div>
+            <div id='navigation'>
+                <ul>
+                    <li class='active'><a href='<?php echo Wi3::inst()->urlof->controller("superadminarea"); ?>'>Sites</a></li>
+                </ul>
+            </div>
+            <div id='status'>
+                <?php echo "Ingelogd als <strong>" . Wi3::inst()->globalauth->user->username . "</strong>. [" . html::anchor(Wi3::inst()->urlof->action("logout"), "uitloggen") . "]"; ?>
+            </div>
         </div>
         <div id='content'>
             <?php if (isset($content)) { echo $content; } else { echo View::factory("superadminarea/dashboard"); } ?>

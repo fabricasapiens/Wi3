@@ -33,6 +33,8 @@
     
         <div id='navigationandstatus'>
         
+            <div id='wi3logo'></div>
+        
             <?php 
                 //subnavigationleft, if set
                 if (isset($navigation)) { echo "<div id='navigation'>" .$navigation."</div>"; } 
