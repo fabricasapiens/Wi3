@@ -70,24 +70,143 @@ class Controller_Superadminarea extends Controller_ACL {
     {
         $this->setview("superadminarea");
         
+        // name should not start with a dot, to prevent issues with a) overwriting the .template folder, and b) hidden folders
+        if (substr($_POST["name"], 0, 1) == ".") 
+        {
+            echo "<p>site kon niet aangemaakt worden!</p>";
+            echo "<p>Sitenaam mag niet beginnen met een punt (.)!</p>";
+            return;
+        }
+        
+        ###
+        # Database settings
+        ###
+        if (isset($_POST["dbusername"]) AND isset($_POST["dbpassword"]) AND isset($_POST["dbexistingornew"]) AND isset($_POST["dbname"]))
+        {
+            // Create or use Database!
+            $dbname = $_POST["dbname"];
+            $dbokay = TRUE;
+            for($i=0;$i<1;$i++) // Just do it one time, but now we can use the break command...
+            {
+                // Try connection
+                @$con = mysql_connect("localhost",$_POST["dbusername"],$_POST["dbpassword"]);
+                if (!$con)
+                {
+                    $dbokay = FALSE;
+                    $message = __("Connection to database could not be established. Please try again.");
+                    break;
+                }
+                // Save the grants of the current user 
+                $result = mysql_query("SHOW GRANTS FOR CURRENT_USER");
+                $grants = Array();
+                while($row = mysql_fetch_array($result))
+                {
+                    $grants[] = $row;
+                }
+                $hasallprivileges = FALSE;
+                foreach($grants as $grant)
+                {
+                    if (strpos($grant[0], "GRANT ALL PRIVILEGES ON *.* TO ") === 0)
+                    {
+                        // User has all privileges for all dbs, so that's fine
+                        $hasallprivileges = TRUE;
+                        break; // break from foreach
+                    }
+                }
+
+                if ($_POST["dbexistingornew"] == "existing")
+                {
+                    // Try if existing db exists
+                    $db_selected = mysql_select_db($dbname, $con);
+                    if ($db_selected == FALSE) {
+                        $dbokay = FALSE;
+                        $message = __("Database '" . $dbname . "' does not exist. Please try again.");
+                        break;
+                    }
+                    // Now check whether we have the rights to create tables in the db 
+                    $hasprivileges = FALSE;
+                    if ($hasallprivileges)
+                    {
+                        $hasprivileges = TRUE;
+                    }
+                    else 
+                    {
+                        foreach($grants as $grant)
+                        {
+                            if (strpos($grant[0], "GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, REFERENCES, INDEX, ALTER") === 0 AND strpos($grant[0], "ON `" . $dbname . "`") > 0)
+                            {
+                                // User has privileges for the $dbname db, so that's fine
+                                $hasprivileges = TRUE;
+                                break; // break from foreach
+                            }
+                        }
+                    }
+                    // Final check for db privileges
+                    if ($hasprivileges === FALSE)
+                    {
+                        $dbokay = FALSE;
+                        $message = __("User does not have the proper rights to use database '" . $dbname . "'. Please try again.");
+                        break;
+                    }
+                }
+                else 
+                {
+                    // Check if we can create the new DB
+                    if ($hasallprivileges)
+                    {
+                        if (!mysql_query("CREATE DATABASE " . $dbname,$con))
+                        {
+                            $dbokay = FALSE;
+                            // Check if there was an error because the db already existed
+                            $db_selected = mysql_select_db($dbname, $con);
+                            if ($db_selected) 
+                            {
+                                $message = __("User was unable to create database '" . $dbname . "' because it already exists. Please delete the db manually or select the 'existing' option to use the existing database.");
+                            }
+                            else 
+                            {
+                                $message = __("User was unable to create database '" . $dbname . "', despite having the rights to do so. Please try again.");
+                            }
+                            break;
+                        }
+                    }
+                    else 
+                    {
+                        $dbokay = FALSE;
+                        $message = "User does not have the proper rights to create database '" . $dbname . "'. Please try again.";
+                        break;
+                    }
+                }
+            }
+            if (!$dbokay)
+            {
+                echo "<p>" . $message . "</p>";
+                return;
+            }
+        }
+        
+        
+        ###
+        # Site creation
+        ###
+        
         $site = Wi3::inst()->model->factory("site");
         $site->active = $_POST["active"];
         $site->name = $_POST["name"];
-        $site->databasesafename = str_replace(".", "_", $_POST["name"]); // Gives a 'database-safe' representation of the sitename (i.e. without dots if it is a domain-name)
         $site->title = $_POST["title"]; // Sitefolder is currently always the same as the sitename
         try 
         {
             $site->create();
-            // Set the global site the sitearea->globalsite
-            Wi3::inst()->sitearea = Wi3_Sitearea::inst();
-            Wi3::inst()->sitearea->globalsite = $site;
-            // Set the local site temporarily the same as the global site, so that the DB config can fetch i.e. name etc from that
-            Wi3::inst()->sitearea->site = $site;
-            // Now try to create a dedicated database for this site
-            Wi3::inst()->database->create_database("wi3_".$site->databasesafename);
-            // Second create a folder with config files etc
-                // TODO: folder for now is assumed. 
-            // Third, load the available database-config file for this specific site
+            // Second create the site folder (with config files etc). Do this by copying the .template folder.
+            Wi3::inst()->copy_recursive( APPPATH . "../../sites/.template", APPPATH . "../../sites/" . $site->name);
+            // Save the DB configuration file by loading the example file and set the correct values
+            $wi3databaseconfig = file_get_contents(APPPATH . "../../sites/" . $site->name . "/config/sitedatabase.php.example");
+            $wi3databaseconfig = preg_replace("@\'username\'.*@", "'username' => '" . $_POST["dbusername"] . "',", $wi3databaseconfig);
+            $wi3databaseconfig = preg_replace("@\'password\'.*@", "'password' => '" . $_POST["dbpassword"] . "',", $wi3databaseconfig);
+            $wi3databaseconfig = preg_replace("@\'database\'.*@", "'database' => '" . $_POST["dbname"] . "',", $wi3databaseconfig);
+            $wi3databaseconfig = preg_replace("@dbname\=\w*@", "dbname=" . $_POST["dbname"], $wi3databaseconfig);
+            file_put_contents(APPPATH . "../../sites/" . $site->name . "/config/sitedatabase.php", $wi3databaseconfig);
+            // Now load the newly created database-config file for this specific site
             $configarray = include( APPPATH . "../../sites/" . $site->name . "/config/sitedatabase.php" );
             $dbinstance = Database::instance("site", $configarray["site"]);
             // Now create all user tables in the site-space. They will use the 'site' DB instance automatically (as this is set in the Model->_db setting)
@@ -151,12 +270,29 @@ class Controller_Superadminarea extends Controller_ACL {
         
         $site = Wi3::inst()->model->factory("site");
         $site->name = $_POST["name"];
-        //$site->load();
+        $site->load();
         try 
         {
+            ## Delete the global site in the global DB
             $site->delete(); // The cascading deletion of the corresponding URLs happens in the model itself
-            // TODO: get the databasename from the databaseconfig
-            Wi3::inst()->database->delete_database("wi3_".str_replace(".", "_", $_POST["name"])); // Gives a 'database-safe' representation of the sitename (i.e. without dots if it is a domain-name)
+            ## Delete the site-DB
+            // Set the local site and add a databasesafename so that the DB config can fetch it
+            Wi3::inst()->sitearea = Wi3_Sitearea::inst();
+            Wi3::inst()->sitearea->site = $site;
+            Wi3::inst()->sitearea->site->databasesafename = str_replace(".", "_", $site->name);
+            // Load DB config
+            $configarray = include( APPPATH . "../../sites/" . $site->name . "/config/sitedatabase.php" );
+            $dbinstance = Database::instance("site", $configarray["site"]);
+            if (isset($configarray["site"]["connection"]["database"]) AND !empty($configarray["site"]["connection"]["database"]))
+            {
+                @Wi3::inst()->database->delete_database($configarray["site"]["connection"]["database"]); 
+            }
+            ## Delete all files etc for this site 
+            $sitename = $site->name;
+            if (!empty($sitename)) // Be very sure that we do not delete the whole /sites folder
+            {
+                @Wi3::inst()->unlink_recursive(APPPATH . "../../sites/" . $sitename . "/");
+            }
         }
         catch(Exception $e) 
         {

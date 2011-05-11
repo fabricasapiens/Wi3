@@ -1,5 +1,5 @@
 *
 !.gitignore
-!/demosite
-!/demosite/*
-!/demosite/**/*
+!/.template
+!/.template/*
+!/.template/**/*

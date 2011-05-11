@@ -250,6 +250,69 @@
             return $path;
         }
         
+        // Thanks PHP.net
+        function copy_recursive( $path, $dest )
+        {
+            if(is_dir($path))
+            {
+                @mkdir( $dest );
+                $objects = scandir($path);
+                if( sizeof($objects) > 0 )
+                {
+                    foreach($objects as $file)
+                    {
+                        if( $file == "." || $file == ".." )
+                            continue;
+                        // go on
+                        if( is_dir( $path.DIRECTORY_SEPARATOR.$file ) )
+                        {
+                            $this->copy_recursive( $path.DIRECTORY_SEPARATOR.$file, $dest.DIRECTORY_SEPARATOR.$file );
+                        }
+                        else
+                        {
+                            copy( $path.DIRECTORY_SEPARATOR.$file, $dest.DIRECTORY_SEPARATOR.$file );
+                        }
+                    }
+                }
+                return true;
+            }
+            elseif(is_file($path))
+            {
+                return copy($path, $dest);
+            }
+            else
+            {
+                return false;
+            }
+        }
+        
+        // Function to unlink dirs and/or files recursively
+        // Based on code found on php.net
+        function unlink_recursive($dir) 
+        { 
+            if (is_dir($dir)) 
+            { 
+                $objects = scandir($dir); 
+                foreach ($objects as $object) { 
+                    if ($object != "." && $object != "..") { 
+                        if (filetype($dir."/".$object) == "dir")
+                        {
+                            $this->unlink_recursive($dir."/".$object); 
+                        }
+                        else
+                        {
+                            unlink($dir."/".$object); 
+                        }
+                    } 
+                } 
+                reset($objects); 
+                rmdir($dir); 
+            }
+            else 
+            {
+                unlink($dir);
+            }
+        } 
     }
     
 ?>
