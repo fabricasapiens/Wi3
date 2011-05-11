@@ -81,6 +81,7 @@ Kohana::$config->attach(new Kohana_Config_File);
  * Enable modules. Modules are referenced by a relative or absolute path.
  */
 Kohana::modules(array(
+    //'supercache' => MODPATH.'supercache', // SuperCache 
     'event' => MODPATH.'event', // Event library
     'sprig-auth'       => MODPATH.'sprig-auth',       // Sprig modeling
     'acl'       => APPPATH.'acl',       // Sprig modeling
@@ -117,6 +118,9 @@ Route::set('default', '(<controller>(/<action>(/<args>)))', array('args' => '.*'
 		'controller' => 'welcome',
 		'action'     => 'index',
 	));
+	
+// Enable the Supercache (don't for the moment, it won't help performance-wise)
+// $super_cache = Super_Cache::instance();
 
 if ( ! defined('SUPPRESS_REQUEST'))
 {

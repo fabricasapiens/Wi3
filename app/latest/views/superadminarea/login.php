@@ -25,6 +25,9 @@
     </div>
 
     <div id='loginform'>
+        <div id='loginform_title'>
+            <div id='wi3logo'></div>
+        </div>
         <div id='loginform_content'>
             <?php 
                 //if (isset($title)) { echo "<h1>" . html::specialchars($title) . "</h1>"; } 
@@ -32,7 +35,7 @@
             <?php if (isset($content)) { echo $content; } ?>
            
             <p id="loginform_copyright">
-                Copyright ©2007–2010 Fabrica Sapiens
+                Copyright ©2007–2011 Fabrica Sapiens
             </p>
         </div>
     </div>

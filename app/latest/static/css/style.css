@@ -38,12 +38,13 @@
     /login form
     /----------------------------------------------------
     */
-    #loginform { position: absolute; left: 50%; margin-left: -480px; width: 960px; top: 50%; margin-top: -190px; height: 300px; background: #fff url(../images/wi3_login.png) no-repeat; }
-	#loginform_content { position: absolute; left: 320px; width: 300px; top: 128px; color: #0b5aa3; }
+    #loginform { position: absolute; left: 50%; margin-left: -200px; width: 400px; top: 50%; margin-top: -180px; height: 300px; background: #fff; border-top: 1px solid #fff; border-bottom: 1px solid #000; box-shadow: 0px 0px 20px rgba(0, 0, 0, 1); }
+    #loginform_title { width: 100px; height: 70px; border-right: 300px solid #eee; }
+	#loginform_content { margin: 30px; width: 340px; color: #0b5aa3;  }
 	    #loginform_content td { padding-top: 11px; }
-	    #loginform_content input { width: 185px; } 
-	    #loginform_content input#loginform_button { float: right; width: 100px; margin-top: 5px; }
-	#loginform_copyright { position: absolute; top: 154px; left: 55px; font-size: 10px; color: #aaa; }
+	    #loginform_content input { width: 205px; } 
+	    #loginform_content input#loginform_button { float: right; width: 120px; margin-top: 5px; }
+	#loginform_copyright { position: absolute; bottom: 0px; left: 30px; font-size: 10px; color: #aaa; }
 	
 	/*
     /----------------------------------------------------
