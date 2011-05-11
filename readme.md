@@ -53,13 +53,11 @@ Point your browser to the Wi3 folder and append "/setup/" to the end of the URL.
 On the last step, click on the link that will take you to the superadmin area.
 
 ### Creating a site ###
-PLEASE NOTE: While the setup is both Dutch and English, the CMS is currently only in Dutch. There will be an english version later; in the meantime, you might be able to guess quite some words by mixing German with English...
+PLEASE NOTE: While the setup is both Dutch and English, the CMS is currently only in Dutch. There will be an english version later; in the meantime, you might use Google Translate or guess quite some words by mixing German with English.
 
-Creating sites is currently not very easy, and a clean user-interface for this is the first thing on the todo list. There are basically three steps:
+Creating a site is very easy. Fill in a (unique!) name and title, along with the database-details below, and click 'Aanmaken'. 
 
-1. Ensure that the correct files reside on disk in the <code>sites</code> folder. The <code>demosite</code> site will already be there and serves as an example.
-2. Ensure that the database-settings for the site are correct. This is important because Wi3 will create another separate database for every new site you enable. Wi3 will use a site-specific database-config for that, as found in <code>sites/[sitename]/config/database.php</code>. For the <code>demosite</code> site, rename <code>sites/demosite/config/database.php.example</code> into <code>sites/demosite/config/database.php</code> and edit the file so that the database user is valid. Do **not change** the databasename. Note that Wi3 requires a DB account that has the privileges to indeed create the desired database!
-3. Enable the site through the superadminarea. As you can see at your first visit in the superadminarea, there are no sites yet. To create one for the demosite, fill the top input with 'demosite'. The top input will be used to get the correct site in the <code>sites</code> folder. In the second input, give the site a title (e.g. 'local demosite' but anything works). Then set the select to 'ja' and click 'aanmaken'. The CMS will now create a site along with a default admin login.
+For now, create a site named and title 'demosite', with 'active' to true. Once you click 'Aanmaken', the site will appear at the bottom of the page.
 
 Congratulations, you now have everything working to log into the CMS and do some actual content managing!
 
