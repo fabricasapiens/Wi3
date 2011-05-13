@@ -185,7 +185,6 @@ class Controller_Superadminarea extends Controller_ACL {
             }
         }
         
-        
         ###
         # Site creation
         ###
@@ -250,18 +249,6 @@ class Controller_Superadminarea extends Controller_ACL {
             echo "<p>site kon niet aangemaakt worden!</p>";
             echo Kohana::debug($e);
         }
-        /*
-        $url = Wi3::inst()->model->factory("site_url");
-        $url->url = $_POST["url"];
-        $url->site = $site; // This alias will use the column $url->site_id and fill it with $site->id
-        try 
-        {
-            $url->create();
-        }
-        catch(Exception $e) 
-        {
-            echo "url die bij site hoort, kon niet aangemaakt worden!";
-        }*/
     }
     
     public function action_deletesite()
@@ -296,6 +283,27 @@ class Controller_Superadminarea extends Controller_ACL {
         }
         catch(Exception $e) 
         {
+            echo Kohana::debug($e);
+        }
+    }
+    
+    public function action_addurl()
+    {
+        $this->setview("superadminarea");
+        
+        $site = Wi3::inst()->model->factory("site");
+        $site->name = $_POST["name"];
+        $site->load();
+        try 
+        {
+            $url = Wi3::inst()->model->factory("url");
+            $url->url = $_POST["url"];
+            $url->site = $site; // This alias will use the column $url->site_id and fill it with $site->id
+            $url->create();
+        }
+        catch(Exception $e) 
+        {
+            echo "Url kon niet aangemaakt worden!";
             echo Kohana::debug($e);
         }
     }

@@ -30,15 +30,15 @@ class Model_Site extends Sprig
 				'unique' => TRUE,
 			)),
 			'active' => new Sprig_Field_Boolean(
-			) 
-            /* 'urls' => new Sprig_Field_HasMany(array(
-				'model' => 'Site_Url',
+			),
+            'urls' => new Sprig_Field_HasMany(array(
+				'model' => 'Url',
 				'editable' => FALSE,
-			)) */
+			))
 		);
 	}
     
-    /* public function delete(Database_Query_Builder_Delete $query = NULL) 
+    public function delete(Database_Query_Builder_Delete $query = NULL) 
     {
         // If not loaded, then load
         if (!$this->loaded()) {
@@ -50,7 +50,7 @@ class Model_Site extends Sprig
         }
         // Go ahead with primary deletion
         parent::delete();
-    }*/
+    }
 }
     
 ?>

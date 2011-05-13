@@ -1,28 +1,16 @@
-<h1>Nieuwe site aanmaken</h1>
-<form method='POST' action='<?php echo Wi3::inst()->urlof->action('createsite');?>'>
-    <h2>Algemeen</h2>
-    <input class='rightside' name='name'></input><label>naam</label><br />
-    <input class='rightside' name='title'></input><label>titel</label><br />
-    <label>actief </label><select class='rightside' name='active'><option value='0'>nee</option><option value='1'>ja</option></select><br />
-    <h2>Database</h2>
-    <label for='dbusername'>Gebruikersnaam</label><input class='rightside' name='dbusername' /><br />
-    <label for='dbpassword'>Wachtwoord</label><input class='rightside' name='dbpassword' /><br />
-    <p> </p>
-    <p>
-    Elke site heeft een <strong>eigen database</strong> nodig.
-    </p>
-    <p>
-    Moet Wi3 een bestaande database gebruiken, of zelf een nieuwe aanmaken met bovenstaande login?
-    </p>
-    <input type='radio' name='dbexistingornew' value='existing'>Bestaand <small>(Bestaande tabellen binnen de database zullen overschreven worden!)</small></input><br />
-    <input type='radio' name='dbexistingornew' value='new'>Nieuw <small>(Bovenstaande gebruiker dient de rechten te hebben om een database aan te maken!)</small></input><br />
-    <p> </p>
-    <label for='dbname'>Databasenaam</label><input class='rightside' name='dbname' /><br />
-    <p> </p>
-    <button>Aanmaken</button>
-</form>
+<?php
 
-<h1>Bestaande sites</h1>
+    Wi3::inst()->plugins->load("plugin_jquery_core"); // For the nice modal box
+
+    echo "<div id='wi3_add_pages' style='width: 920px'>";
+        echo "<a href='javascript:void(0);' onClick='$(this).next().slideToggle();'><h2>Nieuwe site</h2></a>";
+        echo "<div style='display:none; margin:15px; margin-right: 55px; position: relative;'>";
+        echo View::factory("superadminarea/dashboard/addsite");
+        echo "</div>";
+    echo "</div>";
+
+?>
+<p></p>
 <?php 
 
     // The , FALSE parameter sets no limit to the amount of records loaded
@@ -33,9 +21,24 @@
         ?>
         <div class='topbottomborderedbox'>
             <h2><?php echo $site->title; ?></h2>
-            <p>Map: <span class='rightside'><?php echo Wi3::inst()->pathof->site($site->name); ?></span></p> 
+            <p>Map: <span class='rightside'><?php echo Wi3::inst()->pathof->site($site->name); ?></span></p>
+            <p>URLs
+                <?php
+                
+                    foreach($site->urls as $url)
+                    {
+                        echo "<span class='rightside'>" . $url->url . " (" . HTML::anchor( trim($url->url. "/") . "adminarea", "adminarea") . ")</span><br />";
+                    }
+                
+                ?>
+            </p>
+            <form method='POST' action='<?php echo Wi3::inst()->urlof->action("addurl");?>'>
+                <input type='hidden' name='name' value='<?php echo $site->name; ?>'></input>
+                <label>Nieuwe URL</label><input class='rightside' name='url' value=''></input><br />
+                <label style='visibility: hidden;'>.</label><div style='display: inline-block;' class='rightside'><button>Nieuwe URL toevoegen</button></div>
+            </form>
             <form method='POST' action='<?php echo Wi3::inst()->urlof->action(($site->active ? "deactivatesite" : "activatesite"));?>'>
-                <input  type='hidden' name='name' value='<?php echo $site->name; ?>'></input>
+                <input type='hidden' name='name' value='<?php echo $site->name; ?>'></input>
                 <label>Status van site</label><div style='display: inline-block;' class='rightside'> <?php echo ($site->active ? "actief" : "niet actief"); ?> <button><?php echo ($site->active ? "deactiveren" : "activeren"); ?></button></div>
             </form>
             <form method='POST' action='<?php echo Wi3::inst()->urlof->action('deletesite');?>'>

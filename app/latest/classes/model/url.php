@@ -1,11 +1,9 @@
 <?php defined('SYSPATH') or die ('No direct script access.');
-/**
- * Sprig Auth User Model
- * @package Sprig Auth
- * @author	Paul Banks
- */
-class Model_Site_Url extends Sprig
+
+class Model_Url extends Sprig
 {
+    public $_db = "global";
+
 	protected $_title_key = 'url';
 
 	protected $_sorting = array('url' => 'asc');

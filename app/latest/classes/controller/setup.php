@@ -28,6 +28,7 @@ class Controller_Setup extends Controller_Base {
         if (!$this->create_superadmin($settings)) { exit; }
         if (!$this->setup_table("user_token")) { exit; }
         if (!$this->setup_table("site")) { exit; }
+        if (!$this->setup_table("url")) { exit; }
         
         echo "tables sucessfully created"; // Succes!
 	}
