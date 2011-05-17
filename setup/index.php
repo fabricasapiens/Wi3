@@ -1,5 +1,17 @@
 <?php
 
+    /**
+     * Set the default time zone.
+     * @see  http://php.net/timezones
+     */
+    date_default_timezone_set('Europe/Amsterdam');
+
+    /**
+     * Set the default locale.
+     * @see  http://php.net/setlocale
+     */
+    setlocale(LC_ALL, 'en_US.utf-8');
+
     session_name("wi3setup");
     session_start();
     
