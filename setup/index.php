@@ -289,7 +289,7 @@
                     {
                         foreach($grants as $grant)
                         {
-                            if (strpos($grant[0], "GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, REFERENCES, INDEX, ALTER") === 0 AND strpos($grant[0], "ON `" . $dbname . "`") > 0)
+                            if (strpos($grant[0], "GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, REFERENCES, INDEX, ALTER") === 0 AND (strpos($grant[0], "ON `" . $dbname . "`") > 0 OR strpos($grant[0], "ON `" . addcslashes($dbname, "_") . "`") > 0))
                             {
                                 // User has privileges for the $dbname db, so that's fine
                                 $hasprivileges = TRUE;
