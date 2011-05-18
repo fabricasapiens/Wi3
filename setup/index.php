@@ -6,7 +6,7 @@
      */
     date_default_timezone_set('Europe/Amsterdam');
 
-    /**ee
+    /**
      * Set the default locale.
      * @see  http://php.net/setlocale
      */
