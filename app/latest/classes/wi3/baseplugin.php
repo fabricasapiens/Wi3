@@ -27,7 +27,7 @@
         public function css($file, $category = "wi3") {
             ////find the directory of this plugin
             $filename = strtolower(str_replace("_", "/",get_class($this)));
-            $location = Kohana::find_file("classes", $filename);
+            $location = Wi3::inst()->unixpath(Kohana::find_file("classes", $filename));
             //extract the 'base' directory
             $directory = substr($location, 0, strrpos($location, "/classes/")) . "/";
             //now remove the first part of the dir, so that the remaining dir works from the wi3 base dir
@@ -46,7 +46,7 @@
         public function javascript($file, $category = "wi3") {
             ///find the directory of this plugin
             $filename = strtolower(str_replace("_", "/",get_class($this))); 
-            $location = Kohana::find_file("classes", $filename);
+            $location = Wi3::inst()->unixpath(Kohana::find_file("classes", $filename));
             //extract the 'base' directory
             $directory = substr($location, 0, strrpos($location, "/classes/")) . "/";
             //now remove the first part of the dir, so that the remaining dir works from the wi3 base dir

@@ -60,11 +60,11 @@ RewriteRule adminarea(.*)$ ../../../app/index.php/adminarea$1 [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_URI} \/$
-RewriteRule _wi3files/(.*)[.]{1} ../../../app/latest/$1  [L]
+RewriteRule _wi3files/(.*)[.]{1}$ ../../../app/latest/$1  [L]
 # Otherwise, if there was no trailing slash, just redirect
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule _wi3files/(.*) ../../../app/latest/$1  [L]
+RewriteRule _wi3files/(.*)$ ../../../app/latest/$1  [L]
 
 # Any Wi3 controller (not files!)
 RewriteCond %{REQUEST_FILENAME} !-f

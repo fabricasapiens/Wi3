@@ -16,7 +16,7 @@ U dient hier in te loggen met de eerder ingevoerde combinatie van gebruikersnaam
         </p>
         <form method='POST'>
            <input type='hidden' name='step' value='6' />
-          http://localhost/<input name='url' value='<?php echo truepath($_SERVER["REQUEST_URI"] . "/../"); ?>'></input>/superadminarea
+          http://localhost<input name='url' value='<?php echo truepath($_SERVER["REQUEST_URI"] . "/../"); ?>'></input>/superadminarea
            <p> </p>
            <input type='submit' value='Opslaan en klaar' />
         </form>

@@ -208,10 +208,10 @@
         
         public function unixpath($path)
         {
-            // convert forward slashes to backslashes
-            $path = str_replace(DIRECTORY_SEPARATOR, "/", $path);
-            // return path without .. and . parts
-            return Wi3::inst()->truepath($path);
+            // Resolve .. and . parts
+            $path = Wi3::inst()->truepath($path);
+            // Convert forward slashes to backslashes
+            return str_replace(DIRECTORY_SEPARATOR, "/", $path);
         }
         
         // Return a nice path without .. and .
@@ -222,15 +222,11 @@
          */
         public function truepath($path)
         {
+            $originalpath = $path;
             // attempts to detect if path is relative in which case, add cwd
             if(strpos($path,':')===false && (strlen($path)==0 || $path{0}!='/'))
             {
-                $absolute = false;
                 $path=getcwd().DIRECTORY_SEPARATOR.$path;
-            }
-            else 
-            {
-                $absolute = true;
             }
             // resolve path parts (single dot, double dot and double delimiters)
             $path = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $path);
@@ -244,7 +240,7 @@
                     $absolutes[] = $part;
                 }
             }
-            $path=($absolute?"/":"") . implode(DIRECTORY_SEPARATOR, $absolutes);
+            $path=($originalpath[0]=="/"?"/":"") . implode(DIRECTORY_SEPARATOR, $absolutes);
             // if file exists and it is a link, use readlink to resolves links
             //if(file_exists($path) && linkinfo($path)>0)$path=readlink($path);
             return $path;

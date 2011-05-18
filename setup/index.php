@@ -6,7 +6,7 @@
      */
     date_default_timezone_set('Europe/Amsterdam');
 
-    /**
+    /**ee
      * Set the default locale.
      * @see  http://php.net/setlocale
      */
@@ -71,8 +71,10 @@
      */
     function truepath($path)
     {
+        $originalpath = $path;
         // attempts to detect if path is relative in which case, add cwd
-        if(strpos($path,':')===false && (strlen($path)==0 || $path{0}!='/')){
+        if(strpos($path,':')===false && (strlen($path)==0 || $path{0}!='/'))
+        {
             $path=getcwd().DIRECTORY_SEPARATOR.$path;
         }
         // resolve path parts (single dot, double dot and double delimiters)
@@ -87,9 +89,9 @@
                 $absolutes[] = $part;
             }
         }
-        $path=implode(DIRECTORY_SEPARATOR, $absolutes);
+        $path=($originalpath[0]=="/"?"/":"") . implode(DIRECTORY_SEPARATOR, $absolutes);
         // if file exists and it is a link, use readlink to resolves links
-        if(file_exists($path) && linkinfo($path)>0)$path=readlink($path);
+        //if(file_exists($path) && linkinfo($path)>0)$path=readlink($path);
         return $path;
     }
     
@@ -185,7 +187,7 @@
         $paths = Array();
         foreach($checkpaths as $path => $writable)
         {
-            $path = "/".truepath($path);
+            $path = truepath($path);
             $paths[$path] = is_writable($path);
         }
         // Save step of installation in the setupconfig 
@@ -205,7 +207,7 @@
         $paths = Array();
         foreach($checkpaths as $path => $writable)
         {
-            $path = "/".truepath($path);
+            $path = truepath($path);
             if (!is_writable($path))
             {
                 // We should not continue, but simply stay at step 2
@@ -397,7 +399,7 @@
         savesetupconfig($setupconfig);
         
         // If the setup continues from step 5 without doing the above processing for step 4, we still need to fetch the URL of the current wi3 installation
-        $url = (strpos($_SERVER["SERVER_PROTOCOL"], "HTTPS")>0?"https":"http") . "://" . $_SERVER["HTTP_HOST"] . "/" . truepath($_SERVER["REQUEST_URI"] . "/../");
+        $url = (strpos($_SERVER["SERVER_PROTOCOL"], "HTTPS")>0?"https":"http") . "://" . $_SERVER["HTTP_HOST"] . truepath($_SERVER["REQUEST_URI"] . "/../");
     }
     
     // Display menu
