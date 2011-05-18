@@ -56,6 +56,12 @@ RewriteRule adminarea(.*)$ ../../../app/index.php/adminarea$1 [L]
 
 # _Wi3files content.
 # The redirect to 'latest' will resolve to the latest app version (e.g. 0.7.2 or 1.0 or whatever version is newest)
+# remove a trailing slash, if there is any
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} \/$
+RewriteRule _wi3files/(.*)[.]{1} ../../../app/latest/$1  [L]
+# Otherwise, if there was no trailing slash, just redirect
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule _wi3files/(.*) ../../../app/latest/$1  [L]
