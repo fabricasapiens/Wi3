@@ -1,16 +1,16 @@
 RewriteEngine On
 
 #### 
-# Special Wi3 controllers adminarea and superadminarea
+# Enable the superadminarea URL
 ####
 
-# Superadminarea (should not be available on every site!)
+# Superadminarea
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_URI} /superadminarea
 RewriteRule superadminarea(.*)$ app/index.php/superadminarea$1 [L]
 
 #### 
-# Wi3 locations
+# Enable the fetching of files through _wi3files
 ####
 
 # _Wi3files content.
@@ -24,8 +24,3 @@ RewriteRule _wi3files/(.*)[.]{1}$ app/latest/$1  [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule _wi3files/(.*)$ app/latest/$1  [L]
-
-# Any Wi3 controller (not files!)
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_URI} _wi3controllers
-RewriteRule _wi3controllers/(.*)$ app/index.php/$1 [L]
