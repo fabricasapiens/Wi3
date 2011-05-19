@@ -248,7 +248,11 @@ class Controller_Superadminarea extends Controller_ACL {
         {
             echo "<p>site kon niet aangemaakt worden!</p>";
             echo Kohana::debug($e);
+            return;
         }
+        
+        // Redirect to get rid of the superadminarea/someaction URL and to prevent POST issues
+        Request::instance()->redirect(Wi3::inst()->urlof->controller("superadminarea"));
     }
     
     public function action_deletesite()
@@ -284,7 +288,11 @@ class Controller_Superadminarea extends Controller_ACL {
         catch(Exception $e) 
         {
             echo Kohana::debug($e);
+            return;
         }
+        
+        // Redirect to get rid of the superadminarea/someaction URL and to prevent POST issues
+        Request::instance()->redirect(Wi3::inst()->urlof->controller("superadminarea"));
     }
     
     public function action_addurl()
@@ -294,18 +302,145 @@ class Controller_Superadminarea extends Controller_ACL {
         $site = Wi3::inst()->model->factory("site");
         $site->name = $_POST["name"];
         $site->load();
-        try 
+        if (Validate::factory($_POST)
+            ->filter(TRUE, 'trim')
+            ->rule('url', 'not_empty')
+            ->rule('url', 'url')
+            ->check()
+        )
         {
-            $url = Wi3::inst()->model->factory("url");
-            $url->url = $_POST["url"];
-            $url->site = $site; // This alias will use the column $url->site_id and fill it with $site->id
-            $url->create();
+            try 
+            {
+                $url = Wi3::inst()->model->factory("url");
+                $url->url = $_POST["url"];
+                $url->site = $site; // This alias will use the column $url->site_id and fill it with $site->id
+                // Get the domain and folder for this URL
+                preg_match("@^http[s]?\:[\/]{2}([^\/]+)(?:\/(.*))?$@", $_POST["url"], $matches);
+                $url->domain = $domain = $matches[1];
+                $url->folder = $folder = trim(isset($matches[2])?$matches[2]:"", "/");
+                $url->create();
+                
+                $vhostfolder = Wi3::inst()->unixpath(APPPATH . "../../vhosts/") . "/";
+                
+                // Create the vhost. Do this by copying the .template folder.
+                if (!is_dir(APPPATH . "../../vhosts/" . $domain))
+                {
+                    Wi3::inst()->copy_recursive($vhostfolder.".template", $vhostfolder.$domain);
+                }
+                // Create the correct folder
+                // TODO: This will probably not work for folders that are nested deeper than 1 level. Fix this recursively
+                if (!empty($folder))
+                {
+                    mkdir($vhostfolder . $domain . "/httpdocs/" . $folder);
+                }
+                
+                // Create correct .htaccess by copying the example.htaccess file and set the correct values
+                $htaccess = file_get_contents($vhostfolder . $domain . "/httpdocs/example.htaccess");
+                $htaccess = preg_replace("@demosite@", $site->name, $htaccess);
+                if (empty($folder))
+                {
+                    // Make adminarea and superadminarea links functional
+                    $htaccess = preg_replace("@vhosts\/\(\.\*\)\/httpdocs@", "vhosts/".$domain."/httpdocs", $htaccess);
+                    file_put_contents($vhostfolder . $domain . "/httpdocs/.htaccess", $htaccess);
+                }
+                else
+                {
+                    // Make adminarea and superadminarea links functional
+                    $htaccess = preg_replace("@vhosts\/\(\.\*\)\/httpdocs@", "vhosts/".$domain."/httpdocs/".$folder, $htaccess);
+                    // Make the redirect to the /sites folder correct...
+                    $htaccess = preg_replace("@\.\.\/\.\.\/\.\.\/@", "../../../../", $htaccess);
+                    file_put_contents($vhostfolder . $domain . "/httpdocs/" . $folder . "/.htaccess", $htaccess);
+                }
+                
+                // Create new rules for root .htaccess 
+                $all = Wi3::inst()->model->factory("url")->load(NULL, FALSE); // FALSE for no limit = load all
+                $distinctdomains = Array();
+                $rules = "RewriteEngine On
+                
+";
+                foreach($all as $one)
+                {
+                    if (!isset($distinctdomains[$one->domain]))
+                    {   
+                        $distinctdomains[$one->domain] = $one->domain;
+                        // Add rule 
+                        $rules .= "RewriteCond %{SERVER_NAME} ^" . $one->domain . "$ [NC]
+RewriteRule (.*) " . $vhostfolder . $one->domain . "/httpdocs/$1/ [E=REDIRECTED:TRUE,L]
+";
+                    }
+                }
+                
+                // Write the .htaccess in /
+                // TODO: only do this if the .htaccess actually changed (i.e. if a new domain was added)
+                $root = $_SERVER["DOCUMENT_ROOT"]."/";
+                if (is_writable($root.".htaccess"))
+                {
+                    file_put_contents($root.".htaccess", $rules);
+                }
+                else
+                {
+                    if (!file_exists($root.".htaccess") AND is_writable($root))
+                    {
+                        file_put_contents($root.".htaccess", $rules);
+                    }
+                    else
+                    {
+                        // TODO: present the rules if adding them was not possible
+                    }
+                }
+                
+                // Below code is if we did not want to use vhosts for some reason
+                /*
+                // Now create the .htaccess code for this URL
+                $folderhtaccess = View::factory("superadminarea/htaccess/foldertemplate")->set("domain", $domain)->render();
+                $vhosthtaccess = View::factory("superadminarea/htaccess/vhosttemplate")->set("sitename", $site->name)->set("currentpath", $folder)->set("wi3path", Wi3::inst()->unixpath(APPPATH."../../").DIRECTORY_SEPARATOR)->render();
+                // Set this code in the correct place
+                if (empty($folder))
+                {
+                    // Put .htaccess in root 
+                    $root = $_SERVER["DOCUMENT_ROOT"]."/";
+                    if (is_writable($root))
+                    {
+                        file_put_contents($root.".htaccess", $vhosthtaccess);
+                    }
+                    else 
+                    {
+                        echo ".htaccess kon niet aangemaakt worden...! Doe dit handmatig.";
+                    }
+                }
+                else 
+                {
+                    // There is a folder
+                    $writefolder = $_SERVER["DOCUMENT_ROOT"]."/".$folder;
+                    if (!is_dir($writefolder))
+                    {
+                       @mkdir($writefolder);
+                    }
+                    if (is_writable($writefolder))
+                    {
+                        file_put_contents($writefolder."/".".htaccess", $vhosthtaccess);
+                    }
+                    else
+                    {
+                        echo ".htaccess kon niet aangemaakt worden...! Doe dit handmatig.";
+                    }
+                }
+                */
+            }
+            catch(Exception $e) 
+            {
+                echo "Url kon niet aangemaakt worden!";
+                echo Kohana::debug($e);
+                return;
+            }
         }
-        catch(Exception $e) 
+        else 
         {
             echo "Url kon niet aangemaakt worden!";
-            echo Kohana::debug($e);
         }
+        
+        // Redirect to get rid of the superadminarea/someaction URL and to prevent POST issues
+        Request::instance()->redirect(Wi3::inst()->urlof->controller("superadminarea"));
     }
     
     public function action_activatesite()
@@ -317,6 +452,9 @@ class Controller_Superadminarea extends Controller_ACL {
         $site->load();
         $site->active = TRUE;
         $site->update();
+        
+        // Redirect to get rid of the superadminarea/someaction URL and to prevent POST issues
+        Request::instance()->redirect(Wi3::inst()->urlof->controller("superadminarea"));
     }
     
     public function action_deactivatesite()
@@ -328,6 +466,34 @@ class Controller_Superadminarea extends Controller_ACL {
         $site->load();
         $site->active = FALSE;
         $site->update();
+        
+        // Redirect to get rid of the superadminarea/someaction URL and to prevent POST issues
+        Request::instance()->redirect(Wi3::inst()->urlof->controller("superadminarea"));
+    }
+    
+    public function action_htaccessrules()
+    {
+        $vhostfolder = Wi3::inst()->unixpath(APPPATH . "../../vhosts/") . "/";
+        // Create rules for root .htaccess 
+        $all = Wi3::inst()->model->factory("url")->load(NULL, FALSE); // FALSE for no limit = load all
+        $distinctdomains = Array();
+        $rules = "RewriteEngine On
+        
+";
+        foreach($all as $one)
+        {
+            if (!isset($distinctdomains[$one->domain]))
+            {   
+                $distinctdomains[$one->domain] = $one->domain;
+                // Add rule 
+                $rules .= "RewriteCond %{SERVER_NAME} ^" . $one->domain . "$ [NC]
+RewriteRule (.*) " . $vhostfolder . $one->domain . "/httpdocs/$1/ [E=REDIRECTED:TRUE,L]
+";
+            }
+        }
+        
+        Request::instance()->response = $rules;
+        Request::instance()->send_file(TRUE, "htaccess.txt");
     }
 
 }

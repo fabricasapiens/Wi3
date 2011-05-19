@@ -16,6 +16,14 @@ class Model_Url extends Sprig
 				'empty'  => FALSE,
 				'unique' => TRUE,
 			)),
+			'domain' => new Sprig_Field_Char(array(
+				'empty'  => FALSE,
+				'unique' => FALSE,
+			)),
+			'folder' => new Sprig_Field_Char(array(
+				'empty'  => TRUE,
+				'unique' => FALSE,
+			)),
 			'site' => new Sprig_Field_BelongsTo(array(
 				'model' => 'Site',
                 'column' => 'site_id', // Column in the site_url-table

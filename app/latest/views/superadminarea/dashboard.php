@@ -11,6 +11,29 @@
 
 ?>
 <p></p>
+<?php
+
+    // If there is a URL (and thus a site), we need to alert the user if the .htaccess in the root cannot be properly written
+    $all = Wi3::inst()->model->factory("url")->load(NULL, FALSE); // FALSE for no limit = load all
+    if (count($all) > 0 AND !is_writable($_SERVER["DOCUMENT_ROOT"]."/.htaccess"))
+    {
+        // Show the .htaccess rules for in the root
+        echo "<div style='border: 1px solid #ff0000; padding: 20px;'>";
+            echo "<h2>Belangrijk!</h2>";
+            echo "<p>Uw root .htaccess is niet schrijfbaar..! ";
+            if (file_exists($_SERVER["DOCUMENT_ROOT"]."/.htaccess"))
+            {
+                echo "Het bestaande .htaccess bestand dient een aantal specifieke regels voor Wi3 te bevatten om het cms correct te laten functioneren. ";
+            }
+            else
+            {
+                echo "Een .htaccess in de www-root is echter nodig om Wi3 correct te laten functioneren. ";
+            }
+            echo "U kunt Wi3 toestaan het .htaccess bestand automatisch correct aan te passen door de .htaccess schrijfbaar te maken. Als u dit niet wilt, dient u handmatig te zorgen dat het .htaccess bestand in uw www-root de regels bevat zoals te vinden in " . HTML::anchor( Wi3::inst()->urlof->action("htaccessrules"), "dit bestand") . ".";
+        echo "</div>";
+    }
+
+?>
 <?php 
 
     // The , FALSE parameter sets no limit to the amount of records loaded
@@ -27,7 +50,7 @@
                 
                     foreach($site->urls as $url)
                     {
-                        echo "<span class='rightside'>" . $url->url . " (" . HTML::anchor( trim($url->url. "/") . "adminarea", "adminarea") . ")</span><br />";
+                        echo "<span class='rightside'>" . $url->url . " (" . HTML::anchor( trim($url->url, "/"). "/adminarea", "adminarea") . ")</span><br />";
                     }
                 
                 ?>
