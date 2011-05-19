@@ -364,7 +364,8 @@ class Controller_Superadminarea extends Controller_ACL {
                     {   
                         $distinctdomains[$one->domain] = $one->domain;
                         // Add rule 
-                        $rules .= "RewriteCond %{SERVER_NAME} ^" . $one->domain . "$ [NC]
+                        $rules .= "RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{SERVER_NAME} ^" . $one->domain . "$ [NC]
 RewriteRule (.*) " . $vhostfolder . $one->domain . "/httpdocs/$1/ [E=REDIRECTED:TRUE,L]
 ";
                     }
@@ -486,7 +487,8 @@ RewriteRule (.*) " . $vhostfolder . $one->domain . "/httpdocs/$1/ [E=REDIRECTED:
             {   
                 $distinctdomains[$one->domain] = $one->domain;
                 // Add rule 
-                $rules .= "RewriteCond %{SERVER_NAME} ^" . $one->domain . "$ [NC]
+                $rules .= "RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{SERVER_NAME} ^" . $one->domain . "$ [NC]
 RewriteRule (.*) " . $vhostfolder . $one->domain . "/httpdocs/$1/ [E=REDIRECTED:TRUE,L]
 ";
             }

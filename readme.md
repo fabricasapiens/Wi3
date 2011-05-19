@@ -59,10 +59,12 @@ Creating a site is very easy. Fill in a (unique!) name and title, along with the
 
 For now, create a site named and title 'demosite', with 'active' to true. Once you click 'Aanmaken', the site will appear at the bottom of the page.
 
-Congratulations, you now have everything working to log into the CMS and do some actual content managing!
+Finally, we couple a URL with the demosite. Backup your www-root/.htaccess, because Wi3 will try to overwrite it! 
+
+For demo purposes, pick the domainname of the URL that is currently displayed in the browser bar (when testing locally for example 'http://127.0.0.1' or 'http://localhost'). Click 'Nieuwe URL toevoegen' to couple the URL with the demosite. Now click the 'adminarea' link to do some actual content managing!
 
 ### Editing Content ###
-For the demosite, go to the folder that contains wi3, and append <code>/adminarea/</code> to the URL. An example could be <code>http://localhost/wi3/adminarea/</code>. You can login with the default combination of admin/admin. This is the actual Wi3 CMS that users will see... The first tab is for managing pages, the second tab for managing content and the third tab for managing files. Go ahead and create a page. Now click the 'inhoud' tab and see the magic of an HTML5 CMS! :-)
+You can login with the default combination of admin/admin. This is the actual Wi3 CMS that users will see... The first tab is for managing pages, the second tab for managing content and the third tab for managing files. Go ahead and create a page. Now click the 'inhoud' tab and see the magic of an HTML5 CMS! :-)
 
 [ TODO: expand readme ]
 
