@@ -46,27 +46,44 @@ class View extends Kohana_View {
         }
 	}
 	
+	// Chainable
 	public function set_filename($file) 
 	{	
-	    // Try to get translated view
+	    Kohana::$log->add("bla", $file);
+	    // Get path for possible translations
+        if (strrpos($file, "/") !== FALSE)
+        {
+            $split = strrpos($file, "/");
+            $firstpart = substr($file, 0, $split+1); // The +1 to catch the /
+            $lastpart = substr($file, $split+1);
+        }
+        else
+        {
+            $firstpart = "";
+            $lastpart = $file;
+        }
+        
+	    // Try to get translated view, with complete area suffix (e.g. en-us)
 		try 
 		{
-			return parent::set_filename("i18n/".i18n::lang()."/".$file);
+			parent::set_filename($firstpart . "i18n/".i18n::lang()."/".$lastpart); // Will try to load file, and fail if file cannot be found
 		}
 		catch(Exception $e) 
 		{
-		    //  Try to get translated view for the overall language, disregarding area suffix (i.e. 'en' from 'en-gb') 
+		    //  Try to get translated view for the overall language, without area suffix (e.g. 'en' from 'en-us') 
 		    try 
 		    {
-			    return parent::set_filename("i18n/".substr(i18n::lang(),0,2)."/".$file);
+			    parent::set_filename($firstpart . "i18n/".substr(i18n::lang(),0,2)."/".$lastpart);
 		    }
 		    catch(Exception $e) 
 		    {
-			    return parent::set_filename($file);
+			    parent::set_filename($file);
 		    }
 		}
+		return $this;
 	}
     
+    // Chainable
     public function set_filepath($filepath)
     {
         // Get path for possible translations
@@ -94,6 +111,7 @@ class View extends Kohana_View {
         {
             $this->_file = $filepath;
         }
+        return $this;
     }
 
 } // End View

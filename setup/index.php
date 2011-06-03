@@ -24,6 +24,7 @@
         $expire = time()+60*60*24*30; // 1 month
         setcookie("lang", $_POST["lang"], $expire);
         $_COOKIE["lang"] = $_POST["lang"];
+        $_SESSION["lang"] = $_POST["lang"];
     }
     
 ?>
@@ -114,6 +115,11 @@
     else
     {
         $lang = "nl-nl";
+    }
+    // Set language in session as well, if not already there 
+    if (!isset($_SESSION["lang"]))
+    {
+        $_SESSION["lang"] = $lang;
     }
     
     // Load setupconfig

@@ -70,7 +70,7 @@
         #wi3_ajax_menu { display: inline; position: relative; }
         #wi3_ajax_menu #wi3_ajax_indicator { display: inline; background: url(../images/ajax-loader.png) no-repeat; padding-left: 20px; border-right: 2px solid #aaa; margin-right: 10px; padding-right: 10px;}
         #wi3_ajax_menu #wi3_ajax_indicator.working { background: url(../images/ajax-loader.gif) no-repeat; }
-	    #wi3_ajax_menu #wi3_notification_top, #wi3_ajax_menu #wi3_notification_bottom { position: absolute; left: 0px; display: none; background: #fff; border: 2px solid #22242B; border-top: none; top: 44px; width: 160px; padding: 20px; height: 40px; text-align: center; color: #1891FF; }
+	    #wi3_ajax_menu #wi3_notification_top, #wi3_ajax_menu #wi3_notification_bottom { position: absolute; left: 0px; display: none; background: #fff; border: 2px solid #22242B; border: none; border-top: none; top: 44px; width: 160px; padding: 20px; text-align: center; color: #1891FF; box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.4); }
 	
 	#content { position: absolute; left: 0px; top: 85px; width: 960px; padding: 20px; padding-top: 15px; background: #eee; border-top: 1px solid #fff; border-bottom: 1px solid #000; box-shadow: 0px 0px 20px rgba(0, 0, 0, 1);  min-height: 600px; }
     #content.contentpage { height: 0px; min-height: 0px; width: 1000px; overflow: hidden; padding: 0px; }

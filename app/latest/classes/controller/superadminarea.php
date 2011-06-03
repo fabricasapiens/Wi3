@@ -373,6 +373,7 @@ RewriteRule (.*) " . $vhostfolder . $one->domain . "/httpdocs/$1/ [E=REDIRECTED:
                 
                 // Write the .htaccess in /
                 // TODO: only do this if the .htaccess actually changed (i.e. if a new domain was added)
+                // TODO: backup old .htaccess
                 $root = $_SERVER["DOCUMENT_ROOT"]."/";
                 if (is_writable($root.".htaccess"))
                 {

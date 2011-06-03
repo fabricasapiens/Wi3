@@ -2,7 +2,7 @@
     <h2>Algemeen</h2>
     <input class='rightside' name='name'></input><label>naam</label><br />
     <input class='rightside' name='title'></input><label>titel</label><br />
-    <label>actief </label><select class='rightside' name='active'><option value='0'>nee</option><option value='1'>ja</option></select><br />
+    <label>direct actief? </label><select class='rightside' name='active'><option value='0'>nee</option><option value='1'>ja</option></select><br />
     <h2>Database</h2>
     <label for='dbusername'>Gebruikersnaam</label><input class='rightside' name='dbusername' /><br />
     <label for='dbpassword'>Wachtwoord</label><input class='rightside' name='dbpassword' /><br />

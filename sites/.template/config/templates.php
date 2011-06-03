@@ -20,12 +20,12 @@
                 "path" => Wi3::inst()->pathof->app ."templates/fabricasapiens.nl/",
                 "url" => Wi3::inst()->urlof->appfiles ."templates/fabricasapiens.nl/"
             ),
-            "yellowstone" => Array
+            "wi3.nl" => Array
             (
-                "title" => "yellowstone",
-                "description" => "Yellowstone door Rocket Website Templates",
-                "path" => Wi3::inst()->pathof->app ."templates/yellowstone/",
-                "url" => Wi3::inst()->urlof->appfiles ."templates/yellowstone/"
+                "title" => "wi3.nl",
+                "description" => "Template for wi3.nl",
+                "path" => Wi3::inst()->pathof->app ."templates/wi3.nl/",
+                "url" => Wi3::inst()->urlof->appfiles ."templates/wi3.nl/"
             )
         )
     );

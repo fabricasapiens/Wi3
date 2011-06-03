@@ -49,6 +49,11 @@
             }
         }
         
+        public function view($name)
+        {
+            return View::factory()->set_filepath($this->_params["view_path"] . $name . EXT);
+        }
+        
        	/**
          * Captures the output that is generated when a view is included.
          * The view data will be extracted to create local variables.

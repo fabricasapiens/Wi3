@@ -21,7 +21,7 @@
         echo "<p><label for='pagetitle'>paginatitel: </label><input name='longtitle' id='longtitle' type='text' value='" . $page->longtitle . "' /></p>";
         // A sprig boolean value will always revert to either TRUE or FALSE, so we can only work with those values, and use external variables for 0 and 1
         $visible = ($page->visible===TRUE?"1":"0");
-        echo "<p><label for='visible'>zichtbaarheid in menu: </label><select name='visible' id='visible' value='" . $visible . "'>" . Wi3::inst()->optionlist(array("1"=>"zichtbaar", "0"=>"verborgen"),$visible) . "</select></p>";
+        echo "<p><label for='visible'>zichtbaar in menu: </label><select name='visible' id='visible' value='" . $visible . "'>" . Wi3::inst()->optionlist(array("1"=>"zichtbaar", "0"=>"verborgen"),$visible) . "</select></p>";
     } 
     catch(Exception $e) 
     {
@@ -87,7 +87,7 @@
     }
     catch(Exception $e) 
     {
-        echo "<p>U hebt niet de benodige rechten om de rechten-instellingen aan te passen.</p>";
+        echo "<p>U hebt niet de benodige rechten om de template-instellingen aan te passen.</p>";
     }
     echo "</form>";
     //save button
@@ -105,7 +105,7 @@
     {
         Wi3::inst()->acl->check($page);
         echo "<p>";
-        echo "<select style='width: 300px;' name='redirect_type' id='redirect_type' value='" . $page->redirecttype . "'>" . Wi3::optionlist(array("none"=>"Geen doorverwijzing; eigen inhoud pagina", "wi3" => "Doorverwijzen naar wi3 pagina", "external"=>"Doorverwijzen naar externe URL"), $page->redirecttype) . "</select><br />";
+        echo "<select style='width: 300px;' name='redirect_type' id='redirect_type' value='" . $page->redirecttype . "'>" . Wi3::optionlist(array("none"=>"Geen doorverwijzing; eigen inhoud pagina", "wi3" => "Doorverwijzen naar pagina binnen site", "external"=>"Doorverwijzen naar externe URL"), $page->redirecttype) . "</select><br />";
 
         $pagelist = Array();
         $pagepositions = Wi3::inst()->model->factory("site_pageposition")->load(NULL, FALSE); // False for no limit

@@ -21,6 +21,14 @@ class Controller_Setup extends Controller_Base {
             $settings = $_SESSION;
         }
         
+        // Set language, based on session information of setup 
+        if (isset($settings["lang"]))
+        {
+            // Do not set it in a cookie, since this is a SUB-request from the actual setup process, and the setup process will not process the cookie that is sent along, espeically not if it is encrypted...!
+            // Set the default language in a config file instead. The wi3.php will try to load the default language from this file every time it is unable to find a language cookie
+            file_put_contents(Wi3::inst()->pathof->app . "config/i18n.php", '<?php return ' . var_export(Array("lang" => $settings["lang"]), true) . '; ?>'); // ,true to return instead of echo
+        }
+        
         // TODO: only create tables when they do not already exist
         
         if (!$this->setup_table("role")) { exit; }

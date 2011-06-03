@@ -21,7 +21,8 @@
                 'javascript_url' => $pagefillerurl.'static/javascript/', 
                 'javascript_path' => $pagefillerpath.'static/javascript/',
                 'css_url' => $pagefillerurl.'static/css/',
-                'css_path' => $pagefillerpath.'static/css/'
+                'css_path' => $pagefillerpath.'static/css/',
+                'view_path' => $pagefillerpath.'views/',
             )); 
             $pagefillerview = View::factory()->set("this", $pagefillerbaseview);
             $pagefillerview->set_filepath($pagefillerpath.'views/'.$viewname.EXT); // set_filepath sets a complete filename on the View
@@ -74,7 +75,8 @@
                 'javascript_url' => $templates->$templatename->url.'static/javascript/', 
                 'javascript_path' => $templates->$templatename->path.'static/javascript/',
                 'css_url' => $templates->$templatename->url.'static/css/',
-                'css_path' => $templates->$templatename->path.'static/css/'
+                'css_path' => $templates->$templatename->path.'static/css/',
+                'view_path' => $templates->$templatename->path.'views/',                
             )); 
             $templateview = View::factory()->set("this", $templatebaseview);
             $templateview->set_filepath($templateconfig->templateview); // set_filepath sets a complete filename on the View

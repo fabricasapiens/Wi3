@@ -53,8 +53,6 @@ Point your browser to the Wi3 folder and append "/setup/" to the end of the URL.
 On the last step, click on the link that will take you to the superadmin area.
 
 ### Creating a site ###
-PLEASE NOTE: While the setup is both Dutch and English, the CMS is currently only in Dutch. There will be an english version later; in the meantime, you might use Google Translate or guess quite some words by mixing German with English.
-
 Creating a site is very easy. Fill in a (unique!) name and title, along with the database-details below, and click 'Aanmaken'. 
 
 For now, create a site named and title 'demosite', with 'active' to true. Once you click 'Aanmaken', the site will appear at the bottom of the page.
@@ -65,6 +63,4 @@ For demo purposes, pick the domainname of the URL that is currently displayed in
 
 ### Editing Content ###
 You can login with the default combination of admin/admin. This is the actual Wi3 CMS that users will see... The first tab is for managing pages, the second tab for managing content and the third tab for managing files. Go ahead and create a page. Now click the 'inhoud' tab and see the magic of an HTML5 CMS! :-)
-
-[ TODO: expand readme ]
 

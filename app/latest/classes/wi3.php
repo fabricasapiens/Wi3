@@ -32,13 +32,34 @@
             $this->session = Session::instance();
             
             // Determine language
-            $lang = Cookie::get('lang', 'nl-nl');
-            if(!in_array($lang, array('nl-nl', 'en-us'))) {
-               // check the allowed languages, and force the default
-               $lang = 'nl-nl';
+            $lang = Cookie::get('lang');
+            if ($lang !== NULL)
+            {
+                if(!in_array($lang, array('nl-nl', 'en-us'))) {
+                   // Check the allowed languages, and force the default
+                   $lang = 'nl-nl';
+                }
             }
-            // set the target language
+            else 
+            {
+                // Language not set in cookie. Get default language from i18n file.
+                $i18nfiles = Kohana::find_file("config", "i18n");
+                if (!empty($i18nfiles))
+                {
+                    $i18nsettings = Kohana::load($i18nfiles[0]);
+                    $lang = $i18nsettings["lang"];
+                }
+                else 
+                {
+                    $lang = 'nl-nl'; // Fall back to default
+                }
+                // Save loaded language in cookie
+                Cookie::set('lang', $lang);
+            }
+            // Set the target language
             i18n::lang($lang);
+            // Set the source language to some non-existing language to prevent Kohana skipping translation lookup if source and target language are identical
+            i18n::$source = "bb-bb"; // See http://unicode.org/cldr/utility/languageid.jsp?a=bb&l=en for valid tags
             
             // Load wi3-kohana-specific functions
             $this->kohana = new Wi3_Kohana;
@@ -98,13 +119,11 @@
                 if (isset($_SERVER['REDIRECT_SITENAME']))
                 {
                     $sitename = $_SERVER['REDIRECT_SITENAME']; // With correct loading, $_SERVER['REDIRECT_SITENAME'] should always be present, as it is set in the vhosts .htaccess that redirect here
-                    $sitedatabasesafename = str_replace(".", "_", $_SERVER['REDIRECT_SITENAME']); // Gives a 'database-safe' representation of the sitename (i.e. without dots if it is a domain-name)
                     // Global site is the site in the global space, i.e. the Site model in the 'list of sites' that is always accesible
                     // ( In the per-site database, there can only exist one Site model )
                     $this->sitearea->globalsite = $this->model->factory("site")->set('name', $sitename)->load();
                     Event::instance("wi3.init.sitearea.globalsite.loaded")->execute();
                     $this->sitearea->site = $this->sitearea->globalsite; // This site instance will be replaced by the local user site. The ->name will be added to that local site, since it does not store that in the local db
-                    $this->sitearea->site->databasesafename = $sitedatabasesafename;
                 } 
                 // If the sitename not present, the page request came here via some illegal method.
                 // If the site was not loaded correctly or is not active, we cannot show the site either
