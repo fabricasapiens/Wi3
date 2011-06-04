@@ -64,7 +64,8 @@ Kohana::$environment = ($_SERVER['SERVER_NAME'] !== 'localhost' AND $_SERVER['SE
 	'base_url'   => substr($_SERVER["PHP_SELF"], 0, strpos($_SERVER["PHP_SELF"], "index.php")),
 	'index_file' => FALSE,    
     'profile'    => Kohana::$environment !== Kohana::PRODUCTION,
-    'caching'    => Kohana::$environment === Kohana::PRODUCTION,
+    'caching'    => FALSE // Kohana::$environment === Kohana::PRODUCTION, // [!] Set caching to false, since it will cause different sites to load each other's databases (a file request to config/sitedatabase.php can result in DIFFERENT paths EVERY REQUEST, so it should NOT be cached)
+    // TODO: catch files per sitename?
 ));
 
 /**
