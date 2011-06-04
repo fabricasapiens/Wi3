@@ -191,11 +191,11 @@
                     // Create block, and add id if it was present in the <cms> block
                     if (!empty($id))
                     {
-                        $blockcontent = "<div style='display:inline-block;' id='" . $id . "' type='contentblock' name='" . $name . "'>" . $content . "</div>";
+                        $blockcontent = "<div style='display:inline-block; width: 100%;' id='" . $id . "' type='contentblock' name='" . $name . "'>" . $content . "</div>";
                     }
                     else
                     {
-                        $blockcontent = "<div style='display:inline-block;' type='contentblock' name='" . $name . "'>" . $content . "</div>";
+                        $blockcontent = "<div style='display:inline-block; width: 100%;' type='contentblock' name='" . $name . "'>" . $content . "</div>";
                     }
                     pq($editableblock)->replaceWith($blockcontent);
                 }

@@ -80,7 +80,9 @@ wi3.pagefillers.default.edittoolbar = {
     {
         // insert the style-float and style-padding tags into the fields, since PHPQuery does not properly support the css() function 
         $("[type=field]").each(function(counter) {
-            $(this).attr("style_padding", $(this).css("padding"));
+            // For padding, we use padding-left, and assume all paddings are like that 
+            // Simply using .css('padding') does not work, due to "Shorthand CSS properties (e.g. margin, background, border) are not supported" (http://api.jquery.com/css/)
+            $(this).attr("style_padding", $(this).css("padding-left"));
             $(this).attr("style_float", $(this).css("float"));
             $(this).attr("style_width", $(this).css("width")); 
         });
@@ -264,26 +266,6 @@ wi3.pagefillers.default.edittoolbar = {
     {
         jqueryobj = $(jqueryobj);
         jqueryobj.bind("mouseenter", function(event) {
-            /*
-            $(this).attr("oldcssmargin",$(this).css("margin")); // save current margin value
-            if (isNaN(parseInt($(this).css("margin")))) 
-            { 
-                $(this).css("margin", "-10px");
-            }
-            else
-            {
-                $(this).css("margin", ( parseInt($(this).css("margin")) - 10) + "px");
-            }
-            $(this).css("border", "10px solid #fff");
-            
-            // Webkit has the problem of not taking the negative top-margin into account if the top-border is the same amount of px.
-            // Thus, margin -10 and border 10px does not work...
-            // A solution is to zoom in and out. Kind of weird, but it works...
-            if ($.browser.webkit)
-            {
-                $("body").css("zoom", "1.2");
-                setTimeout('$("body").css("zoom", "1");', 0); // doing a direct css(zoom,1) will somehow cause the renderer not to update the screen
-            }*/
             
             // Show shadow
             $(this).css("-webkit-box-shadow", "0px 0px 10px #ccc");
@@ -294,15 +276,6 @@ wi3.pagefillers.default.edittoolbar = {
             $(this).find("[type=fieldbuttons]").show();
             
         }).bind("mouseleave", function(event) {
-            /*
-            $(this).css("border", "none");
-            $(this).css("margin", $(this).attr("oldcssmargin")); // Restore old margin value
-            if ($.browser.webkit) 
-            {
-                $("body").css("zoom", "1.2");
-                setTimeout('$("body").css("zoom", "1");', 0);
-            }
-            */
             
             // Hide shadow
             $(this).css("-webkit-box-shadow", "none");

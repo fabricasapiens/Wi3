@@ -33,13 +33,13 @@
             </div>
             <div id='content'>
                 <?php
-                
+                    
                     // Get url to the template base-url
                     $baseurl = substr($this->_params["javascript_url"], 0, strpos($this->_params["javascript_url"], "/static/javascript")) . "/";
                     
                     try 
                     {
-                        echo $this->view(strtolower($page->longtitle))->render();
+                        echo $this->view(strtolower($page->longtitle))->set("page", $page)->set("site",$site)->render();
                     }
                     catch(Exception $e)
                     {

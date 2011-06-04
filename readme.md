@@ -53,14 +53,14 @@ Point your browser to the Wi3 folder and append "/setup/" to the end of the URL.
 On the last step, click on the link that will take you to the superadmin area.
 
 ### Creating a site ###
-Creating a site is very easy. Fill in a (unique!) name and title, along with the database-details below, and click 'Aanmaken'. 
+Creating a site is very easy. Fill in a (unique!) name and title, along with the database-details below, and click 'Create'. 
 
-For now, create a site named and title 'demosite', with 'active' to true. Once you click 'Aanmaken', the site will appear at the bottom of the page.
+For now, create a site named and title 'demosite', with 'active' to true. Once you click 'Create', the site will appear at the bottom of the page.
 
 Finally, we couple a URL with the demosite. Backup your www-root/.htaccess, because Wi3 will try to overwrite it! 
 
-For demo purposes, pick the domainname of the URL that is currently displayed in the browser bar (when testing locally for example 'http://127.0.0.1' or 'http://localhost'). Click 'Nieuwe URL toevoegen' to couple the URL with the demosite. Now click the 'adminarea' link to do some actual content managing!
+For demo purposes, pick the domainname of the URL that is currently displayed in the browser bar (when testing locally for example 'http://127.0.0.1' or 'http://localhost'). Click 'Add new URL' to couple the URL with the demosite. Now click the 'adminarea' link to do some actual content managing!
 
 ### Editing Content ###
-You can login with the default combination of admin/admin. This is the actual Wi3 CMS that users will see... The first tab is for managing pages, the second tab for managing content and the third tab for managing files. Go ahead and create a page. Now click the 'inhoud' tab and see the magic of an HTML5 CMS! :-)
+You can login with the default combination of admin/admin. This is the actual Wi3 CMS that users will see... The first tab is for managing pages, the second tab for managing content and the third tab for managing files. Go ahead and create a page. Now click the 'content' tab and see the magic of an HTML5 CMS! :-)
 
