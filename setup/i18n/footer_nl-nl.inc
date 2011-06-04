@@ -1,1 +1,1 @@
-<div id='logo'>Wi3 is Open Source en eigendom van <a href='http://fabricasapiens.nl'>Fabrica Sapiens</a> <br />Broncode is beschikbaar op <a href='https://github.com/fabricasapiens/Wi3'>Github</a></div>
+<div id='logo'>Wi3 is een Open Source project van <a href='http://fabricasapiens.nl'>Fabrica Sapiens</a> <br />Broncode is beschikbaar op <a href='https://github.com/fabricasapiens/Wi3'>Github</a></div>

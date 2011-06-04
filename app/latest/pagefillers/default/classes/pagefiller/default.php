@@ -76,6 +76,7 @@
                 'javascript_path' => $templates->$templatename->path.'static/javascript/',
                 'css_url' => $templates->$templatename->url.'static/css/',
                 'css_path' => $templates->$templatename->path.'static/css/',
+                'image_url' => $templates->$templatename->url.'static/images/',                
                 'view_path' => $templates->$templatename->path.'views/',                
             )); 
             $templateview = View::factory()->set("this", $templatebaseview);

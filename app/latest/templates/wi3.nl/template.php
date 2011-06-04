@@ -1,5 +1,5 @@
 <?php defined('SYSPATH') OR die('No direct access allowed.'); ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html>
 
 <?php
     $page = Wi3::inst()->sitearea->page;
@@ -39,15 +39,21 @@
                     
                     try 
                     {
-                        echo $this->view(strtolower($page->longtitle))->set("page", $page)->set("site",$site)->render();
+                        // Add view, and make it inherit the current view (i.e. $this)
+                        echo $this->view(strtolower($page->longtitle))->set("this", $this)->set("page", $page)->set("site",$site)->render();
                     }
                     catch(Exception $e)
                     {
-                        // Do nothing
+                        // Add an editable part
+                        echo "<cms type='editableblock' name='group1'>
+                        </cms>";
                     }
                 
                 ?>
             </div>
+        </div>
+        <div id='footer'>
+            Copyright 2010-2011 <a href='http://fabricasapiens.nl'>Fabrica Sapiens</a>. All rights reserved. Source code on <a href='https://github.com/fabricasapiens/Wi3'>Github</a>
         </div>
         
           <script type="text/javascript">
