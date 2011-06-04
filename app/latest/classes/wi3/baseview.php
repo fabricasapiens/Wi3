@@ -49,6 +49,29 @@
             }
         }
         
+        public function image($name, $size = NULL, $attributes = NULL) 
+        {
+            // TODO: also work with full URLs
+            if (isset($this->_params["image_url"]))
+            {
+                if (is_numeric($size))
+                {
+                    // TODO: make size work properly with $name that contains subfolders
+                    $attributes["src"] = $this->_params["image_url"] . $size . "/" . $name;
+                    echo "<img" . HTML::attributes($attributes) . "></img>";
+                }
+                else
+                {
+                    $attributes["src"] = $this->_params["image_url"] . $name;
+                    echo "<img" . HTML::attributes($attributes) . "></img>";
+                }
+            }
+            else 
+            {
+                echo "Image could not be found.";
+            }
+        }
+        
         public function view($name)
         {
             return View::factory()->set_filepath($this->_params["view_path"] . $name . EXT);

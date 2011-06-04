@@ -54,6 +54,11 @@
                 $prevpageposition = $pageposition;
                 $pages = $pageposition->pages;
                 $page = $pages[0]; // Simply get first page
+                if ($page->visible == FALSE)
+                {
+                    continue;
+                }
+                
                 // Determine URL, based on the redirect-type
                 if ($page->redirecttype == "external")
                 {

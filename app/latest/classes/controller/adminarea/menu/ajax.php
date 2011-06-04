@@ -288,7 +288,15 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
                         // Also change slug if title is changed
                         if ($name == "longtitle") 
                         {
-                            $page->slug = $post;
+                            // Find a unique slug
+                            $slug = $post;
+                            $counter = 0;
+                            while($p = Wi3::inst()->model->factory("site_page")->set("slug", $slug)->load() AND $p->loaded() === true AND $p->id != $page->id AND $counter < 100)
+                            {
+                                $counter++;
+                                $slug = $post . " " . $counter;
+                            }
+                            $page->slug = $slug;
                         }
                         $page->{$name} = $post;
                     }

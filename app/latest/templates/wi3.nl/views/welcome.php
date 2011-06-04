@@ -1,22 +1,43 @@
 
     <--
     
-        On top a quick definition of Wi3, with the logo (see Github.com for example?)
-        
-        Beneath it the stuff for designer, programmer, end-user, in three columns: first a nice slogan/big text, then a list of links.
-        
         In the top-right a big button with "Download & Install in 3 minutes"
         
         At the very bottom a dark-grey area with copyrights etc. This should be in the main template.
     
     -->
-
-    <cms type='editableblock' name='leftcontent'>
-        <p  style='margin-top: 50px;'>
-            Placeholder text.
-        </p>
-        <p  style='margin-top: 25px;'>
-            Placeholder text.
-        </p>
-    </cms>
     
+    <div id='topdefinition'>
+        <?php
+            $this->image("wi3_logo_blue on white_100x70.png");
+        ?>
+        <p><strong>Wi3</strong> is a modern and flexible <strong>Open Source HTML5 CMS</strong>.</p>
+        <p style='font-size: 16px;'>It focuses on a great experience for end-users, designers and developeres alike.</p>
+        <p style='font-size: 16px;'>With its easy setup you can <a href='#'>Download and install Wi3 in 3 minutes</a>!</p>
+        <div class='floatfix'>.</div>
+    </div>
+    
+    <div id='targetgroups'>
+    
+        <div class='targetgroup'>
+
+            <cms type='editableblock' name='group1'>
+            </cms>
+            
+        </div>
+        
+        <div class='targetgroup'>
+
+            <cms type='editableblock' name='group2'>
+            </cms>
+            
+        </div>
+        
+        <div class='targetgroup'>
+
+            <cms type='editableblock' name='group3'>
+            </cms>
+            
+        </div>
+        
+    </div>
