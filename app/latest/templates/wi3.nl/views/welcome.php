@@ -13,7 +13,7 @@
         ?>
         <p><strong>Wi3</strong> is a modern and flexible <strong>Open Source HTML5 CMS</strong>.</p>
         <p style='font-size: 16px;'>It focuses on a great experience for end-users, designers and developeres alike.</p>
-        <p style='font-size: 16px;'>With its easy setup you can <a href='#'>Download and install Wi3 in 3 minutes</a>!</p>
+        <p style='font-size: 16px;'>With its easy setup you can <a href="<?php echo Wi3::inst()->urlof->page("Download and install"); ?>">Download and install Wi3 in 3 minutes</a>!</p>
         <div class='floatfix'>.</div>
     </div>
     
