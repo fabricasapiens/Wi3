@@ -3,7 +3,7 @@
 Congratulations, the installation is complete! The URL to the superadminarea is
 </p>
 <p>
-<a href='<?php echo $url."/superadminarea/"; ?>'><?php echo $url."/superadminarea/"; ?></a>
+<a href='<?php echo $url."superadminarea/"; ?>'><?php echo $url."superadminarea/"; ?></a>
 </p>
 <p>
 You should login with the username and password combination as entered in an earlier step.
