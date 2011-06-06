@@ -371,7 +371,9 @@
                 file_put_contents("../app/latest/config/database.php", $wi3databaseconfig);
                 
                 // Fetch the URL of the current wi3 installation
-                $url = (strpos($_SERVER["SERVER_PROTOCOL"], "HTTPS")>0?"https":"http") . "://" . $_SERVER["HTTP_HOST"] . "/" . truepath($_SERVER["REQUEST_URI"] . "/../");
+                $url = (strpos($_SERVER["SERVER_PROTOCOL"], "HTTPS")>0?"https":"http") . "://" . $_SERVER["HTTP_HOST"] . truepath($_SERVER["REQUEST_URI"] . "/../");
+                // Ensure trailing slash at the end
+                if ($url[strlen($url)-1] != "/") { $url .= "/"; }
                 
                 // Call the Setup controller within Wi3 to actually generate the tables
                 // This Setup controller will check the login via the same mechanism as this setup 
@@ -384,7 +386,7 @@
                     )
                 );
                 $context = stream_context_create($opts);
-                $result = file_get_contents($url . "/app/setup",false, $context);
+                $result = file_get_contents($url . "app/setup",false, $context);
                 if ($result == "tables sucessfully created")
                 {
                     // Ok
@@ -406,6 +408,8 @@
         
         // If the setup continues from step 5 without doing the above processing for step 4, we still need to fetch the URL of the current wi3 installation
         $url = (strpos($_SERVER["SERVER_PROTOCOL"], "HTTPS")>0?"https":"http") . "://" . $_SERVER["HTTP_HOST"] . truepath($_SERVER["REQUEST_URI"] . "/../");
+        // Ensure trailing slash at the end
+        if ($url[strlen($url)-1] != "/") { $url .= "/"; }
     }
     
     // Display menu
