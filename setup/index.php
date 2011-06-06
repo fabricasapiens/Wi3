@@ -175,7 +175,7 @@
     // Take action at any step 
     if ($step == 1)
     {
-        // Nothing to do yet
+        // User chooses language here, and this gets processed at the next step.
     }
     elseif ($step == 2)
     {
@@ -199,6 +199,17 @@
         // Save step of installation in the setupconfig 
         $setupconfig["step"] = 2;
         savesetupconfig($setupconfig);
+        
+        // Check whether the user has PHP 5.3 installed. Wi3 needs it to use Late Static Binding
+        if (strnatcmp(phpversion(),'5.3') >= 0) 
+        { 
+            // PHP 5.3 is present. Ok.
+        } 
+        else 
+        { 
+            // PHP 5.3 not present. Fail.
+            $step = "phpversiontoolow";
+        } 
     }
     elseif ($step == 3)
     {
