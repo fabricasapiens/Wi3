@@ -1,0 +1,1 @@
+<div style='display:none;' id='pagefiller_default_edittoolbar_pageid'><?php echo $page->id; ?></div>

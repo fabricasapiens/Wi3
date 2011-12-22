@@ -86,9 +86,10 @@ class Controller_Adminarea extends Controller_ACL {
     
     public function action_content_edit()
     {
-        // Load correct page
+        // Load correct page. Pagename is the first argument from the URL
         $pagename = Wi3::inst()->routing->args[0];
-        Wi3::inst()->sitearea->setpage($pagename);  // Will automatically distinguish between id-urls (/_number) and slug-urls (/string)
+        // Create a page from pagename. Wi3 will automatically distinguish between id-urls (/_number) and slug-urls (/string) and fetch the correct page
+        Wi3::inst()->sitearea->setpage($pagename);  
         // Render page
         $this->template = Wi3::inst()->sitearea->page->render(); 
         // Page caching will be handled via an Event. See bootstrap.php and the Caching module

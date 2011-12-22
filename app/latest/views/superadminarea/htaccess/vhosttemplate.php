@@ -13,7 +13,10 @@ SetEnv SITENAME <?php echo $sitename; ?>
 # Site locations
 ####
 
-# Direct access to the site files
+# Direct access to the site files. Remove last slash if present.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule _sitefiles/(.*)[\/]{1}$ <?php echo $wi3path; ?>sites/<?php echo $sitename; ?>/$1  [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule _sitefiles/(.*) <?php echo $wi3path; ?>sites/<?php echo $sitename; ?>/$1  [L]

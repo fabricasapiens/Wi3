@@ -22,7 +22,7 @@ In order to support the community with funded dedicated development, we employ a
 The Wi3 CMS is licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License](http://creativecommons.org/licenses/by-nc-sa/3.0/). Most importantly, this implies that anyone is free to share and remix the Wi3 CMS, but that the CMS cannot be used for commercial purposes. 
 
 #### Commercial license ####
-For commercial use of the Wi3 CMS, please contact us at wi3@fabricasapiens.nl and indicate how you are planning to use Wi3. We will make you a very competitive offer :-)
+For commercial use of the Wi3 CMS, please contact us at wi3@fabricasapiens.nl and indicate how you are planning to use Wi3. We will make you a competitive offer.
 
 ### Contributions ###
 Contributions are more than welcome! To guarantee compliance with the dual-license approach, you are required to explicitly state that the code you provide falls under the [Creative Commons

@@ -7,14 +7,15 @@
 ?>
 
     <div id='left'>
-            <img src='<?php echo $baseurl . "static/images/links_logo.png"; ?>'/>
-            <cms type='editableblock' name='leftcontent'>
+        <img src='<?php echo $baseurl . "static/images/links_logo.png"; ?>'/>
+        <cms type='editableblock' name='leftcontent'>
             <p  style='margin-top: 50px;'>
                 Websites van Fabrica Sapiens zijn prachtig om te zien en een plezier om bij te houden.
             </p>
             <p  style='margin-top: 25px;'>
                 Klik rechts voor een aantal sites uit ons portfolio.
             </p>
+        </cms>
     </div>
     
     <div id='right'>

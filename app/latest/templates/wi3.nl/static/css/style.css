@@ -6,8 +6,8 @@
     / General definitions
     /----------------------------------------------------
     */
-	html { height: 100%; overflow-y: scroll; display: block; }
-	body { font: 13px verdana, arial, verdana; color: #000; background: #22242b; height: 100%; }
+	html {  }
+	body { font: 13px verdana, arial, verdana; color: #000; background: #22242b; }
 	html, body { margin: 0px; padding: 0px; }
 	
 	.color1 { color: #ffaf25; } /* yellow */

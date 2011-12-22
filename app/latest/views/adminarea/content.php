@@ -6,7 +6,10 @@
     $site = Wi3::inst()->sitearea->site;
     $page = Wi3::inst()->sitearea->page;
     
-    // We need to escape from the 'column' and go full wide, thus the following DOM structure
+    // We give pagefiller the opportunity to add some html and then close this tag
+    $pagefillername = "Pagefiller_" . $page->filler;
+    $pagefiller = new $pagefillername;
+    echo $pagefiller->getTopbarHTML($page);
     
 ?>
         </div>

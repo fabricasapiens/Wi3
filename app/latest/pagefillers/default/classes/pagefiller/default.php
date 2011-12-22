@@ -30,6 +30,17 @@
             return $pagefillerview;
         }
         
+        // HTML that will be injected in the adminarea-topbar, just beneath the 'content' button
+        public function getTopbarHTML($page) {
+            // Inject Javascript
+            $this->javascript("edittoolbar/ontopbar.js");
+            // Load and return HTML
+            $iconurl = Wi3::inst()->urlof->pagefillerfiles . "static/images/edittoolbar/";
+            $toolbarhtml = $this->view("edittoolbar")->set("iconurl", $iconurl)->set("page", $page)->render();
+            $popuphtml = $this->view("popup")->render();
+            return $toolbarhtml . $popuphtml;
+        }
+        
         // Sitearea/Adminarea Render function
         public function render($page)
         {
@@ -87,19 +98,22 @@
             // Editing
             //-------------------
             
-            // Check whether the user is editing, and if so, inject the edit-toolbar and popupdiv at <body>
+            // Check whether the user is editing, and if so, inject the popupdiv and page-id at <body>
             if (Wi3::inst()->routing->controller == "adminarea")
             {
                 // TODO: check if user has rights to do this
                 Wi3::inst()->plugins->load("plugin_jquery_wi3");
-                $this->javascript("edittoolbar.js");
+                $this->javascript("edittoolbar/onpage.js");
                 $this->javascript("jq-wysihat.js");
                 $this->javascript("rangy-core.js");
-                $iconurl = Wi3::inst()->urlof->pagefillerfiles . "static/images/edittoolbar/";
-                $toolbarhtml = $this->view("edittoolbar")->set("iconurl", $iconurl)->set("page", $page)->render();
-                $html = preg_replace("@<body[^>]*>@","$0".$toolbarhtml,$html);
+
+                // Insert Popup
                 $popuphtml = $this->view("popup")->render();
                 $html = preg_replace("@<body[^>]*>@","$0".$popuphtml,$html);
+
+                // Insert Page-ID
+                $pageidhtml = $this->view("pageid")->set("page", $page)->render();
+                $html = preg_replace("@<body[^>]*>@","$0".$pageidhtml,$html);
                 
                 // Replace all the <cms> blocks with the appropriate content
                 $html = phpQuery::newDocument($html); // Give PHPQuery a context to work with

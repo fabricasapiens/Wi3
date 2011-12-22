@@ -10,6 +10,7 @@ $(document).ready( function(){
     // Catch all 'delete' and 'backspace' keys and disable them when they are about to delete a complete field...!
     // Also, catch some control+key combinations
     wi3.pagefillers.default.edittoolbar.controlKeyDown = false;
+    // TODO: make this work with the simple e.ctrlKey
     $(document).keydown(function (e) {
         // Track some Control+key functions for e.g. saving (Control + s)
         if (e.which == 17)
@@ -90,33 +91,9 @@ wi3.pagefillers.default.edittoolbar = {
         wi3.request("pagefiller_default_edittoolbar_ajax/savealleditableblocks", {pageid: $("#pagefiller_default_edittoolbar_pageid").text(), html:$("body").html()});
     },
     
-    showFormatblockPanel : function()
-    {
-        // Show the panel from which fields can be inserted
-        $("#pagefiller_default_edittoolbar_formatblockpanel").show();
-    },
-    
-    hideFormatblockPanel : function()
-    {
-        // Show the panel from which fields can be inserted
-        $("#pagefiller_default_edittoolbar_formatblockpanel").hide();
-    },
-    
     formatblock : function(blocktype)
     {
         wi3.pagefillers.default.edittoolbar.getActiveEditor().formatblockSelection(blocktype);
-    },
-    
-    showInsertPanel : function()
-    {
-        // Show the panel from which fields can be inserted
-        $("#pagefiller_default_edittoolbar_insertpanel").show();
-    },
-    
-    hideInsertPanel : function()
-    {
-        // Show the panel from which fields can be inserted
-        $("#pagefiller_default_edittoolbar_insertpanel").hide();
     },
     
     insertField : function(fieldtype)

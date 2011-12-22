@@ -21,7 +21,10 @@ SetEnv SITENAME demosite
 # Site locations
 ####
 
-# Direct access to the site files
+# Direct access to the site files. Remove last slash if present.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule _sitefiles/(.*)[\/]{1}$ ../../../sites/demosite/$1  [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule _sitefiles/(.*) ../../../sites/demosite/$1  [L]
