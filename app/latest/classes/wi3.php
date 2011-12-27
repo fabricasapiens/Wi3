@@ -30,7 +30,15 @@
         { 
             // Load session handler
             $this->session = Session::instance();
+			
+			// Define APPRELATIVEPATH, which is the path to the application relative to the web root
+			// We can retrieve this by using the SCRIPT_NAME from the front-controller ({pathfromroot}/app/index.php), and extracting the path-from-root
+			define("APPRELATIVEPATH", substr($_SERVER["SCRIPT_NAME"],0,strpos($_SERVER["SCRIPT_NAME"],"/app/index.php")) . "/app/latest/");
             
+			// Define document root
+			// TODO: Add support for ISS (see http://www.helicron.net/php/)
+			define("DOCUMENTROOT", $_SERVER["DOCUMENT_ROOT"]."/");
+			
             // Determine language
             $lang = Cookie::get('lang');
             if ($lang !== NULL)
@@ -236,13 +244,13 @@
         // Return a nice path without .. and .
         /**
          * This function is to replace PHP's extremely buggy realpath().
-         * @param string The original path, can be relative etc.
-         * @return string The resolved path, it might not exist.
+         * @param string The original path, can be relative or absolute.
+         * @return string The resolved path. Note that it might not exist.
          */
         public function truepath($path)
         {
             $originalpath = $path;
-            // attempts to detect if path is relative in which case, add cwd
+            // attempts to detect if path is relative in which case, add cwd (current working directory)
             if(strpos($path,':')===false && (strlen($path)==0 || $path{0}!='/'))
             {
                 $path=getcwd().DIRECTORY_SEPARATOR.$path;

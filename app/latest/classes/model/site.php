@@ -21,6 +21,10 @@ class Model_Site extends Sprig
 				'empty'  => FALSE,
 				'unique' => TRUE,
 			)),
+			'databasesafename' => new Sprig_Field_Char(array(
+                'empty'  => TRUE,
+                'in_db' => FALSE, // Not te be found in Database. Is inserted from the global site's name at runtime
+            )),
             'title' => new Sprig_Field_Char(array(
 				'empty'  => FALSE,
 				'unique' => TRUE,

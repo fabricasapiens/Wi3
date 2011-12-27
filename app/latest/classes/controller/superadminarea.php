@@ -323,7 +323,7 @@ class Controller_Superadminarea extends Controller_ACL {
                 $vhostfolder = Wi3::inst()->unixpath(APPPATH . "../../vhosts/") . "/";
                 
                 // Create the vhost. Do this by copying the .template folder.
-                if (!is_dir(APPPATH . "../../vhosts/" . $domain))
+                if (!is_dir($vhostfolder.$domain))
                 {
                     Wi3::inst()->copy_recursive($vhostfolder.".template", $vhostfolder.$domain);
                 }
@@ -353,6 +353,7 @@ class Controller_Superadminarea extends Controller_ACL {
                 }
                 
                 // Create new rules for root .htaccess 
+				$vhostrootrelativefolder = Wi3::inst()->unixpath(APPRELATIVEPATH . "../../vhosts/") . "/";
                 $all = Wi3::inst()->model->factory("url")->load(NULL, FALSE); // FALSE for no limit = load all
                 $distinctdomains = Array();
                 $rules = "RewriteEngine On
@@ -366,7 +367,7 @@ class Controller_Superadminarea extends Controller_ACL {
                         // Add rule 
                         $rules .= "RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{SERVER_NAME} ^" . $one->domain . "$ [NC]
-RewriteRule (.*) " . $vhostfolder . $one->domain . "/httpdocs/$1/ [E=REDIRECTED:TRUE,L]
+RewriteRule (.*) " . $vhostrootrelativefolder . $one->domain . "/httpdocs/$1/ [E=REDIRECTED:TRUE,L]
 ";
                     }
                 }
@@ -374,7 +375,7 @@ RewriteRule (.*) " . $vhostfolder . $one->domain . "/httpdocs/$1/ [E=REDIRECTED:
                 // Write the .htaccess in /
                 // TODO: only do this if the .htaccess actually changed (i.e. if a new domain was added)
                 // TODO: backup old .htaccess
-                $root = $_SERVER["DOCUMENT_ROOT"]."/";
+                $root = DOCUMENTROOT;
                 if (is_writable($root.".htaccess"))
                 {
                     file_put_contents($root.".htaccess", $rules);
@@ -475,7 +476,7 @@ RewriteRule (.*) " . $vhostfolder . $one->domain . "/httpdocs/$1/ [E=REDIRECTED:
     
     public function action_htaccessrules()
     {
-        $vhostfolder = Wi3::inst()->unixpath(APPPATH . "../../vhosts/") . "/";
+        $vhostfolder = Wi3::inst()->unixpath(APPRELATIVEPATH . "../../vhosts/") . "/";
         // Create rules for root .htaccess 
         $all = Wi3::inst()->model->factory("url")->load(NULL, FALSE); // FALSE for no limit = load all
         $distinctdomains = Array();

@@ -213,7 +213,7 @@
     }
     elseif ($step == 3)
     {
-        // Test whether all maps are writable
+        // Test whether all folders are writable
         $checkpaths = Array(
             dirname(__FILE__ ). "/" => FALSE,
             dirname(__FILE__ ). "/../app/latest/logs/" => FALSE,
