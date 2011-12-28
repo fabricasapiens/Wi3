@@ -309,10 +309,10 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
                 echo json_encode(
                     Array(
                         "alert" => "Pagina-eigenschappen van '" . $oldname . "' succesvol gewijzigd!.",
-                        //"dom" => Array(
-                        //    "fill" => Array("#treeItem_" . $pageid   . " > span > a" => $page->longtitle)
-                        //),
-                        //"scriptsbefore" => Array("adminarea.menu_editdiv_hide()")
+                        "dom" => Array(
+                            "fill" => Array("#treeItem_" . $page->pageposition->id   . " > span > a" => $page->longtitle)
+                        ),
+                        "scriptsbefore" => Array("adminarea.menu_editdiv_hide()")
                     )
                 );
             }
