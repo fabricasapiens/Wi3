@@ -11,5 +11,5 @@ Options -Indexes
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_URI} \.(png|jpg|jpeg|gif|bmp).$ [NC]
+RewriteCond %{REQUEST_URI} \.(png|jpg|jpeg|gif|bmp)$ [NC]
 RewriteRule (.*) afbeelding.php/$1/ [L]
