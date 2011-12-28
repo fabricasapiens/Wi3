@@ -15,9 +15,9 @@ class Controller_Pagefiller_Default_Edittoolbar_Ajax extends Controller_ACL {
         // Check whether this controller (fills in current action automatically) can be accessed
         Wi3::inst()->acl->grant("admin", $this); // Admin role can access every function in this controller
         Wi3::inst()->acl->check($this);
-        // Check if the origin-page is an adminarea-page, and not some sneaky Iframe-include on a weird website
-        $ajaxfromadminarea = (Request::$is_ajax AND isset($_SERVER["HTTP_ORIGIN"]) AND (Wi3::inst()->routing->protocol.Wi3::inst()->routing->host == $_SERVER["HTTP_ORIGIN"]) AND isset($_SERVER["HTTP_REFERER"]) AND strpos($_SERVER["HTTP_REFERER"], "adminarea") !== FALSE );
-        if (!$ajaxfromadminarea) { exit; }
+        // Check if the user gets here via an AJAX POST, and not via a sneaky GET in an Iframe on a weird site
+        $ajaxpost = (Request::$is_ajax AND Request::$method=="POST");
+        if (!$ajaxpost) { exit; }
         // TODO: A non-admin user could have injected javascript code that calls saveAllEditableBlocks. This will go ahead once an admin opens the page, deleting all content... 
         // Thus: Non-admin users are NOT allowed to insert any script code, onclick, onmouseover events etc etc. That is complicated...
         // Go with a Whitelist, and only allow text inside spans, p, h1, h2, h3, div and that's it! Other elements like links and images should be done with fields...

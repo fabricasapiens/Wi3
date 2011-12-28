@@ -14,8 +14,9 @@ class Controller_Adminarea_Files_Ajax extends Controller_ACL {
         // Check whether this controller (fills in current action automatically) can be accessed
         Wi3::inst()->acl->grant("admin", $this); // Admin (of this site!) can access every function in this controller
         Wi3::inst()->acl->check($this);
-        $ajaxfromadminarea = (Request::$is_ajax AND isset($_SERVER["HTTP_ORIGIN"]) AND (Wi3::inst()->routing->protocol.Wi3::inst()->routing->host == $_SERVER["HTTP_ORIGIN"]) AND isset($_SERVER["HTTP_REFERER"]) AND strpos($_SERVER["HTTP_REFERER"], "adminarea") !== FALSE );
-        if (!$ajaxfromadminarea) { exit; }
+        // Check if the user gets here via an AJAX POST, and not via a sneaky GET in an Iframe on a weird site
+        $ajaxpost = (Request::$is_ajax AND Request::$method=="POST");
+        if (!$ajaxpost) { exit; }
     }
     
     protected function view($name)
