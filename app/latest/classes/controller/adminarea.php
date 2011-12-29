@@ -94,7 +94,7 @@ class Controller_Adminarea extends Controller_ACL {
         $this->template = Wi3::inst()->sitearea->page->render(); 
         // Page caching will be handled via an Event. See bootstrap.php and the Caching module
     }
-    
+	
     public function action_files()
     {
         $this->setview("adminarea");
@@ -184,6 +184,15 @@ class Controller_Adminarea extends Controller_ACL {
             $this->template->content = View::factory("adminarea/files");
         }
     }
+	
+	public function action_users()
+    {
+        $this->setview("adminarea");
+        $this->template->navigation = View::factory("adminarea/navigation");
+        $this->template->status= View::factory("adminarea/status");
+		
+		$this->template->content = View::factory("adminarea/users");
+	}
     
     public function action_commits()
     {
@@ -313,4 +322,4 @@ class Controller_Adminarea extends Controller_ACL {
         Request::instance()->redirect(Wi3::inst()->urlof->controller);
     }
 
-} // End Welcome
+} // End Adminarea
