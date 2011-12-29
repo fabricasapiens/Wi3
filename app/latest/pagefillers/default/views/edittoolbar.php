@@ -38,6 +38,7 @@
         <div id='pagefiller_default_edittoolbar_insertpanel' onMouseOver='wi3.pagefillers.default.edittoolbar.showInsertPanel();' onMouseOut='wi3.pagefillers.default.edittoolbar.hideInsertPanel();' style='display: none; position: absolute; z-index: 10; left: 300px; height: 30px; width: 200px; height: 100px; padding: 10px; overflow: auto; background: #fff; border: 1px solid #ddd; border-top: none;'>
             <button style='float: left; cursor:pointer;' onClick='$("#wi3_edit_iframe").get(0).contentWindow.wi3.pagefillers.default.edittoolbar.insertField("image");'>afbeelding</button>
             <button style='float: left; cursor:pointer;' onClick='$("#wi3_edit_iframe").get(0).contentWindow.wi3.pagefillers.default.edittoolbar.insertField("link");'>link</button>
+            <button style='float: left; cursor:pointer;' onClick='$("#wi3_edit_iframe").get(0).contentWindow.wi3.pagefillers.default.edittoolbar.insertField("photoshop");'>fotowinkel</button>
             <?php // <button style='float: left; cursor:pointer;' onClick='$("#wi3_edit_iframe").get(0).contentWindow.wi3.pagefillers.default.edittoolbar.insertField("simpleblog");'>weblog</button> ?>
         </div>
     </div>
