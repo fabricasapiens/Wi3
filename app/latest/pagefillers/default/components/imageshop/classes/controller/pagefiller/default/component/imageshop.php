@@ -2,11 +2,11 @@
 
 <?php
 
-    class Controller_Pagefiller_Default_Component_Photoshop extends Controller_ACL
+    class Controller_Pagefiller_Default_Component_imageshop extends Controller_ACL
     {
     
         public $template;
-        protected $componentname = "photoshop";
+        protected $componentname = "imageshop";
     
         public function before() 
         {
@@ -61,7 +61,7 @@
             // Load field, and the image-date field that connects to it
             $fieldid = $_POST["fieldid"];
             $field = Wi3::inst()->model->factory("site_field")->set("id", $fieldid)->load();
-            $data = Wi3::inst()->model->factory("site_data")->setref($field)->setname("image")->load();
+            $data = Wi3::inst()->model->factory("site_data")->setref($field)->setname("folder")->load();
             // If data does not exist, create it
             if (!$data->loaded())
             {
@@ -77,7 +77,7 @@
             echo json_encode(
                 Array(
                     "scriptsbefore" => Array(
-                        "0" => "$('[type=field][fieldid=" . $fieldid . "] [type=fieldcontent] > img').attr('src', '" . Wi3::inst()->urlof->sitefiles . "data/uploads/200/" . $file->filename . "');"
+                        "0" => "$('[type=field][fieldid=" . $fieldid . "] [type=fieldcontent]').html('" . $field->render() . "');"
                     )
                 )
             );

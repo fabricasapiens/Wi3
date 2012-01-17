@@ -4,7 +4,7 @@
 // A rule must allow access to adminarea.login for everybody
 // AACL should try to auto-login a user when it has not logged in yet
 // If the check fails, bootstrap.php should send the user to $controller/login
-// For the sitearea controller, there is no AACL check on the controller/action, but rather on a file. Redirect will then be to $site->errorfile
+// For the sitearea controller, there is no AACL check on the controller/action, but rather on a file. Redirect will then be to $site->errorpage
 class Controller_Adminarea_Files_Ajax extends Controller_ACL {
         
     public $template;
@@ -38,13 +38,13 @@ class Controller_Adminarea_Files_Ajax extends Controller_ACL {
             // TODO: caching
             echo json_encode(
                 Array(
-                    "alert" => "pagina is verhuisd"
+                    "alert" => "bestand is verhuisd"
                 )
             );
         } else {
             echo json_encode(
                 Array(
-                    "alert" => "pagina kon NIET verhuisd worden"
+                    "alert" => "bestand kon NIET verhuisd worden"
                 )
             );
         }
@@ -59,13 +59,13 @@ class Controller_Adminarea_Files_Ajax extends Controller_ACL {
             // TODO: caching
             echo json_encode(
                 Array(
-                    "alert" => "pagina is verhuisd"
+                    "alert" => "bestand is verhuisd"
                 )
             );
         } else {
             echo json_encode(
                 Array(
-                    "alert" => "pagina kon NIET verhuisd worden"
+                    "alert" => "bestand kon NIET verhuisd worden"
                 )
             );
         }
@@ -82,13 +82,13 @@ class Controller_Adminarea_Files_Ajax extends Controller_ACL {
             //#
             echo json_encode(
                 Array(
-                    "alert" => "pagina is verhuisd"
+                    "alert" => "bestand is verhuisd"
                 )
             );
         } else {
             echo json_encode(
                 Array(
-                    "alert" => "pagina kon NIET verhuisd worden"
+                    "alert" => "bestand kon NIET verhuisd worden"
                 )
             );
         }
@@ -104,13 +104,13 @@ class Controller_Adminarea_Files_Ajax extends Controller_ACL {
             //#
             echo json_encode(
                 Array(
-                    "alert" => "pagina is verwijderd"
+                    "alert" => "bestand is verwijderd"
                 )
             );
         } else {
             echo json_encode(
                 Array(
-                    "alert" => "pagina kon NIET verwijderd worden"
+                    "alert" => "bestand kon NIET verwijderd worden"
                 )
             );
         }
