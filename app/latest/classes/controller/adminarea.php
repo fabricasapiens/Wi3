@@ -136,7 +136,7 @@ class Controller_Adminarea extends Controller_ACL {
                 $this->template->content->message = "Het toevoegen van .htaccess bestanden is niet toegestaan. Probeer het nog eens.";
                 return;
             }
-            $target = Wi3::inst()->pathof->site. "data/uploads/" . basename($_FILES['file']['name']); 
+            $target = Wi3::inst()->pathof->site. "data/uploads/" . $filename; 
             if (!file_exists(Wi3::inst()->pathof->site. "data/uploads")) {
                 $this->template->content = View::factory("adminarea/files");
                 $this->template->content->message = "Fout bij wegschrijven van bestand. Dit is een permanente fout. Mail de beheerder van de site met uw probleem.";
@@ -144,9 +144,15 @@ class Controller_Adminarea extends Controller_ACL {
             }
             //check if the destination already exist, and if so, change the destination location
             $existscounter = 0;
+            $extensionpos = strrpos(basename($_FILES['file']['name']), ".");
             while(file_exists($target)) {
                 $existscounter++;
-                $target = Wi3::inst()->pathof->site. "data/uploads/" . substr($filename, 0, $extensionpos-1) . "_" . $existscounter . "." . substr($filename, $extensionpos);
+                if ($extensionpos !== false) {
+                    $target = Wi3::inst()->pathof->site. "data/uploads/" . substr($filename, 0, $extensionpos-1) . "_" . $existscounter . "." . substr($filename, $extensionpos+1);
+                } else {
+                    $target = Wi3::inst()->pathof->site. "data/uploads/" . $filename . "_" . $existscounter;
+                }
+                
             }
             ini_set("upload_max_filesize", "50M");
             ini_set('memory_limit', '50M');
