@@ -16,36 +16,61 @@ $(function() {
             $(this).closest(".component_imageshop").data("cart", {});
         }
         var cart = $(this).closest(".component_imageshop").data("cart");
-        // Add product to cart
+        // Ensure that product is added to cart
         var productid = $(this).data("productid");
         if (cart[productid] == null) {
-            cart[productid] = { amount: 0 };
+            cart[productid] = { orderlines : [], src : $(this).closest(".thumbnail").find("img").attr("src") };
         }
-        cart[productid].amount = (cart[productid].amount * 1) + 1;
-        alert(cart);
+        // Add an orderline to the product
+        cart[productid].orderlines.push({ amount: 1, size: "13x18"});
         // Render cart
         $(this).closest(".component_imageshop").find(".rightbar .cart").html(renderCart(cart));
+        // Hide image, if it was visible
+        $(this).closest(".component_imageshop").find(".rightbar .largeimage").fadeOut("100");
     });
     
-    
-    // Clicking on a + or - button will increase/decrease the amount of images that the user will order
-    $(".component_imageshop [data-buttontype=increase]").click(function(event) {
-        $(this).nextAll("span").data("amount", ($(this).nextAll("span").data("amount")+1));
-        $(this).nextAll("span").text($(this).nextAll("span").data("amount"));
+    // Set live click events on the plus and minus buttons
+        // Clicking on a + or - button will increase/decrease the amount of images that the user will order
+    $(".component_imageshop [data-buttontype=increase]").live("click", function(event) {
+        $(this).prevAll("span").data("amount", ($(this).prevAll("span").data("amount")+1));
+        $(this).prevAll("span").text($(this).prevAll("span").data("amount"));
     });
-    $(".component_imageshop [data-buttontype=decrease]").click(function(event) {
-        $(this).nextAll("span").data("amount", ($(this).nextAll("span").data("amount")-1));
-        $(this).nextAll("span").text($(this).nextAll("span").data("amount"));
+    $(".component_imageshop [data-buttontype=decrease]").live("click", function(event) {
+        $(this).prevAll("span").data("amount", ($(this).prevAll("span").data("amount")-1));
+        $(this).prevAll("span").text($(this).prevAll("span").data("amount"));
     });
     
     function renderCart(cart) {
         // For every item in the cart, render its amount and details
         var r = "";
-        for (item in cart) {
-            var html = "<div class='cartitem'>Aantal: " + cart.amount + "</div>";
+        for (itemId in cart) {
+            var item = cart[itemId];
+            var html = "<div class='cartitem contained mediumpadding smallmargin'><img src='" + item.src + "'></img>" +
+                "<div class='orderlines'>";
+                for(orderlineId in item.orderlines) {
+                    var orderline = item.orderlines[orderlineId];
+                    html += "<div>";
+                        html += "Aantal: <span data-amount='" + orderline.amount + "'>" + orderline.amount + "</span> <button data-buttontype='decrease'>-</button><button data-buttontype='increase'>+</button> ";
+                        html += "Formaat: <select>" + renderSelectOptions({'10x15':'10 x 15', '13x18':'13 x 18', '20x30':'20 x 30'}, orderline.size) + "</select>";
+                    html += "</div>";
+                }
+                html += "</div>";
+            html += "</div>";
             r += html;
         }
         return r;
+    }
+    
+    function renderSelectOptions(options, selectedKey) {
+        var html = "";
+        for (key in options) {
+            html += "<option value='" + key + "' ";
+            if (key == selectedKey) {
+                html += "selected='selected'";
+            }
+            html += ">" + options[key] + "</option>";
+        }
+        return html;
     }
     
     $(".component_imageshop .rightbar .largeimage").click(function(event) {

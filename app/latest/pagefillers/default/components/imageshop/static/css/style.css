@@ -32,13 +32,15 @@
 .component_imageshop .thumbnail .productbuttons button { font-size: 20px; margin-top: 5px; width: 100%; }
 .component_imageshop .orderbutton { display: block; position: absolute; left: 0px; top: 270px; width: 370px; height: 30px; }
 
-.component_imageshop .rightbar { position: absolute; left: 380px; right: 0px; top: 0px; height: 300px; background: #fff; overflow: hidden; }
+.component_imageshop .rightbar { position: absolute; left: 380px; right: 0px; top: 0px; height: 300px; background: #fff; overflow-y:scroll; overflow-x:hidden; }
 .component_imageshop .rightbar .cart { }
+.component_imageshop .rightbar .cartitem img { float: left; }
+.component_imageshop .rightbar .cartitem .orderlines { margin-left: 60px; min-height: 50px; }
 .component_imageshop .rightbar .largeimage { position: absolute; overflow: hidden; } /* this is an overlay */
 
 .component_imageshop .mediumtransparentbackground { background-color: rgba(255,255,255,0.5); }
 
-.component_imageshop .hoverable {
+.component_imageshop .hoverable, .component_imageshop .contained {
    border: 1px solid #DDD;
    border-radius: 3px;
    text-shadow: 0 1px 1px white;
