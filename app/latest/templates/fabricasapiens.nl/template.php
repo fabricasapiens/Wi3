@@ -50,7 +50,8 @@
                         }
                         catch(Exception $e)
                         {
-                            // Do nothing
+							// Default editable block
+                            echo "<cms type='editableblock' name='content'><p>Dit is wijzigbare tekst</p></cms>";
                         }
                     
                     ?>
@@ -59,8 +60,8 @@
                 <div id='bottom'>
                     <div style='float: left; margin: 20px;'>
                         <p>Adres</p>
-                        <p>Winnemolenlaan 27<br />
-                        7339 CE Ugchelen</p>
+                        <p>Brederodehof 63<br />
+                        3341 VC H-I-Ambacht</p>
                     </div>
                     <div style='float: left; margin: 20px;'>
                         <p>Contact</p>
