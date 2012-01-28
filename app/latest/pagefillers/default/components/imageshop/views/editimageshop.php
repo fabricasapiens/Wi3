@@ -1,6 +1,10 @@
 <?php 
 
     echo "<form onsubmit='return false;'>";
+    
+        $currentemailaddress = $imagedata = Wi3::inst()->model->factory("site_data")->setref($field)->setname("emailaddress")->load();
+        $emailinput = Wi3::inst()->formbuilder->input()->attr(Array("name"=>"emailaddress", "value" => $currentemailaddress));
+        echo $emailinput->render();
         
         $folderselector = Wi3::inst()->formbuilder->folderselector()->attr("name", "image")->set("fileextensions", Array("jpg", "jpeg"))->addextension("png");
 

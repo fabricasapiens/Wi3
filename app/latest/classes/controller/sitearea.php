@@ -48,17 +48,17 @@ class Controller_Sitearea extends Controller {
         }
     }
     
-	public function action_index()
-	{
+    public function action_index()
+    {
         return $this->action_view();
-	}
+    }
     
-    public function action_view($pagetitle = NULL)
-	{
+    public function action_view()
+    {
         // Correct page has been loaded in the before() function
         // Render page
         $this->request->response = Wi3::inst()->sitearea->page->render(); 
         // Page caching will be handled via an Event. See bootstrap.php and the Caching module
-	}
+    }
 
 }

@@ -15,10 +15,14 @@
 .mediumpadding { padding: 10px; }
 .largepadding { padding: 20px; }
 
+.nobottompadding { padding-bottom: 0px; }
+
 .nomargin { margin: 0px; }
 .smallmargin { margin: 5px; }
 .mediummargin { margin: 10px; }
 .largemargin { margin: 20px; }
+
+.nobottommargin { margin-bottom: 0px; }
 
 .paddingmarginwithinbox { 
     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
@@ -37,6 +41,8 @@
 .component_imageshop .rightbar .cartitem img { float: left; }
 .component_imageshop .rightbar .cartitem .orderlines { margin-left: 60px; min-height: 50px; }
 .component_imageshop .rightbar .largeimage { position: absolute; overflow: hidden; } /* this is an overlay */
+.component_imageshop .rightbar .largeimage .instruction { display: none; position: absolute; left: 20px; top: 20px; right: 20px; font-size: 30px; color: #000; background: #E6E6E6; opacity: 0.3; }
+.component_imageshop .rightbar .largeimage:hover .instruction { display: block; }
 
 .component_imageshop .mediumtransparentbackground { background-color: rgba(255,255,255,0.5); }
 
@@ -49,7 +55,6 @@
    box-shadow:         0 1px 1px #fff;
    color: #666;
    background: transparent;
-   cursor: pointer;
 }
 .component_imageshop .hoverable:hover, .component_imageshop .hoverable:focus {
    border-color: #999;

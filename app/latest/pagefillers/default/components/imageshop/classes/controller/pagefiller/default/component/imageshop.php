@@ -50,7 +50,7 @@
                         )
                     ),
                     "scriptsafter" => Array(
-                        "0" => "wi3.pagefillers.default.edittoolbar.showPopup();"
+                        "0" => "wi3.popup.show();"
                     )
                 )
             );
@@ -78,6 +78,27 @@
                 Array(
                     "scriptsbefore" => Array(
                         "0" => "$('[type=field][fieldid=" . $fieldid . "] [type=fieldcontent]').html('" . $field->render() . "');"
+                    )
+                )
+            );
+        }
+        
+        public function action_order() {
+            // Send an email to client and to the pre-set emailaddress
+            $clientname = $_POST["name"];
+            $clientemailaddress = $_POST["emailaddress"];
+            $presetemailaddress = "info@fabricasapiens.nl";
+            // Create mail
+            $message = Kohana::debug($_POST);
+            $subject = "Bestelling fotosite";
+            // Send mail to 'us' and to client
+            mail($presetemailaddress, $subject, $message);
+            //mail($clientemailaddress, $subject, $message);
+            // Echo result
+            echo json_encode(
+                Array(
+                    "scriptsbefore" => Array(
+                        "0" => "$(wi3.popup.getDOM()).fadeOut(100,function() { $(this).html('Bestelling succesvol geplaatst!').fadeIn(); } );"
                     )
                 )
             );

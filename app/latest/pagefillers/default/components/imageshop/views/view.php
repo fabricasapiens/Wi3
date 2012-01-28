@@ -4,9 +4,9 @@
         $this->css("style.css");
         $this->javascript("imageshop.js");
         
-        //load the central JQuery plugin
-        Wi3::inst()->plugins->load("plugin_jquery_core");
-
+        // Load wi3 plugin, so we can do wi3 requests
+        Wi3::inst()->plugins->load("plugin_jquery_wi3"); // depends on JQuery Core, so no need to include it separately
+        
         $leftbar = "<div class='mediumpadding leftbar mediumtransparentbackground paddingmarginwithinbox'>";
         foreach($files as $file) {
             $leftbar .= thumbnail($file);

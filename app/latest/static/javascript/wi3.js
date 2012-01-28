@@ -22,8 +22,13 @@ if (!wi3 || typeof(wi3) != "object") { var wi3 = {}; }
 wi3.popup = {
     content : "",
     show : function(content) {
-        wi3.popup.content = content;
+        if ($.type(content) == "string") {
+            wi3.popup.content = content;
+        }
         $("head").click(); //so that Fancybox is activated
+    },
+    getDOM : function() {
+        return $("#fancybox-inner").get(0);
     }
 }
 
