@@ -44,11 +44,14 @@
             $html = $this->view("edit".$this->componentname)->set("field", $field)->render();
             echo json_encode(
                 Array(
-                    "dom" => Array(
+                    "scriptsbefore" => Array(
+                        "0" => "wi3.popup.content='" . addcslashes($html, "'") . "'"
+                    ),
+                    /*"dom" => Array(
                         "fill" => Array(
                             "div[type=popuphtml]" => $html
                         )
-                    ),
+                    ),*/
                     "scriptsafter" => Array(
                         "0" => "wi3.popup.show();"
                     )
