@@ -20,6 +20,6 @@
     
     echo "</form>";
 
-    echo "<button onclick='wi3.request(\"pagefiller_default_component_imageshop/editImage\", {fieldid: " . $field->id . ", image: $(this).prevAll(\"form\").find(\"input\").val()});'>geselecteerde afbeeldingen gebruiken</button>";
+    echo "<button onclick='wi3.request(\"pagefiller_default_component_imageshop/editImage\", {fieldid: " . $field->id . ", emailaddress: $(this).prevAll(\"form\").find(\"input[name=emailaddress]\").val(), image: $(this).prevAll(\"form\").find(\"input[name=image]\").val()});'>geselecteerde afbeeldingen gebruiken</button>";
 
 ?>
