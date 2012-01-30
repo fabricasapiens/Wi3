@@ -48,4 +48,6 @@ class Wi3_Formbuilder_Base extends Wi3_Base
         return $this;
     }
     
+} // End class
+    
 ?>
