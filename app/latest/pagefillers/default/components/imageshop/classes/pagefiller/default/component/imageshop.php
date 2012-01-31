@@ -38,7 +38,8 @@
                 // Load all images for this folder
                 $query = DB::select()->
                         where($folder->left_column, ">", $folder->{$folder->left_column})->
-                        or_where($folder->right_column, "<", $folder->{$folder->right_column});
+                        and_where($folder->right_column, "<", $folder->{$folder->right_column})->
+                        order_by($folder->left_column);
                 $files = $folder->load($query, NULL); // NULL for no limit
                 
                 return $this->view("view")->set("files", $files)->render();
