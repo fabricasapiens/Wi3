@@ -143,7 +143,21 @@ $(function() {
                     var orderline = item.orderlines[orderlineId];
                     html += "<div data-orderlineid='" + orderlineId + "'>";
                         html += "Aantal: <span>" + orderline.amount + "</span> <button data-buttontype='decrease'>-</button><button data-buttontype='increase'>+</button> ";
-                        html += "Type: <select>" + renderSelectOptions({'digitaal':'digitaal, volledig formaat', '10x15':'foto, 10 x 15 cm', '13x18':'foto, 13 x 18 cm', '20x30':'foto, 20 x 30 cm'}, orderline.size) + "</select>";
+                        html += "Type: <select>" + renderSelectOptions(
+                            {
+                                'digitaal':'digitaal, volledig formaat', 
+                                '10x15':'foto, 10 x 15 cm (\u20ac1,50)', 
+                                '13x18':'foto, 13 x 18 cm (\u20ac2,00)', 
+                                '15x20':'foto, 15 x 20 cm (\u20ac2,50)',
+                                '20x30':'foto, 20 x 30 cm (\u20ac4,00)',
+                                '30x45':'foto, 30 x 45 cm (\u20ac7,00)',
+                                '40x60':'foto, 40 x 60 cm (\u20ac14,00)',
+                                '50x75':'foto, 50 x 75 cm (\u20ac18,00)',
+                                '60x90':'foto, 60 x 90 cm (\u20ac25,00)',
+                                '70x105':'foto, 70 x 105 cm (\u20ac28,00)',
+                                '76x115':'foto, 76 x 115 cm (\u20ac31,00)'
+                            }
+                        , orderline.size) + "</select>";
                         html += " <a data-buttontype='removeorderline' href='javascript:void(0);' title='bestelregel verwijderen'>weg</a>";
                     html += "</div>";
                 }
