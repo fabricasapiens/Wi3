@@ -12,6 +12,7 @@
         {
             Wi3::inst()->acl->grant("*", $this, "login"); // Everybody can access login and logout function in this controller
             Wi3::inst()->acl->grant("*", $this, "logout");
+            Wi3::inst()->acl->grant("*", $this, "order");
             Wi3::inst()->acl->grant("admin", $this); // Admin role can access every function in this controller
             Wi3::inst()->acl->check($this);
         }
