@@ -35,7 +35,6 @@
                 // fetch image-id and render the image
                 $fileid = $imagedata->data;
                 $folder = Wi3::inst()->model->factory("site_file")->set("id", $fileid)->load();
-                echo Kohana::debug($folder);
                 // Load all images for this folder
                 $query = DB::select()->
                         where($folder->left_column, ">", $folder->{$folder->left_column})->
