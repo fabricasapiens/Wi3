@@ -122,9 +122,9 @@
                 $_POST["folderid"] = $folderid;
                 // Store order
                 $orders = Wi3::inst()->model->factory("site_data")->setref($field)->setname("orders")->load();
-                if (!$ordersdata->loaded())
+                if (!$orders->loaded())
                 {
-                    $ordersdata->create();
+                    $orders->create();
                 }
                 $ordersdata = unserialize($orders->data);
                 $ordersdata[] = $_POST;
@@ -132,10 +132,11 @@
                 $orders->update();
                 // Create mail
                 $message = $this->view("mail")->set("post", $_POST)->render();
-                $subject = "Bestelling fotosite";
+                $clientmessage = $this->view("clientmail")->set("post", $_POST)->render();
+                $subject = "Bestelling foto's";
                 // Send mail to 'us' and to client
                 mail($presetemailaddress, $subject, $message);
-                //mail($clientemailaddress, $subject, $message);
+                mail($_POST["emailaddress"], $subject, $clientmessage);
                 echo json_encode(
                     Array(
                         "scriptsbefore" => Array(
