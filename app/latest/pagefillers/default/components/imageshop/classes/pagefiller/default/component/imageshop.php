@@ -14,11 +14,15 @@
                 Controller_Pagefiller_Default_Edittoolbar_Ajax::$responseoptions["inserttype"] = "replace"; // Replace the current selection
                 // Create the data that is associated with this field
                 Wi3::inst()->model->factory("site_data")->setref($field)->setname("folder")->create();
+                Wi3::inst()->model->factory("site_data")->setref($field)->setname("emailaddress")->create();
+                Wi3::inst()->model->factory("site_data")->setref($field)->setname("orders")->create();
             }
             else if ($eventtype == "delete")
             {
                 // Destory data
                 Wi3::inst()->model->factory("site_data")->setref($field)->setname("folder")->delete();
+                Wi3::inst()->model->factory("site_data")->setref($field)->setname("emailaddress")->delete();
+                Wi3::inst()->model->factory("site_data")->setref($field)->setname("orders")->delete();
             }
         }
     

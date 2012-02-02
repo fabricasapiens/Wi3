@@ -22,6 +22,8 @@
 .mediummargin { margin: 10px; }
 .largemargin { margin: 20px; }
 
+.fullwidth { width: 100%; }
+
 .nobottommargin { margin-bottom: 0px; }
 
 .paddingmarginwithinbox { 
