@@ -38,7 +38,7 @@ class Wi3_Formbuilder_Base extends Wi3_Base
         } else {
             if (empty($val))
             {
-                unset($this->attributes->attr);
+                unset($this->attributes->{$attr});
             }
             else
             {
