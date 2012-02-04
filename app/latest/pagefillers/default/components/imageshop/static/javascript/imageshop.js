@@ -53,6 +53,8 @@ $(function() {
         $(this).closest(".component_imageshop").find(".rightbar .cart").html(renderCart(cart));
         // Hide image, if it was visible
         $(this).closest(".component_imageshop").find(".rightbar .largeimage").fadeOut("100");
+        // Persist data, if possible
+        $(this).closest(".component_imageshop").get(0).persistCart();
     });
     
     // Set live click events on the plus and minus buttons
@@ -115,11 +117,12 @@ $(function() {
         wi3.popup.show(renderOrderOverview());
         // Assign confirmation-button event to order-overview
         var cart = $(this).closest(".component_imageshop").data("cart");
-        $(wi3.popup.getDOM()).find("button[data-buttontype=confirmorder]").click({cart:cart}, function(event) {
+        var fieldId = $(this).closest("div[type=field]").attr("fieldid");
+        $(wi3.popup.getDOM()).find("button[data-buttontype=confirmorder]").click({cart:cart, fieldId:fieldId}, function(event) {
             var name = $(this).parent().find("[name=name]").val();
             var emailaddress = $(this).parent().find("[name=emailaddress]").val();
             if (name.length > 0 && emailaddress.length > 0) {
-                wi3.request("pagefiller_default_component_imageshop/order", { cart : event.data.cart, name:name, emailaddress:emailaddress });
+                wi3.request("pagefiller_default_component_imageshop/order", { cart : event.data.cart, fieldid: event.data.fieldId, name:name, emailaddress:emailaddress });
             } else {
                 alert('Vul naam en emailadres in.');
             }
@@ -197,7 +200,7 @@ $(function() {
     });
 });
 
-/*
+/* Utopia:
  * Links een veld met kleine icoontjes en als je er overheen gaat twee knoppen: vergroot en "winkelmandje".
  * Rechts een veld met een winkelwagen waar de linkse icoontjes inkomen als je op hun winkelwagentje klikt.
  * Elk icoontje rechts bevat alle instellingen voor dit product, als die er zijn. Dit omvat minimaal het aantal.

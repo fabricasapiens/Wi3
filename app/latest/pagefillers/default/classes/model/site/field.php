@@ -11,37 +11,37 @@ class Model_Site_Field extends Sprig
     public $options = Array();
     
     protected function _init()
-	{
+    {
         // Overrule the names of the Roles and User_Token model to the Site_... version
-		$this->_fields = array(
-            'id' => new Sprig_Field_Auto,
-            
-           '_refclass' => new Sprig_Field_Char(array(
-				'empty'  => TRUE, // Default FALSE
-			)),
-            '_refid' => new Sprig_Field_Char(array(
-				'empty'  => TRUE, // Default FALSE
-			)),
-            
-            'name' => new Sprig_Field_Char(array(
-				'empty'  => TRUE, // Default FALSE
-			)),
-			
-			'type' => new Sprig_Field_Char(array(
-				'empty'  => TRUE, // Default FALSE
-			))
-            
-		);
-	}
-	
-	public function create()
-	{
-	    $return = parent::create(); // Pass the create function to the parent
-	    
-	    //-------------------
-        // Enable Component through the autoloaded, so the component can be created
+        $this->_fields = array(
+        'id' => new Sprig_Field_Auto,
+
+        '_refclass' => new Sprig_Field_Char(array(
+                            'empty'  => TRUE, // Default FALSE
+                    )),
+        '_refid' => new Sprig_Field_Char(array(
+                            'empty'  => TRUE, // Default FALSE
+                    )),
+
+        'name' => new Sprig_Field_Char(array(
+                            'empty'  => TRUE, // Default FALSE
+                    )),
+
+                    'type' => new Sprig_Field_Char(array(
+                            'empty'  => TRUE, // Default FALSE
+                    ))
+
+            );
+    }
+
+    public function create()
+    {
+        $return = parent::create(); // Pass the create function to the parent
+
+        //-------------------
+        // Add the related Component to the Autoloader-paths, so it can be found by Kohana
         //-------------------   
-           
+
         // Get component path
         $componentpath = Wi3::inst()->pathof->pagefiller("default") . "components/";
         // Loop over component-modules and add the one for this specific field
@@ -54,24 +54,24 @@ class Model_Site_Field extends Sprig
                 continue;
             }
         }
-        
+
         // Create component 
         $componentname = "Pagefiller_default_component_" . $this->type;
         $component = $componentname::inst();
-        
-	    // Send the component of this field an event notice
+
+            // Send the component of this field an event notice
         $component->fieldevent("create", $this);
-        
+
         return $return;
-	}
-	
-	public function delete(Database_Query_Builder_Delete $query = NULL)
-	{
-	    
-	    //-------------------
-        // Enable Component through the autoloaded, so the component can be created
+    }
+
+    public function delete(Database_Query_Builder_Delete $query = NULL)
+    {
+
+        //-------------------
+        // Add the related Component to the Autoloader-paths, so it can be found by Kohana
         //-------------------   
-           
+
         // Get component path
         $componentpath = Wi3::inst()->pathof->pagefiller("default") . "components/";
         // Loop over component-modules and add the one for this specific field
@@ -84,18 +84,18 @@ class Model_Site_Field extends Sprig
                 continue;
             }
         }
-        
+
         // Create component 
         $componentname = "Pagefiller_default_component_" . $this->type;
         $component = $componentname::inst();
-        
-	    // Send the component of this field an event notice
+
+            // Send the component of this field an event notice
         $component->fieldevent("delete", $this);
-        
+
         // Finally delete the field
         return parent::delete($query); // Pass the create function to the parent
-	}   
-    
+    }   
+
     public function setname($name)
     {
         $this->name = $name;
@@ -114,8 +114,8 @@ class Model_Site_Field extends Sprig
         if (!empty($this->type))
         {
             //-------------------
-            // Enable Component through the autoloaded, so the component can be created
-            //-------------------   
+            // Add the related Component to the Autoloader-paths, so it can be found by Kohana
+            //-------------------  
                
             // Get component path
             $componentpath = Wi3::inst()->pathof->pagefiller("default") . "components/";
@@ -208,7 +208,7 @@ class Model_Site_Field extends Sprig
     public function fieldactions()
     {
         //-------------------
-        // Enable Component through autoloader, so it can be created
+        // Add the related Component to the Autoloader-paths, so it can be found by Kohana
         //-------------------   
            
         // Get component path
@@ -229,6 +229,12 @@ class Model_Site_Field extends Sprig
         $component = $componentname::inst();
         
         return $component->fieldactions($this);
+    }
+    
+    // Returns whether a given user is allowed to 
+    public function isuserallowedto($user, $action) {
+        //echo Kohana::debug($this);
+        return true;// TODO: security implementation
     }
     
 }
