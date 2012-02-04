@@ -148,9 +148,8 @@ $(function() {
                         html += "Aantal: <span>" + orderline.amount + "</span> <button data-buttontype='decrease'>-</button><button data-buttontype='increase'>+</button> ";
                         html += "Type: <select>" + renderSelectOptions(
                             {
-                                'digitaal':'digitaal, volledig formaat', 
-                                '10x15':'foto, 10 x 15 cm (\u20ac1,50)', 
-                                '13x18':'foto, 13 x 18 cm (\u20ac2,00)', 
+                                '10x15':'foto, 10 x 15 cm (\u20ac1,00)', 
+                                '13x18':'foto, 13 x 18 cm (\u20ac1,50)', 
                                 '15x20':'foto, 15 x 20 cm (\u20ac2,50)',
                                 '20x30':'foto, 20 x 30 cm (\u20ac4,00)',
                                 '30x45':'foto, 30 x 45 cm (\u20ac7,00)',
@@ -164,7 +163,7 @@ $(function() {
                         html += " <a data-buttontype='removeorderline' href='javascript:void(0);' title='bestelregel verwijderen'>weg</a>";
                     html += "</div>";
                 }
-                html += "<div class='mediummargin nobottommargin'><a data-buttontype='addorderline' href='javascript:void(0);'>voeg nog bestelregel toe voor deze foto</a></div>";
+                html += "<div class='mediummargin nobottommargin'><a data-buttontype='addorderline' href='javascript:void(0);'>voeg nog een bestelregel toe voor deze foto</a></div>";
                 html += "</div>";
             html += "</div>";
             r += html;
