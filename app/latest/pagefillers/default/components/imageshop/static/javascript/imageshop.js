@@ -105,6 +105,9 @@ $(function() {
         var orderlineid = $(this).closest("div").data("orderlineid");
         // Remove the orderline from the product
         cart[productId].orderlines.splice(orderlineid, 1); // Remove 1 element from the Array
+        if (cart[productId].orderlines.length == 0) {
+            delete(cart[productId]);
+        }
         // Re-render cart
         imageshop.find(".rightbar .cart").html(renderCart(cart));
         // Persist data, if possible
