@@ -1,0 +1,28 @@
+body, html { margin: 0px; padding: 0px; }
+body { background: url(../images/background.png) repeat; }
+#container { 
+	margin: auto; 
+	margin-top: 0px; 
+	background: #fff; 
+	border: solid 1px #003a81;
+	border-top:none;
+	color: #000000;
+	width: 1000px;
+	padding: 0;
+	text-align: left; 
+	font: 12px arial, verdana;
+}
+#header {  }
+
+#images { margin: 20px; margin-top: 0px; }
+
+#navigation { color: #fff; border-top: 10px solid #003a81; position: relative; font-size: 16px; height: 40px; }
+#navigation ul { position: absolute; top: 0px; margin-top: -10px; }
+#navigation ul li { float: left; margin-left: 20px; padding: 10px; background: #ff0000; position: relative; }
+#navigation ul li ul { position: absolute; left: 0px; top: 40px; margin: 0px; display: none; font-size: 12px; }
+#navigation ul li:hover ul { display: block; }
+#navigation ul li ul li { float: none; margin: 0px; border-top: 1px solid #fff; }
+#navigation a { border: none; text-decoration: none; }
+.floatfix { font-size: 1px; visibility: hidden; clear: both; }
+
+.mediumpadding { padding: 10px; }

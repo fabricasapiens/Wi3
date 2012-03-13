@@ -273,7 +273,7 @@
             // Create or use Database!
             $dbname = $_POST["dbname"];
             $dbokay = TRUE;
-            for($i=0;$i<1;$i++) // Just do it one time, but now we can use the break command...
+            for($i=0;$i<1;$i++) // We will only use one iteration of the loop, but now we can use the break command...
             {
                 // Try connection
                 @$con = mysql_connect("localhost",$_POST["dbusername"],$_POST["dbpassword"]);
@@ -293,7 +293,8 @@
                 $hasallprivileges = FALSE;
                 foreach($grants as $grant)
                 {
-                    if (strpos($grant[0], "GRANT ALL PRIVILEGES ON *.* TO ") === 0)
+                    if ( strpos($grant[0], "GRANT ALL PRIVILEGES ON *.* TO ") === 0 OR 
+                         strpos($grant[0], "GRANT ALL PRIVILEGES ON `".$dbname."`.* TO ") === 0 )
                     {
                         // User has all privileges for all dbs, so that's fine
                         $hasallprivileges = TRUE;
@@ -398,6 +399,7 @@
                 );
                 $context = stream_context_create($opts);
                 $result = file_get_contents($url . "app/setup",false, $context);
+                echo $result;
                 if ($result == "tables sucessfully created")
                 {
                     // Ok
