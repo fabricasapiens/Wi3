@@ -39,6 +39,7 @@
                     <div id='background'>
                     </div>
                     <div id='content'>
+                    <cms type="field">bloabl</cms>
                     <?php
                     
                         // Get url to the template base-url
