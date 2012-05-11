@@ -1,0 +1,82 @@
+/* 
+    Document   : style
+    Created on : 6-jan-2012, 17:24:22
+    Author     : Willem Mulder
+    Description: Style for imageshop
+*/
+
+.notransparency { opacity: 0; }
+.littletransparency { opacity: 0.9; }
+.mediumtransparency { opacity: 0.6; }
+.muchtransparency { opacity: 0.3; }
+
+.nopadding { padding: 0px; }
+.smallpadding { padding: 5px; }
+.mediumpadding { padding: 10px; }
+.largepadding { padding: 20px; }
+
+.nobottompadding { padding-bottom: 0px; }
+
+.nomargin { margin: 0px; }
+.smallmargin { margin: 5px; }
+.mediummargin { margin: 10px; }
+.largemargin { margin: 20px; }
+
+.fullwidth { width: 100%; }
+
+.nobottommargin { margin-bottom: 0px; }
+
+.paddingmarginwithinbox { 
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+ }
+
+.component_imageshop .leftbar { position: absolute; top: 0px; left: 0px; width: 370px; height: 260px; overflow-y:scroll; overflow-x:hidden; }
+.component_imageshop .thumbnail { background: #fff; float: left; cursor: pointer; text-shadow: #fff 1px 1px 0px; }
+.component_imageshop .thumbnail .imagecontainer { height: 40px; width: 50px; overflow: hidden; }
+.component_imageshop .thumbnail .productbuttons button { font-size: 20px; margin-top: 5px; width: 100%; }
+.component_imageshop .orderbutton { display: block; position: absolute; left: 0px; top: 270px; width: 370px; height: 30px; }
+
+.component_imageshop .rightbar { position: absolute; left: 380px; right: 0px; top: 0px; height: 300px; background: #fff; overflow-y:scroll; overflow-x:hidden; }
+.component_imageshop .rightbar .cart { }
+.component_imageshop .rightbar .cartitem img { float: left; }
+.component_imageshop .rightbar .cartitem .orderlines { margin-left: 60px; min-height: 50px; }
+.component_imageshop .rightbar .largeimage { position: absolute; overflow: hidden; } /* this is an overlay */
+.component_imageshop .rightbar .largeimage .instruction { display: none; position: absolute; left: 20px; top: 20px; right: 20px; font-size: 30px; color: #000; background: #E6E6E6; opacity: 0.3; }
+.component_imageshop .rightbar .largeimage:hover .instruction { display: block; }
+
+.component_imageshop .mediumtransparentbackground { background-color: rgba(255,255,255,0.5); }
+
+.component_imageshop .hoverable, .component_imageshop .contained {
+   border: 1px solid #DDD;
+   border-radius: 3px;
+   text-shadow: 0 1px 1px white;
+   -webkit-box-shadow: 0 1px 1px #fff;
+   -moz-box-shadow:    0 1px 1px #fff;
+   box-shadow:         0 1px 1px #fff;
+   color: #666;
+   background: transparent;
+}
+.component_imageshop .hoverable:hover, .component_imageshop .hoverable:focus {
+   border-color: #999;
+   background: -webkit-linear-gradient(top, white, #E0E0E0);
+   background:    -moz-linear-gradient(top, white, #E0E0E0);
+   background:     -ms-linear-gradient(top, white, #E0E0E0);
+   background:      -o-linear-gradient(top, white, #E0E0E0);
+   -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.25), inset 0 0 3px #fff;
+   -moz-box-shadow:    0 1px 2px rgba(0,0,0,0.25), inset 0 0 3px #fff;
+   box-shadow:         0 1px 2px rgba(0,0,0,0.25), inset 0 0 3px #fff;
+}
+.component_imageshop .hoverable.pushed {
+   border: 1px solid #AAA;
+   border-bottom-color: #CCC;
+   border-top-color: #999;
+   -webkit-box-shadow: inset 0 1px 2px #aaa;
+   -moz-box-shadow:    inset 0 1px 2px #aaa;
+   box-shadow:         inset 0 1px 2px #aaa;
+   background: -webkit-linear-gradient(top, #E6E6E6, gainsboro);
+   background:    -moz-linear-gradient(top, #E6E6E6, gainsboro);
+   background:     -ms-linear-gradient(top, #E6E6E6, gainsboro);
+   background:      -o-linear-gradient(top, #E6E6E6, gainsboro);
+}

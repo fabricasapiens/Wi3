@@ -155,10 +155,11 @@
                 $this->sitearea->site->name = $sitename; // Add name, since this is not stored in the local site tables, but only in the global ones
                 Event::instance("wi3.init.sitearea.site.loaded")->execute();
                 
-                // Load the pageposition, page and file manager, both within the sitearea
+                // Load the pageposition, page and file manager, all within the sitearea
                 $this->sitearea->pagepositions = Wi3_Sitearea_Pagepositions::inst();
                 $this->sitearea->pages = Wi3_Sitearea_Pages::inst();
                 $this->sitearea->files = Wi3_Sitearea_Files::inst();
+				$this->sitearea->users = Wi3_Sitearea_Users::inst();
             
             }
             

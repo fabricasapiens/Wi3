@@ -33,6 +33,22 @@
 	/* width of actual content is 960px, container is 1000px to enable for fitting in the 1000px width background */
 	#container { width: 1000px; position: absolute; left:50%; top: 0px; margin-left: -500px; background: #FFF; }
 	
+        .nopadding { padding: 0px; }
+        .smallpadding { padding: 5px; }
+        .mediumpadding { padding: 10px; }
+        .largepadding { padding: 20px; }
+        
+        .nomargin { margin: 0px; }
+        .smallmargin { margin: 5px; }
+        .mediummargin { margin: 10px; }
+        .largemargin { margin: 20px; }
+        
+        .relativepositioning { position: relative; }
+        
+        .clearfix { clear: both; visibility: hidden; font-size: 1px; }
+        
+        .mediumtransparentbackground { background-color: rgba(255,255,255,50); }
+        
 	/*
     /----------------------------------------------------
     /login form

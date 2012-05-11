@@ -29,18 +29,27 @@ class Wi3_Formbuilder_Base extends Wi3_Base
         return $this;
     }
     
-    public function attr($attr, $val)
+    public function attr($attr, $val = null)
     {
-        if (empty($val))
-        {
-            unset($this->attributes->attr);
-        }
-        else
-        {
-           $this->attributes->{$attr} = $val;
+        if (is_array($attr)) {
+            foreach($attr as $key => $val) {
+                $this->attr($key, $val);
+            }
+        } else {
+            if (empty($val))
+            {
+                if (isset($this->attributes->{$attr})) {
+                    unset($this->attributes->{$attr});
+                }
+            }
+            else
+            {
+            $this->attributes->{$attr} = $val;
+            }
         }
         return $this;
     }
-}
+    
+} // End class
     
 ?>

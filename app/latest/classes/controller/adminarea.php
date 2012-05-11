@@ -89,12 +89,13 @@ class Controller_Adminarea extends Controller_ACL {
         // Load correct page. Pagename is the first argument from the URL
         $pagename = Wi3::inst()->routing->args[0];
         // Create a page from pagename. Wi3 will automatically distinguish between id-urls (/_number) and slug-urls (/string) and fetch the correct page
-        Wi3::inst()->sitearea->setpage($pagename);  
+        Wi3::inst()->sitearea->setpage($pagename);
         // Render page
+        // TODO: check if user is allowed to view this page
         $this->template = Wi3::inst()->sitearea->page->render(); 
         // Page caching will be handled via an Event. See bootstrap.php and the Caching module
     }
-    
+	
     public function action_files()
     {
         $this->setview("adminarea");
@@ -122,61 +123,71 @@ class Controller_Adminarea extends Controller_ACL {
         }
         
         //--------------------
-        // Add file, if one is sent along
+        // Add file(s), if any are sent along
         //--------------------
-        if (isset($_FILES['file'])) {
-            //add file
-            $filename = basename( $_FILES['file']['name']);
-            // Usually, one would filter for forbidden extensions (or better: have a whitelist approach)
-            // With Wi3 however this is not necessary, since a .htaccess in the uploads directory prevents the execution of any script: it will disable the PHP parser for that dir.
-            // Consequently, it *is* very important to filter for .htaccess (and .gitignore while we're at it) files!
-            if (strtolower($filename) == ".htaccess" OR strtolower($filename) == ".gitignore")
-            {
-                $this->template->content = View::factory("adminarea/files");
-                $this->template->content->message = "Het toevoegen van .htaccess bestanden is niet toegestaan. Probeer het nog eens.";
-                return;
-            }
-            $target = Wi3::inst()->pathof->site. "data/uploads/" . basename($_FILES['file']['name']); 
-            if (!file_exists(Wi3::inst()->pathof->site. "data/uploads")) {
-                $this->template->content = View::factory("adminarea/files");
-                $this->template->content->message = "Fout bij wegschrijven van bestand. Dit is een permanente fout. Mail de beheerder van de site met uw probleem.";
-                return;
-            }
-            //check if the destination already exist, and if so, change the destination location
-            $existscounter = 0;
-            while(file_exists($target)) {
-                $existscounter++;
-                $target = Wi3::inst()->pathof->site. "data/uploads/" . substr($filename, 0, $extensionpos-1) . "_" . $existscounter . "." . substr($filename, $extensionpos);
-            }
-            ini_set("upload_max_filesize", "50M");
-            ini_set('memory_limit', '50M');
-            if (move_uploaded_file($_FILES['file']['tmp_name'], $target)) {
-                
-                // TODO: caching?
-                
-                $file = Wi3::inst()->model->factory("site_file");
-                $file->owner = Wi3::inst()->sitearea->auth->user;
-                $file->adminright = Wi3::inst()->sitearea->auth->user->username;
-                if (!empty($_POST["title"]))
+        if (isset($_FILES['file']) AND is_array($_FILES['file']['name'])) {
+            // Add files
+            $filecount = count($_FILES['file']['name']);
+            for($i=0; $i < $filecount; $i++) {
+                $filename = basename( $_FILES['file']['name'][$i] );
+                // Usually, one would filter for forbidden extensions (or better: have a whitelist approach)
+                // With Wi3 however this is not necessary, since a .htaccess in the uploads directory prevents the execution of any script: it will disable the PHP parser for that dir.
+                // Consequently, it *is* very important to filter for .htaccess (and .gitignore while we're at it) files!
+                if (strtolower($filename) == ".htaccess" OR strtolower($filename) == ".gitignore")
                 {
-                    $file->title = $_POST["title"];
+                    $this->template->content = View::factory("adminarea/files");
+                    $this->template->content->message = "Het toevoegen van .htaccess bestanden is niet toegestaan. Probeer het nog eens.";
+                    return;
                 }
-                else
-                {
-                    $file->title = basename($_FILES['file']['name']);
+                $target = Wi3::inst()->pathof->site. "data/uploads/" . $filename; 
+                if (!file_exists(Wi3::inst()->pathof->site. "data/uploads")) {
+                    $this->template->content = View::factory("adminarea/files");
+                    $this->template->content->message = "Fout bij wegschrijven van bestand. Dit is een permanente fout. Mail de beheerder van de site met uw probleem.";
+                    return;
                 }
-                $file->type = "file";
-                $file->created = time();
-                $file->filename = basename($target);
-                // Add it
-                $file = Wi3::inst()->sitearea->files->add($file);
-                // Success message 
-                $this->template->content = View::factory("adminarea/files");
-                $this->template->content .= "<script>$(document).ready(function(){ adminarea.alert('Bestand is succesvol geüpload.'); });</script>";
-            } else {
-                $message = "Er ging iets fout bij het uploaden. Probeer het alstublieft opnieuw.";
-                $this->template->content = View::factory("adminarea/files");
-                $this->template->content->message = $message;
+                //check if the destination already exist, and if so, change the destination location
+                $existscounter = 0;
+                $extensionpos = strrpos(basename($filename), ".");
+                while(file_exists($target)) {
+                    $existscounter++;
+                    if ($extensionpos !== false) {
+                        $target = Wi3::inst()->pathof->site. "data/uploads/" . substr($filename, 0, $extensionpos-1) . "_" . $existscounter . "." . substr($filename, $extensionpos+1);
+                    } else {
+                        $target = Wi3::inst()->pathof->site. "data/uploads/" . $filename . "_" . $existscounter;
+                    }
+
+                }
+                ini_set("upload_max_filesize", "50M");
+                ini_set('memory_limit', '50M');
+                if (move_uploaded_file($_FILES['file']['tmp_name'][$i], $target)) {
+
+                    // TODO: caching?
+
+                    $file = Wi3::inst()->model->factory("site_file");
+                    $file->owner = Wi3::inst()->sitearea->auth->user;
+                    $file->adminright = Wi3::inst()->sitearea->auth->user->username;
+                    // Only set a title if one file is uploaded
+                    if (!empty($_POST["title"]) AND $filecount == 1)
+                    {
+                        $file->title = $_POST["title"];
+                    }
+                    else
+                    {
+                        $file->title = basename($filename);
+                    }
+                    $file->type = "file";
+                    $file->created = time();
+                    $file->filename = basename($target);
+                    // Add it
+                    $file = Wi3::inst()->sitearea->files->add($file);
+                    // Success message 
+                    $this->template->content = View::factory("adminarea/files");
+                    $this->template->content .= "<script>$(document).ready(function(){ adminarea.alert('Bestand is succesvol geüpload.'); });</script>";
+                } else {
+                    $message = "Er ging iets fout bij het uploaden. Probeer het alstublieft opnieuw.";
+                    $this->template->content = View::factory("adminarea/files");
+                    $this->template->content->message = $message;
+                }
             }
         }
         else
@@ -184,6 +195,15 @@ class Controller_Adminarea extends Controller_ACL {
             $this->template->content = View::factory("adminarea/files");
         }
     }
+	
+	public function action_users()
+    {
+        $this->setview("adminarea");
+        $this->template->navigation = View::factory("adminarea/navigation");
+        $this->template->status= View::factory("adminarea/status");
+		
+		$this->template->content = View::factory("adminarea/users");
+	}
     
     public function action_commits()
     {
@@ -313,4 +333,4 @@ class Controller_Adminarea extends Controller_ACL {
         Request::instance()->redirect(Wi3::inst()->urlof->controller);
     }
 
-} // End Welcome
+} // End Adminarea

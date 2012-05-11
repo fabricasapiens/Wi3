@@ -32,9 +32,15 @@ RewriteRule _sitefiles/(.*) ../../../sites/demosite/$1  [L]
 # Static site content
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule _static/(.*)[\/]{1}$ ../../../sites/demosite/data/static/$1  [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule _static/(.*) ../../../sites/demosite/data/static/$1  [L]
 
 # Uploads
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule _uploads/(.*)[\/]{1}$ ../../../sites/demosite/data/uploads/$1  [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule _uploads/(.*) ../../../sites/demosite/data/uploads/$1 [L]

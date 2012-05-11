@@ -1,31 +1,31 @@
 <?php defined('SYSPATH') or die ('No direct script access.');
 /**
- * Formbuilder Fileselector class
+ * Formbuilder Folderselector class
  * @package Wi3
  * @author	Willem Mulder
  */
  
-class Wi3_Formbuilder_Fileselector extends Wi3_Formbuilder_Base
+class Wi3_Formbuilder_Folderselector extends Wi3_Formbuilder_Base
 {
    
     public function addextension($name)
     {
-        if (!isset($this->settings->extensions) OR !is_array($this->settings->extensions))
+        if (!isset($this->settings->fileextensions) OR !is_array($this->settings->fileextensions))
         {
-            $this->settings->extensions = Array($name => $name);
+            $this->settings->fileextensions = Array($name => $name);
         }
         else
         {
-            $this->settings->extensions[$name] = $name;
+            $this->settings->fileextensions[$name] = $name;
         }
         return $this;
     }
     
     public function removeextension($name)
     {
-        if (isset($this->settings->extensions))
+        if (isset($this->settings->fileextensions))
         {
-            unset($this->settings->extensions[$name]);
+            unset($this->settings->fileextensions[$name]);
         }
         return $this;
     }
@@ -42,19 +42,19 @@ class Wi3_Formbuilder_Fileselector extends Wi3_Formbuilder_Base
         echo "<input type='hidden' name='" . $this->attributes->name . "' id='input_" . $id . "' />";
         echo "<div style='padding: 10px;'>";
         
-            $images = Wi3::inst()->sitearea->files->find(array("extensions" => $this->settings->extensions));
+            $folders = Wi3::inst()->sitearea->files->findfolders(array("fileextensions" => $this->settings->fileextensions));
             
             $counter = 0;
-            foreach($images as $image) {
+            foreach($folders as $folder) {
                 $counter++;
-                echo "<div style='float: left; background: #eee; ";
-                if (isset($this->settings->selected) AND $image->id != $this->settings->selected)
+                echo "<div style='float: left; background: #aaa; ";
+                if (isset($this->settings->selected) AND $folder->id != $this->settings->selected)
                 {
                     echo "opacity: 0.4; ";
                 }
                 echo "margin: 5px;' id='image_".$id."_".$counter."' class='image_".$id."'>";
-                    echo "<a href='javascript:void(0)' style='text-decoration: none;' onClick='$(\"#input_".$id."\").val(\"".$image->id."\").has(\"xyz\").add(\"#image_".$id."_".$counter."\").fadeTo(50,1).has(\"xyz\").add(\".image_".$id."\").not(\"#image_".$id."_".$counter."\").fadeTo(50,0.40);'>";
-                    echo "<div style='float: left; margin: 5px;'><img src='" . Wi3::inst()->urlof->sitefiles . "data/uploads/50/" . $image->filename . "'></img></div></a>";
+                    echo "<a href='javascript:void(0)' style='text-decoration: none;' onClick='$(\"#input_".$id."\").val(\"".$folder->id."\").has(\"xyz\").add(\"#image_".$id."_".$counter."\").css(\"background\", \"#1891FF\").fadeTo(50,1).has(\"xyz\").add(\".image_".$id."\").not(\"#image_".$id."_".$counter."\").css(\"background\", \"#eee\").fadeTo(50,0.40);'>";
+                    echo "<div style='float: left; margin: 5px; height: 20px; overflow: hidden;'>" .$folder->filename . "</div></a>";
                 echo "</div>";
             }
 
