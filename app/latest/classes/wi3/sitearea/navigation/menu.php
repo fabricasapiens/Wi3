@@ -1,19 +1,47 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-    class Wi3_Sitearea_Navigation_Menu extends Wi3_Base 
+    class Wi3_Sitearea_Navigation_Menu extends Wi3_Sitearea_Navigation_Base
     {
         
         // Container class for the menu
         
+        // Override
+        public $tag = "ul";
+        
         private $activepage = NULL;
+        private $itemTag; // Should always be a li
+        private $activeItemTag; // Should always be a li
         
         public function setactivepage($page)
         {
             $this->activepage = $page;
-        }   
+            return $this;
+        }
         
-        public function render()
+        public function itemTag($tag) {
+            $this->itemTag = $tag;
+            return $this;
+        }
+        
+        public function activeItemTag($tag) {
+            $this->activeItemTag = $tag;
+            return $this;
+        }
+        
+        function __construct() {
+            parent::__construct();
+            $newTag = new Wi3_Sitearea_Navigation_Base();
+            $this->itemTag($newTag->tag("li"));
+            $newTag2 = new Wi3_Sitearea_Navigation_Base();
+            $this->activeItemTag($newTag2->tag("li")->attr("class", "active"));
+        }
+        
+        public function renderContent()
         {
+        
+            // Ensure that itemTags are a li
+            $this->itemTag->tag = "li";
+            $this->activeItemTag->tag = "li";
         
             // Set the page, if not done already so 
             if ($this->activepage == NULL)
@@ -23,7 +51,6 @@
         
             // Get all pagepositions and render the menu
             ob_start();
-            echo "<ul>";
             $pagepositions = Wi3::inst()->sitearea->pagepositions->getall();
             $prevpageposition = NULL;
             foreach($pagepositions as $pageposition)
@@ -75,7 +102,7 @@
                     $url = Wi3::inst()->urlof->page($page->slug);
                 }
                 // If page is the same as the 'activepage', then add class='active'
-                echo "<li><span><a " . ($page->id == $this->activepage->id?"class='active'":"") . " " . ($page->redirecttype == "external"?"target='_blank'":"") . " href='" . $url . "'>" . $page->longtitle . "</a></span>";
+                echo ($page->id == $this->activepage->id?$this->activeItemTag->renderOpenTag():$this->itemTag->renderOpenTag()) . "<span><a" . ($page->redirecttype == "external"?"target='_blank'":"") . " href='" . $url . "'>" . $page->longtitle . "</a></span>";
             }
             // Now, if we have ended far from root (i.e. a deep node), we need to add some </li></ul>
             if ($pageposition->{$prevpageposition->level_column} > 0)
@@ -85,7 +112,7 @@
                     echo "</li></ul>";
                 }
             }
-            echo "</li></ul>";
+            echo "</li>";
             return ob_get_clean();
         }
         
