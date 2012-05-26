@@ -9,8 +9,8 @@
         echo "<div id='prullenbak_onder'><h2>Sleep hier om te verwijderen</h2></div>";
     echo "</div>";
     echo "<div id='wi3_add_pages'>";
-        echo "<a href='javascript:void(0);' onClick='$(this).next().slideToggle();'><h2>Nieuwe pagina</h2></a>";
-        echo "<div style='display:none; margin:15px; margin-right: 55px;'>";
+        echo "<a href='javascript:void(0);' onClick='adminarea.toggleAddPagePanel();'><h2>Nieuwe pagina</h2></a>";
+        echo "<div style='display:none; margin:15px; margin-right: 55px;' id='addPagePositionPanel'>";
         echo View::factory("adminarea/menu/addpageposition");
         echo "</div>";
     echo "</div>";

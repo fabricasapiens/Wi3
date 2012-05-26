@@ -63,6 +63,12 @@ var adminarea = {
 		//set Timeout to hide the notification
 		adminarea.timeoutvar = setTimeout('$("#wi3_notification_top").slideUp()', 3000);
     },
+	
+	toggleAddPagePanel : function() {
+		$('#addPagePositionPanel').slideToggle();
+		// Hide any active panel about the currently selected page
+		$("#menu_pagesettings_tabs").fadeOut("fast");
+	},
     
     addpageposition : function() {
         var selected = this.currentTree().getSelected();
