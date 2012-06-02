@@ -269,31 +269,20 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
             $page = Wi3::inst()->sitearea->setpage("_".$pageid); // the _ prefixes a numeric page-ID
             Wi3::inst()->acl->grant("admin", $page);
             try {
+                // Check admin rights
                 Wi3::inst()->acl->check($page);
                 $oldname = $page->longtitle;
                 
-                foreach($_POST as $name => $post) 
-                {                    
-                    if ($name == "visible") 
-                    {
+                foreach($_POST as $name => $post) {                    
+                    if ($name == "visible") {
                         $page->visible = ($post === "0" ? "0" : "1");
-                    } 
-                    else if ($name == "viewright" OR $name == "editright" OR $name == "adminright") 
-                    {
-                        //check for admin privileges
-                        Wi3::inst()->acl->check($page);
-                        $page->{$name} = $post;
-                    } 
-                    else 
-                    {
+                    } else {
                         // Also change slug if title is changed
-                        if ($name == "longtitle") 
-                        {
+                        if ($name == "longtitle") {
                             // Find a unique slug
                             $slug = $post;
                             $counter = 0;
-                            while($p = Wi3::inst()->model->factory("site_page")->set("slug", $slug)->load() AND $p->loaded() === true AND $p->id != $page->id AND $counter < 100)
-                            {
+                            while($p = Wi3::inst()->model->factory("site_page")->set("slug", $slug)->load() AND $p->loaded() === true AND $p->id != $page->id AND $counter < 100) {
                                 $counter++;
                                 $slug = $post . " " . $counter;
                             }
@@ -305,7 +294,7 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
                 
                 //remove cache of the *complete* site!
                 // Wi3::$cache->field_delete_all_wheresite($site);
-                
+
                 $page->update();
                 echo json_encode(
                     Array(
@@ -317,8 +306,9 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
                     )
                 );
             }
-            catch(Exception $e)
-            {
+            catch(Exception $e) {
+                echo Kohana::debug($e);
+                echo View::factory('profiler/stats');
                 echo json_encode(
                 Array(
                     "alert" => "Pagina-eigenschappen konden NIET gewijzigd worden."
