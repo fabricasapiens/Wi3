@@ -49,7 +49,7 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
         if (!isset($post["longtitle"]) OR empty($post["longtitle"])) { $post["longtitle"] = "nieuwe pagina"; }
         if (!isset($post["slug"])) { $post["slug"] = $post["longtitle"]; }
         // Now make sure the page-slug is not yet taken
-        $slug = $post["slug"];
+        $slug = strtolower($post["slug"]);
         $counter = 0;
         while(Wi3::inst()->model->factory("site_page")->set("slug", $post["slug"])->load()->loaded() === true)
         {
@@ -273,20 +273,28 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
                 Wi3::inst()->acl->check($page);
                 $oldname = $page->longtitle;
                 
-                foreach($_POST as $name => $post) {                    
+                // strip ID and Slug
+                unset($_POST["id"]);
+                unset($_POST["slug"]);
+                foreach($_POST as $name => $post) {                  
                     if ($name == "visible") {
                         $page->visible = ($post === "0" ? "0" : "1");
                     } else {
                         // Also change slug if title is changed
                         if ($name == "longtitle") {
                             // Find a unique slug
-                            $slug = $post;
+                            $slug = strtolower($post);
                             $counter = 0;
                             while($p = Wi3::inst()->model->factory("site_page")->set("slug", $slug)->load() AND $p->loaded() === true AND $p->id != $page->id AND $counter < 100) {
                                 $counter++;
                                 $slug = $post . " " . $counter;
                             }
-                            $page->slug = $slug;
+                            // Only set if the slug has changed in something else than lowercase - uppercase
+                            // A change in lower <> upper causes validation issues
+                            // and slugs should always be lowercase anyway
+                            if (strtolower($page->slug) !== strtolower($slug)) {
+                               $page->slug = $slug;
+                            }
                         }
                         $page->{$name} = $post;
                     }
@@ -307,8 +315,6 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
                 );
             }
             catch(Exception $e) {
-                echo Kohana::debug($e);
-                echo View::factory('profiler/stats');
                 echo json_encode(
                 Array(
                     "alert" => "Pagina-eigenschappen konden NIET gewijzigd worden."
