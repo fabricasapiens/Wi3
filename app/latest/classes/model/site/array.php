@@ -121,7 +121,7 @@ class Model_Site_Array extends Sprig Implements Iterator
                 $arraydata->array = $this;
                 $arraydata->create();
                 // Add it to the _related list
-                $this->relate("_arraydatas", $arraydata);
+                $this->add("_arraydatas", $arraydata);
                 // Now, the array has this arraydata as 'original'
                 $this->_originalarray[$key] = $val;
             }
