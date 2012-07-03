@@ -51,7 +51,7 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
         // Now make sure the page-slug is not yet taken
         $slug = strtolower($post["slug"]);
         $counter = 0;
-        while(Wi3::inst()->model->factory("site_page")->set("slug", $post["slug"])->load()->loaded() === true)
+        while($counter < 20 && Wi3::inst()->model->factory("site_page")->set("slug", $post["slug"])->load()->loaded() === true)
         {
             $counter++;
             $post["slug"] = $slug . " " . $counter;
