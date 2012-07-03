@@ -62,7 +62,13 @@
             $field = Wi3::inst()->model->factory("site_field")->set("id", $fieldid)->load();
             // Update data field with image-id
             $data = Wi3::inst()->model->factory("site_array")->setref($field)->setname("data")->load();
-            $data->url = $_POST["url"];
+            if(isset($_POST["url"])) {
+				$data->url = $_POST["url"];
+				$data->destinationtype = "url";
+			} else if(isset($_POST["fileid"])) {
+				$data->fileid = $_POST["fileid"];
+				$data->destinationtype = "file";
+			}
             $data->update();
             
             echo json_encode(

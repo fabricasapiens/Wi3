@@ -42,7 +42,11 @@ class Wi3_Formbuilder_Fileselector extends Wi3_Formbuilder_Base
         echo "<input type='hidden' name='" . $this->attributes->name . "' id='input_" . $id . "' />";
         echo "<div style='padding: 10px;'>";
         
-            $images = Wi3::inst()->sitearea->files->find(array("extensions" => $this->settings->extensions));
+			if (isset($this->settings->extensions)) {
+				$images = Wi3::inst()->sitearea->files->find(array("extensions" => $this->settings->extensions));
+			} else {
+				$images = Wi3::inst()->sitearea->files->find(array());
+			}
             
             $counter = 0;
             foreach($images as $image) {
@@ -54,7 +58,7 @@ class Wi3_Formbuilder_Fileselector extends Wi3_Formbuilder_Base
                 }
                 echo "margin: 5px;' id='image_".$id."_".$counter."' class='image_".$id."'>";
                     echo "<a href='javascript:void(0)' style='text-decoration: none;' onClick='$(\"#input_".$id."\").val(\"".$image->id."\").has(\"xyz\").add(\"#image_".$id."_".$counter."\").fadeTo(50,1).has(\"xyz\").add(\".image_".$id."\").not(\"#image_".$id."_".$counter."\").fadeTo(50,0.40);'>";
-                    echo "<div style='float: left; margin: 5px;'><img src='" . Wi3::inst()->urlof->sitefiles . "data/uploads/50/" . $image->filename . "'></img></div></a>";
+                    echo "<div style='float: left; margin: 5px;'>" . $image->filename . "</div></a>";
                 echo "</div>";
             }
 

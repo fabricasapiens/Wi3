@@ -145,7 +145,7 @@
         
         public function file($file) 
         {
-            return $this->site . "_uploads/" . (is_object($file) ? $file->slug : $file);
+            return $this->site . "_uploads/" . (is_object($file) ? $file->filename : $file);
         }
         
         public function image($file, $xsize=-1) 

@@ -40,7 +40,20 @@
             {
                 $url = $data->url;
             }
-            else if ($destinationtype == "page")
+            else if ($destinationtype == "file")
+            {
+                $fileid = $data->fileid;
+                $file = Wi3::inst()->model->factory("site_file")->set("id", $fileid)->load();
+                if ($file->loaded())
+                {
+                    $url = Wi3::inst()->urlof->file($file);
+                }
+                else
+                {
+                    $url = "";
+                }
+            } 
+			else if ($destinationtype == "page")
             {
                 $pageid = Wi3::inst()->model->factory("site_data")->setref($field)->setname("url")->load();
                 $page = Wi3::inst()->model->factory("site_page")->set("id", $pageid)->load();
