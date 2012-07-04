@@ -9,7 +9,7 @@
  */
 abstract class Sprig_Core {
 
-	const VERSION = '1.1.1';
+	const VERSION = '1.2';
 
 	// Model many-to-many relations
 	protected static $_relations;
@@ -280,7 +280,7 @@ abstract class Sprig_Core {
 	 */
 	public function __toString()
 	{
-		return $this->_model;
+		return (string) $this->_model;
 	}
 
 	/**
@@ -392,10 +392,6 @@ abstract class Sprig_Core {
 							}
 							else
 							{
-                                // $fk = $model->fk();
-                                // Willem Mulder: should this not be $this->fk(); ?
-                                // The fk() of a model will return modelname_id, which is the key with which OTHER models can reference to it
-                                // So if we want the key with which the foreign field references to us, we should simply use $this->fk()... ?
 								$fk = $this->fk();
 							}
 
@@ -673,7 +669,57 @@ abstract class Sprig_Core {
 	 *
 	 * @return $this
 	 */
-	public function add($name, $value)
+	public function relate($name, $value)
+	{
+		if ( ! isset($this->_fields[$name]) OR ! ($this->_fields[$name] instanceof Sprig_Field_HasMany))
+		{
+			throw new Sprig_Exception('Unknown relationship: :name', array(':name' => $name));
+		}
+
+		$values = array();
+		if (is_object($value))
+		{
+			$values[$value->{$value->pk()}] = $value->{$value->pk()};
+		}
+		elseif(is_numeric($value))
+		{
+			$values[$value] = $value;
+		}
+		elseif(is_array($value))
+		{
+			$values = $value;
+		}
+		else
+		{
+			throw new Sprig_Exception('Invalid data type: :value', array(':value' => $value));
+        }
+
+        // $this->$name = (arr::get($this->_original, $name, array())+$values);
+        // Willem Mulder
+        // Check whether there are already some elements in there, and add the new one, instead of simply replacing it...
+        if (is_array($this->$name))
+        {
+            $this->$name += (arr::get($this->_original, $name, array())+$values);
+        }
+        else
+        {
+	        $this->$name = (arr::get($this->_original, $name, array())+$values);
+        }
+
+		return $this;
+	}
+
+	/**
+	 * Removes a relationship to the model
+	 * 
+	 * @param  string  field name to add the relationship to
+	 * @param  mixed   model to remove, can be in integer model ID, a single model object, or an array of integers
+	 * 
+	 * @throws Sprig_Exception  on invalid relationship or model arguments
+	 *
+	 * @return $this
+	 */
+	public function unrelate($name, $value)
 	{
 		if ( ! isset($this->_fields[$name]) OR ! ($this->_fields[$name] instanceof Sprig_Field_HasMany))
 		{
@@ -697,57 +743,9 @@ abstract class Sprig_Core {
 		{
 			throw new Sprig_Exception('Invalid data type: :value', array(':value' => $value));
 		}
-		
-		// $this->$name = (arr::get($this->_original, $name, array())+$values);
-		// Willem Mulder
-		// Check whether there are already some elements in there, and add the new one, instead of simply replacing it...
-		if (is_array($this->$name))
-		{
-		    $this->$name += (arr::get($this->_original, $name, array())+$values);
-		}
-		else
-		{
-    		$this->$name = (arr::get($this->_original, $name, array())+$values);
-		}
 
-		return $this;
-	}
-
-	/**
-	 * Removes a relationship to the model
-	 * 
-	 * @param  string  field name to add the relationship to
-	 * @param  mixed   model to remove, can be in integer model ID, a single model object, or an array of integers
-	 * 
-	 * @throws Sprig_Exception  on invalid relationship or model arguments
-	 *
-	 * @return $this
-	 */
-	public function remove($name, $value)
-	{
-		if ( ! isset($this->_original[$name]) OR ! is_array($this->_original[$name]))
-		{
-			throw new Sprig_Exception('Unknown relationship: :name', array(':name' => $name));
-		}
-
-		$values = array();
-		if (is_object($value))
-		{
-			$values[$value->{$value->pk()}] = $value->{$value->pk()};
-		}
-		elseif(is_numeric($value))
-		{
-			$values[$value] = $value;
-		}
-		elseif(is_array($value))
-		{
-			$values = $value;
-		}
-		else
-		{
-			throw new Sprig_Exception('Invalid data type: :value', array(':value' => $value));
-		}
-
+		// Make sure the field is accessed to load it's values
+		$this->$name;
 		$original = $this->_original[$name];
 		foreach ($values as $value)
 		{
@@ -757,6 +755,26 @@ abstract class Sprig_Core {
 		$this->$name = $original;
 
 		return $this;
+	}
+
+	/**
+	 * Determines if this object has a relation
+	 * 
+	 * @param string field relation name to check
+	 * @param int    the value to compare
+	 *
+	 * @return bool
+	 */
+	public function related($name, $value)
+	{
+		if ( ! isset($this->_fields[$name]) OR ! ($this->_fields[$name] instanceof Sprig_Field_HasMany))
+		{
+			throw new Sprig_Exception('Unknown relationship: :name', array(':name' => $name));
+		}
+
+		// Make sure the field is accessed to load it's values
+		$this->$name;
+		return in_array($value, $this->_original[$name]);
 	}
 
 	/**
@@ -1052,13 +1070,18 @@ abstract class Sprig_Core {
 	public function input($name, array $attr = NULL)
 	{
 		$field = $this->_fields[$name];
+		$value = $this->$name;
 
 		if ($attr === NULL)
 		{
 			$attr = $field->attributes;
 		}
+		if (isset($attr['name']))
+		{
+			$name = $attr['name'];
+		}
 
-		return $field->input($name, $this->$name, $attr);
+		return $field->input($name, $value, $attr);
 	}
 
 	/**
@@ -1165,7 +1188,11 @@ abstract class Sprig_Core {
 		// Load changed values as search parameters
 		$changed = $this->changed();
 
-		if ( ! $query)
+		if ( ! $query AND $limit == 1 AND ! count($changed))
+		{
+			return $this;
+		}
+		elseif ( ! $query)
 		{
 			$query = DB::select();
 		}
