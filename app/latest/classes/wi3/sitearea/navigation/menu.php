@@ -88,7 +88,7 @@
                             // Only close menu parts that were indeed rendered (i.e. the page was not hidden)
                             // We know  that all menu parts are hidden that have a *higher or equal* level than hiddenfromlevel
                             $currentlevel = $pageposition->{$pageposition->level_column}+$i;
-                            if ($currentlevel < $hiddenfromlevel) {
+                            if ($hiddenfromlevel == -1 || $currentlevel < $hiddenfromlevel) {
                                 echo "</li></ul>";
                             }
                         }
