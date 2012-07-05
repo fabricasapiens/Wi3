@@ -38,7 +38,7 @@
             // Create URL based on the destinationtype
             if ($destinationtype == "url")
             {
-                $url = $data->url;
+                $url = (isset($data->url) ? $data->url : "");
             }
             else if ($destinationtype == "file")
             {
