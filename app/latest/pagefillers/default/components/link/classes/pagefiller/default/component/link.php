@@ -18,6 +18,8 @@
                 $data->url = "http://fabricasapiens.nl";
                 $data->linktext = $_POST["selectiontext"];
                 $data->create();
+                
+                
             }
             else if ($eventtype == "delete")
             {
@@ -34,11 +36,12 @@
         {
             // Load the data that is associated with this field 
             $data = Wi3::inst()->model->factory("site_array")->setref($field)->setname("data")->load();
+            ob_start(); print_r($data); ob_end_clean();
             $destinationtype = $data->destinationtype;
             // Create URL based on the destinationtype
             if ($destinationtype == "url")
             {
-                $url = (isset($data->url) ? $data->url : "");
+                $url = $data->url;
             }
             else if ($destinationtype == "file")
             {
