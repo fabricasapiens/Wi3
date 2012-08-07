@@ -11,7 +11,6 @@
         private $activepage = NULL;
         private $itemTag; // Should always be a li
         private $activeItemTag; // Should always be a li
-		private $pagePositions = NULL; // Should be a list of pagePositions
         
         public function setactivepage($page)
         {
@@ -28,14 +27,6 @@
             $this->activeItemTag = $tag;
             return $this;
         }
-		
-		public function pagePositions($list = null) {
-			if ($list != null) {
-				$this->pagePositions = $list;
-				return $this;
-			}
-			return $this->pagePositions;
-		}
         
         function __construct() {
             parent::__construct();
@@ -60,21 +51,33 @@
         
             // Get all pagepositions and render the menu
             ob_start();
-            if ($this->pagePositions() == null) {
-				$this->pagePositions(Wi3::inst()->sitearea->pagepositions->getall());
-			}
-			$pagepositions = $this->pagePositions();
+            $pagepositions = Wi3::inst()->sitearea->pagepositions->getall();
             $prevpageposition = NULL;
+            $hiddenfromlevel = -1;
             foreach($pagepositions as $pageposition)
             {
 
+                $pages = $pageposition->pages;
+                $page = $pages[0]; // Simply get first page
+                // Notice the level from where the menu is hidden
+                if ($page->visible == FALSE) {
+                    if ($hiddenfromlevel == -1) { // Only the lowest hidden level is important. The rest under it is hidden anyways 
+                        $hiddenfromlevel = $pageposition->{$pageposition->level_column};
+                    }
+                }
                 // If there is a previous pageposition, we can check if we went up or down in the tree
                 if ($prevpageposition != NULL)
                 {
                     if ($pageposition->{$pageposition->level_column} > $prevpageposition->{$prevpageposition->level_column})
                     {
-                        // Going a level deeper
-                        echo "<ul>";
+                         // Going a level deeper
+                         if($page->visible == TRUE) {
+                            // Don't start menu level if a parent is hidden anyway
+                            // Only start if all tree up is visible
+                            if ($hiddenfromlevel == -1) {
+                                echo "<ul>";
+                            }
+                        }
                     }
                     else if ($pageposition->{$pageposition->level_column} < $prevpageposition->{$prevpageposition->level_column})
                     {
@@ -82,7 +85,12 @@
                         // Find out how many levels we go up and close every level properly
                         for($i=($prevpageposition->{$prevpageposition->level_column} - $pageposition->{$prevpageposition->level_column}); $i > 0; $i--)
                         {
-                            echo "</li></ul></li>";
+                            // Only close menu parts that were indeed rendered (i.e. the page was not hidden)
+                            // We know  that all menu parts are hidden that have a *higher or equal* level than hiddenfromlevel
+                            $currentlevel = $pageposition->{$pageposition->level_column}+$i;
+                            if ($hiddenfromlevel == -1 || $currentlevel < $hiddenfromlevel) {
+                                echo "</li></ul>";
+                            }
                         }
                     } 
                     else 
@@ -91,9 +99,14 @@
                     }
                 }
                 $prevpageposition = $pageposition;
-				// TODO: make this WAY faster
-                $pages = $pageposition->pages;
-                $page = $pages[0]; // Simply get first page
+                // If page is visible but within an invisible parent, don't show
+                if ($page->visible == TRUE && $hiddenfromlevel != -1 && $pageposition->{$pageposition->level_column} > $hiddenfromlevel) {
+                    continue;
+                }
+                // If page is visible and on same or lower level than hiddenfromlevel, then the hiddenfromlevel should be reset (i.e. to -1)
+                if ($page->visible == TRUE && $pageposition->{$pageposition->level_column} <= $hiddenfromlevel) {
+                    $hiddenfromlevel = -1;
+                }
                 if ($page->visible == FALSE)
                 {
                     continue;
