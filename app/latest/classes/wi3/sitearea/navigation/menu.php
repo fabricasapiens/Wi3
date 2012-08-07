@@ -11,6 +11,7 @@
         private $activepage = NULL;
         private $itemTag; // Should always be a li
         private $activeItemTag; // Should always be a li
+		private $pagePositions = NULL; // Should be a list of pagePositions
         
         public function setactivepage($page)
         {
@@ -27,6 +28,14 @@
             $this->activeItemTag = $tag;
             return $this;
         }
+		
+		public function pagePositions($list = null) {
+			if ($list != null) {
+				$this->pagePositions = $list;
+				return $this;
+			}
+			return $this->pagePositions;
+		}
         
         function __construct() {
             parent::__construct();
@@ -51,7 +60,10 @@
         
             // Get all pagepositions and render the menu
             ob_start();
-            $pagepositions = Wi3::inst()->sitearea->pagepositions->getall();
+            if ($this->pagePositions() == null) {
+				$this->pagePositions(Wi3::inst()->sitearea->pagepositions->getall());
+			}
+			$pagepositions = $this->pagePositions();
             $prevpageposition = NULL;
             foreach($pagepositions as $pageposition)
             {
@@ -79,6 +91,7 @@
                     }
                 }
                 $prevpageposition = $pageposition;
+				// TODO: make this WAY faster
                 $pages = $pageposition->pages;
                 $page = $pages[0]; // Simply get first page
                 if ($page->visible == FALSE)
