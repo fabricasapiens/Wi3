@@ -56,6 +56,10 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
             $counter++;
             $post["slug"] = $slug . " " . $counter;
         }
+		if ($counter == 19) {
+			// Not good
+			// TODO: fix this
+		}
         $post["owner"] = Wi3::inst()->sitearea->auth->user->username;
         $post["filler"] = "default"; // Assume default page filler
         
