@@ -59,7 +59,7 @@ $.fn.simpleTree = function(opt){
 			afterDblClick:	false,
 			// added by Erik Dohmen (2BinBusiness.nl) to make context menu cliks available
 			afterContextMenu:	false,
-			docToFolderConvert:false
+			docToFolderConvert: true
 		};
 		TREE.option = $.extend(TREE.option,opt);
 		$.extend(this, {getSelected: function(){
@@ -219,14 +219,20 @@ $.fn.simpleTree = function(opt){
 				var cloneNode=false;
 				var LI = this;
 				var childNode = $('>ul',this);
-				if(childNode.size()>0){
-					var setClassName = 'folder-';
-					if(className && className.indexOf('open')>=0){
-						setClassName=setClassName+'open';
-						open=true;
-					}else{
-						setClassName=setClassName+'close';
-					}
+				if(childNode.size()>0 || $(this).hasClass('permanent-folder')){
+				    if ($(this).hasClass('permanent-folder')) {
+					    var setClassName = 'permanent-folder folder'; // Set folder as last, since it can be appended with e.g. -last
+				    } else {
+				        var setClassName = 'folder'; 
+				    }
+					if (childNode.size()>0) {
+					    if(className && className.indexOf('open')>=0){
+						    setClassName=setClassName+'-open';
+						    open=true;
+					    }else{
+						    setClassName=setClassName+'-close';
+					    }
+				    }
 					this.className = setClassName + ($(this).is(':last-child')? '-last':'');
 
 					if(!open || className.indexOf('ajax')>=0)childNode.hide();
@@ -414,26 +420,51 @@ $.fn.simpleTree = function(opt){
 			dragNode_destination = dragNode_source = mousePressed = mouseMoved = false;
 			//ajaxCache = Array();
 		};
-		TREE.convertToFolder = function(node){
-			node[0].className = node[0].className.replace('doc','folder-open');
+		TREE.addNodeContainer = function(node){
+		    if ($(node).hasClass("permanent-folder")) {
+		        // Permanent-folder. Add the folder class and leave permanent-folder intact
+		        $(node).addClass("folder-open");
+		    } else {
+		        // Document. Change the doc class to a folder-open class, if allowed to do so
+		        if (TREE.option.docToFolderConvert) {
+    			    node[0].className = node[0].className.replace('doc','folder-open');
+			    } else {
+			        // This should never happen, since the drop of a node on a doc is not allowed when docToFolderConvert == false
+			    }
+		    }
 			node.append('<ul><li class="line-last"></li></ul>');
 			TREE.setTrigger(node[0]);
 			TREE.setEventLine($('.line, .line-last', node));
 		};
-		TREE.convertToDoc = function(node){
+		TREE.removeNodeContainer = function(node){
 			$('>ul', node).remove();
 			$('img', node).remove();
-			node[0].className = node[0].className.replace(/folder-(open|close)/gi , 'doc');
+			$(node).removeClass("folder-open").removeClass("folder-close");
+			if ($(node).hasClass("permanent-folder")) {
+			    // Just leave as is
+			    $(node).addClass("folder");
+			} else {
+			    // If folder can be converted to doc, do so
+			    if (TREE.option.docToFolderConvert) {
+			        $(node).addClass("doc");
+		        } else {
+        			$(node).addClass("folder");
+    			}
+			    
+		    }
 		};
 		TREE.moveNodeToFolder = function(node)
 		{
+		    console.log(node[0].className);
 			if(!TREE.option.docToFolderConvert && node[0].className.indexOf('doc')!=-1)
 			{
 				return true;
-			}else if(TREE.option.docToFolderConvert && node[0].className.indexOf('doc')!=-1){
-				TREE.convertToFolder(node);
+			} else if($(node).hasClass('permanent-folder') || 
+			         (TREE.option.docToFolderConvert && node[0].className.indexOf('doc')!=-1)) {
+				TREE.addNodeContainer(node);
 			}
 			TREE.checkNodeIsLast(dragNode_source[0]);
+			// Last-line is the object before which our object will be dropped. All folders have such a last-line
 			var lastLine = $('>ul >.line-last', node);
 			if(lastLine.size()>0)
 			{
@@ -442,26 +473,23 @@ $.fn.simpleTree = function(opt){
 		};
 		TREE.moveNodeToLine = function(node, nodetofolder){ //edited to include a message if originally the node was dropped on a folder (that is: on another node)
 		    //'node' is the line where the moved tree (dragNode_source) is dropped upon
-		    if($(node).prev().get(0) != dragNode_source[0]) { //edited! Check if the element is not placed on the spot it came from. In that case, do not do these checks, as they corrupt last-doc class
+		    if($(node).prev().get(0) != dragNode_source[0]) { // Check if the element is not placed on the spot it came from. In that case, do not do these checks, as they corrupt last-doc class
 			   TREE.checkNodeIsLast(dragNode_source[0]);
 			   TREE.checkLineIsLast(node);
 			}
 			var parent = $(dragNode_source).parents('li:first');
 			var line = $(dragNode_source).prev('.line');
+			// Drop dragNode before targetNode and take its previous line with him
 			$(node).before(dragNode_source);
 			$(dragNode_source).before(line);
 			node.className = node.className.replace('-over','');
+			// Check how many nodes remain in the original location of dragNode
 			var nodeSize = $('>ul >li', parent).not('.line, .line-last').filter(':visible').size();
-			if(TREE.option.docToFolderConvert && nodeSize==0)
+			if(nodeSize==0)
 			{
-				TREE.convertToDoc(parent);
-			}else if(nodeSize==0)
-			{
-				parent[0].className=parent[0].className.replace('open','close');
-				$('>ul',parent).hide();
-			}
+				TREE.removeNodeContainer(parent);
+			} 
 
-			// added by Erik Dohmen (2BinBusiness.nl) select node
 			if($('span:first',dragNode_source).attr('class')=='text')
 			{
 				$('.active',TREE).attr('class','text');
@@ -519,7 +547,7 @@ $.fn.simpleTree = function(opt){
 			var nodeSize = $('>ul >li', parent).not('.line, .line-last').filter(':visible').size();
 			if(TREE.option.docToFolderConvert && nodeSize==0)
 			{
-				TREE.convertToDoc(parent);
+				TREE.removeNodeContainer(parent);
 			}else if(nodeSize==0)
 			{
 				parent[0].className=parent[0].className.replace('open','close');

@@ -110,6 +110,7 @@ class Controller_Adminarea extends Controller_ACL {
         //--------------------
         // Add folder, if one is sent along
         //--------------------
+        /* Is implemented through AJAX call. Can we do this as well with file upload, please?        
         if (isset($_POST["folder"]) AND !empty($_POST["folder"])) {
             
             // Create folder
@@ -120,7 +121,7 @@ class Controller_Adminarea extends Controller_ACL {
             $file->type = "folder";
             // Add it
             $file = Wi3::inst()->sitearea->files->add($file);
-        }
+        }*/
         
         //--------------------
         // Add file(s), if any are sent along

@@ -29,6 +29,56 @@ class Controller_Adminarea_Files_Ajax extends Controller_ACL {
         $this->template = $this->view($name);
     }
     
+    public function action_addFolder() {
+        
+        $properties = Array();
+        $properties["owner"] = Wi3::inst()->sitearea->auth->user;
+        $properties["adminright"] = Wi3::inst()->sitearea->auth->user->username;
+        $properties["title"] = "Nieuwe map";
+        $properties["type"] = "folder";
+        $properties["created"] = time();
+        $properties["filename"] = $properties["created"]; // needs to be unique
+        
+        $settings = Array();
+        if ( isset($_POST["refid"]) AND !empty($_POST["refid"]) AND  isset($_POST["location"]) AND !empty($_POST["location"])) {
+            $settings["under"] = $_POST["refid"];
+        }
+        // Add it
+        $folder = Wi3::inst()->sitearea->files->add($properties, $settings);
+        if ($folder) {
+            //#remove cache of the *complete* site!
+            //Wi3::$cache->field_delete_all_wheresite(Wi3::$site);
+            //#
+            $li = html::anchor($folder->id, $folder->title);
+            if ($folder->lft == 1 AND $folder->rgt == 2)
+            {
+                // The new folder is the only folder there is. For the javascript menu to work properly, we need to reload the page.
+                echo json_encode(
+                    Array(
+                        "scriptsbefore" => Array(
+                            "reload" => "window.location.reload();"
+                        )
+                    )
+                );
+            } else {
+                echo json_encode(
+                    Array(
+                        "alert" => "map is aangemaakt",
+                        "scriptsafter" => Array(
+                            "adminarea.currentTree().addNode('treeItem_" . $folder->id . "','" . addslashes($li) . "')",
+                        )
+                    )
+                );
+            }
+        } else {
+            echo json_encode(
+                Array(
+                    "alert" => "map kon NIET aangemaakt worden"
+                )
+            );
+        }
+    }
+    
     public function action_moveFileBefore() {
         $movedfile = $_POST["source"];
         $referencefile = $_POST["destination"];
@@ -170,9 +220,9 @@ class Controller_Adminarea_Files_Ajax extends Controller_ACL {
                 echo json_encode(
                     Array(
                         "alert" => "Eigenschappen van '" . $oldname . "' succesvol gewijzigd!",
-                        //"dom" => Array(
-                        //    "fill" => Array("#treeItem_" . $fileid   . " > span > a" => $file->longtitle)
-                        //),
+                        "dom" => Array(
+                            "fill" => Array("#treeItem_" . $fileid   . " > span > a" => $file->title)
+                        ),
                         //"scriptsbefore" => Array("adminarea.menu_editdiv_hide()")
                     )
                 );

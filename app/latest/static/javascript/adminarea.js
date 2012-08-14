@@ -84,6 +84,20 @@ var adminarea = {
             wi3.request("adminarea_menu_ajax/addpageposition", $("#wi3_adminarea_menu_addpageform").serializeArray() );
         }
     },
+    
+    addfolder : function() {
+        var selected = this.currentTree().getSelected();
+        if (selected.size() > 0) 
+        {
+            var id = $(selected.get(0)).attr("id");
+            var options = {"location":"under", "refid":id};
+            wi3.request("adminarea_files_ajax/addfolder", options);
+        }
+        else
+        {
+            wi3.request("adminarea_files_ajax/addfolder", {} );
+        }
+    },
 
     reload_iframe : function () {
         var iframe = $("#wi3_edit_iframe");
@@ -200,6 +214,7 @@ var adminarea = {
 			    //alert("text-"+$('span:first',node).text());
 		    },
 		    afterMove:function(destination, source, pos){
+		        //  TODO: only drop on folder
 			    if ($(destination).is("li") && $(destination).attr("id")) {
 				    wi3.request("adminarea_files_ajax/moveFileUnder/", {source: source.attr("id"), destination: destination.attr("id")} );
 			    } else if ($(destination).next("li").attr("id")) {
@@ -224,7 +239,7 @@ var adminarea = {
 			    //alert('Loaded');
 		    },
 		    animate:true,
-		    docToFolderConvert:true
+		    docToFolderConvert: false
 	    });
 
 	    $('#menu_files a').each(function() {
