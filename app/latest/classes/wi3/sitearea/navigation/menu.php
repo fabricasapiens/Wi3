@@ -6,7 +6,7 @@
         // Container class for the menu
         
         // Override
-        public $tag = "ul";
+        public $tagname = "ul";
         
         private $activepage = NULL;
         private $itemTag; // Should always be a li
