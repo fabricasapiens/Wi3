@@ -5,7 +5,7 @@
  * @author	Willem Mulder
  */
  
-class Wi3_Sitearea_Navigation_Base extends Wi3_Htmlobject_Base
+class Wi3_Sitearea_Navigation_Base extends Wi3_Html_Base
 {
     
 } // End class

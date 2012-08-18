@@ -40,9 +40,9 @@
         function __construct() {
             parent::__construct();
             $newTag = new Wi3_Sitearea_Navigation_Base();
-            $this->itemTag($newTag->tag("li"));
+            $this->itemTag($newTag->tagName("li"));
             $newTag2 = new Wi3_Sitearea_Navigation_Base();
-            $this->activeItemTag($newTag2->tag("li")->attr("class", "active"));
+            $this->activeItemTag($newTag2->tagName("li")->attr("class", "active"));
         }
         
         public function renderContent()
