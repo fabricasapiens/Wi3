@@ -13,6 +13,11 @@ class Wi3_Formbuilder extends Wi3_Base
     {
         return Wi3_Formbuilder_Input::inst(NULL, $settings);
     }
+	
+	public function textarea($settings = Array())
+    {
+        return Wi3_Formbuilder_Textarea::inst(NULL, $settings);
+    }
     
     public function dateselector($settings = Array())
     {

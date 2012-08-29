@@ -5,7 +5,7 @@
  * @author	Willem Mulder
  */
  
-class Wi3_Formbuilder_Fileselector extends Wi3_Formbuilder_Base
+class Wi3_Formbuilder_Fileselector extends Wi3_HTML_FormElement
 {
    
     public function addextension($name)
@@ -52,7 +52,8 @@ class Wi3_Formbuilder_Fileselector extends Wi3_Formbuilder_Base
             foreach($images as $image) {
                 $counter++;
                 echo "<div style='float: left; background: #eee; ";
-                if (isset($this->settings->selected) AND $image->id != $this->settings->selected)
+				$val = $this->val();
+                if ($image->id != $val)
                 {
                     echo "opacity: 0.4; ";
                 }
