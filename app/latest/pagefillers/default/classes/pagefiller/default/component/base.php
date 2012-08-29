@@ -21,6 +21,10 @@
             return $componentview;
         }
         
+		protected function fielddata($field) {
+			$dataobject = Wi3::inst()->model->factory("site_array")->setref($field)->setname("image")->load();
+			return $dataobject;
+		}
         
         public static function css($filename)
         {
