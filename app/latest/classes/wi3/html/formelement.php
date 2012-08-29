@@ -19,10 +19,12 @@ abstract class Wi3_Html_FormElement extends Wi3_Html_Base
 		$this->attr("name", $name);
 		$this->label($label);
 		// Load the value from the Session if possible
-		$pageinstance = PageInstanceId::inst();
-		$vars = $pageinstance->getVarsForPageInstance();
-		if (isset($vars[$name])) {
-			$this->val($vars[$name]);
+		if (class_exists("PageInstanceId")) {
+			$pageinstance = PageInstanceId::inst();
+			$vars = $pageinstance->getVarsForPageInstance();
+			if (isset($vars[$name])) {
+				$this->val($vars[$name]);
+			}
 		}
 	}
 	
