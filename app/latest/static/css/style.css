@@ -138,30 +138,17 @@
 		background-position: 0px 30px;
 	}
 	
-	#wi3_add_pages 
+	#wi3_add_pages, #wi3_add_file { width: 450px; background: url('../images/crystal/30/page.png') no-repeat; }
+	#wi3_add_folder { width: 50px; margin-left: 8px; background: url('../images/crystal/30/folder.png') no-repeat; vertical-align: top; }
+	#wi3_add_pages, #wi3_add_file, #wi3_add_folder
 	{
-	    width: 550px; 
 	    border: 1px solid #1891ff;
-	    background: url('../images/crystal/30/page.png') no-repeat;
 	    background-position: 10px 10px;
 	    padding-left: 40px; 
 	    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+	    display: inline-block;
 	}
-	#wi3_add_pages a { border: none; text-decoration: none; display: block; margin: 15px; }
-	
-	#wi3_add_file, #wi3_add_user { 
-		background: url('../images/crystal/58/kmultiple.png') no-repeat; 
-		background-position: 0px 30px;		
-		margin-left: 20px;
-		height: auto !important;
-		height: 100px;
-		min-height: 100px;
-		max-height: 100px;
-		overflow: hidden;
-		width: 500px;	
-		padding-left: 70px;
-		box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
-	}
+	#wi3_add_pages a, #wi3_add_file a, #wi3_add_folder a { border: none; text-decoration: none; display: block; margin: 15px; }
 	
 	#wi3_add_user { width: 600px; }
 	#wi3_add_user #wi3_add_user_form label { float: left; width: 150px; }
@@ -302,6 +289,16 @@
 	    height:15px;
 	    font-size:15px;
 	    background: #ddd url(../images/tree/spacer.gif) 0 0 repeat-y
+    }
+    .simpleTree .folder
+    {
+	    margin-left:-16px;
+	    background: url(../images/tree/emptyfolder.gif) 0 -2px no-repeat;
+    }
+    .simpleTree .folder-last
+    {
+	    margin-left:-16px;
+	    background: url(../images/tree/emptyfolder-last.gif) 0 -2px no-repeat;
     }
     .simpleTree .folder-open
     {

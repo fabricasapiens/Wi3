@@ -103,7 +103,7 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
             }
             else
             {
-                $li = html::anchor("engine/content/" . $page->id, $page->longtitle);
+                $li = html::anchor($page->id, $page->longtitle);
                 echo json_encode(
                     Array(
                         "alert" => "pagina is toegevoegd ",

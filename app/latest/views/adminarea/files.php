@@ -9,12 +9,15 @@
     echo "<div id='wi3_prullenbak'>";
         echo "<div id='prullenbak_onder'><h2>Sleep hier om te verwijderen</h2></div>";
     echo "</div>";
-    echo "<div id='wi3_add_pages'>";
+    echo "<div id='wi3_add_file'>";
         if (isset($message)) { echo "<div style='color: #cc0000; padding: 15px;'>" . $message . "</div>"; }
         echo "<a href='javascript:void(0);' onClick='$(this).next().slideToggle();'><h2>Nieuw bestand</h2></a>";
         echo "<div style='display:none; margin:15px; margin-right: 55px;'>";
         echo View::factory("adminarea/files/addfile");
         echo "</div>";
+    echo "</div>";
+    echo "<div id='wi3_add_folder'>";
+        echo "<a href='javascript:void(0);' onClick='adminarea.addfolder();'><h2>+</h2></a>";
     echo "</div>";
     
     echo "<ul id='files_files' style='position: relative;' class='simpleTree'><li class='root'><span></span><ul>";
@@ -50,8 +53,7 @@
             }
             $prevfile = $file;
             
-            // If page is the same as the 'activepage', then add class='active'
-            echo "<li class='treeItem' id='treeItem_" . $file->id . "'><span>" . html::anchor(Wi3::inst()->urlof->site . "_uploads", $file->title) . "</span>";
+            echo "<li class='treeItem " . ($file->type == "folder" ? "permanent-folder" : "") . "' id='treeItem_" . $file->id . "'><span>" . html::anchor(Wi3::inst()->urlof->site . "_uploads", $file->title) . "</span>";
         }
         // Now, if we have ended far from root (i.e. a deep node), we need to add some </li></ul>
         if ($file->{$prevfile->level_column} > 0)

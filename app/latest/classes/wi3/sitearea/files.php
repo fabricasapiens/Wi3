@@ -91,10 +91,12 @@ class Wi3_Sitearea_Files extends Wi3_Base {
             $reffile = Wi3::inst()->model->factory("site_file", array("id" => $reffile))->load();
         }
 
-        if ($reffile AND $file) {
+        if ($reffile AND $file AND $reffile->type == "folder") {
             $file->move_to_last_child($reffile);
             $file->reload();
             return true;
+        } else {
+            return false;
         }
     }
 
@@ -104,11 +106,15 @@ class Wi3_Sitearea_Files extends Wi3_Base {
         if (is_numeric($file)) {
             $file = Wi3::inst()->model->factory("site_file", array("id" => $file))->load();
         }
-        // TODO: delete all possible resized versions of images!
-        if (file_exists(Wi3::inst()->pathof->site . "data/uploads/" . $file->filename)) {
-            unlink(Wi3::inst()->pathof->site . "data/uploads/" . $file->filename);
+        // Folder are only present in the DB, not on disk
+        if ($file->type == "file") {
+            // TODO: delete all possible resized versions of images!
+            if (file_exists(Wi3::inst()->pathof->site . "data/uploads/" . $file->filename)) {
+                unlink(Wi3::inst()->pathof->site . "data/uploads/" . $file->filename);
+            }
         }
         // Deleting a node in a tree will delete its descendants as well
+        // The model will take care of that
         $file->delete();
         //echo View::factory("profiler/stats");
         return true;

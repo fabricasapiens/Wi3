@@ -9,8 +9,12 @@
     echo "<div id='wi3_edited_file' style='display: none;'>" . $file->id . "</div>";
     echo "<form id='wi3_fileedit_form' onsubmit='wi3.request(\"ajaxengine/editFileSettings/\" + $(\"#wi3_edited_file\").html(), $(\"#wi3_fileedit_form\").serializeArray()); return false;'>";
     
-    echo "<h2>Bestand openen</h2>";
-    echo "<p><label for='link'>links: </label><span name='viewlink'><a target='_blank' href='" . Wi3::inst()->urlof->site . "_uploads/" . $file->filename . "'>openen</a></span></p>";
+    if ($file->type == "file") {
+    
+        echo "<h2>Bestand openen</h2>";
+        echo "<p><label for='link'>links: </label><span name='viewlink'><a target='_blank' href='" . Wi3::inst()->urlof->site . "_uploads/" . $file->filename . "'>openen</a></span></p>";
+        
+    }
     
     echo "<h2>Bestands-instellingen</h2>";
     Wi3::inst()->acl->grant("admin", $file);
@@ -26,7 +30,7 @@
     catch(Exception $e) 
     {
         // Well, no edit-rights obviously
-        echo "<p>U hebt niet de benodige rechten om de pagina-instellingen aan te passen.</p>";
+        echo "<p>U hebt niet de benodige rechten om de bestands-instellingen aan te passen.</p>";
     }
     
     //check whether user is allowed to set the rights of a file
