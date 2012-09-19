@@ -7,6 +7,7 @@
     
 		public static $componentname = "simpleblogarticle";
 		public static $model = Array(
+			"title" => Array("type" => "text"),
 			"image" => Array("type" => "image"),
 			"keywords" => Array("type" => "list", "model" => Array(
 				"keyword" => Array("type" => "text")
