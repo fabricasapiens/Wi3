@@ -34,12 +34,13 @@ class Wi3_Formbuilder_Fileselector extends Wi3_HTML_FormElement
     {
         
         $id = Wi3::date_now();
+        $val = $this->val();
     
         if (isset($this->attributes->label))
         {
             echo "<label for='" . $this->attributes->name . "'></label>";
         }
-        echo "<input type='hidden' name='" . $this->attributes->name . "' id='input_" . $id . "' />";
+        echo "<input type='hidden' name='" . $this->attributes->name . "' id='input_" . $id . "' value='" . $val . "' />";
         echo "<div style='padding: 10px;'>";
         
 			if (isset($this->settings->extensions)) {
@@ -52,7 +53,6 @@ class Wi3_Formbuilder_Fileselector extends Wi3_HTML_FormElement
             foreach($images as $image) {
                 $counter++;
                 echo "<div style='float: left; background: #eee; ";
-				$val = $this->val();
                 if ($image->id != $val)
                 {
                     echo "opacity: 0.4; ";
