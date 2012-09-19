@@ -150,7 +150,7 @@
         
         public function image($file, $xsize=-1) 
         {
-            return $this->site . "_uploads/" . ($xsize != -1 ? $xsize . "/" : "") . basename((is_object($file) ? $file->url : $file));
+            return $this->site . "_uploads/" . ($xsize != -1 ? $xsize . "/" : "") . basename((is_object($file) ? $file->filename : $file));
         }
         
         public static function fillsite() 
