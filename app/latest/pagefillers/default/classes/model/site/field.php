@@ -59,7 +59,7 @@ class Model_Site_Field extends Sprig
         $componentname = "Pagefiller_default_component_" . $this->type;
         $component = $componentname::inst();
 
-            // Send the component of this field an event notice
+        // Send the component of this field an event notice
         $component->fieldevent("create", $this);
 
         return $return;
@@ -89,7 +89,7 @@ class Model_Site_Field extends Sprig
         $componentname = "Pagefiller_default_component_" . $this->type;
         $component = $componentname::inst();
 
-            // Send the component of this field an event notice
+        // Send the component of this field an event notice
         $component->fieldevent("delete", $this);
 
         // Finally delete the field
@@ -165,15 +165,8 @@ class Model_Site_Field extends Sprig
                 {  
                     $content = pq($editableblock)->html(); // Get the default content
                 }
-                // If this field is inline, make sure the underlying blocks are inline as well...
-                if ($this->options["style"]["display"] == "inline")
-                {
-                    $style = "style='display: inline;' ";
-                }
-                else
-                {
-                    $style = "style='display: block;' ";
-                }
+                // Ensure that inner CMS blocks have the same display (i.e. block or inline) as its parent
+                $style = "style='display: inherit'";
                 // Replace the <cms type='editableblock'> blocks into DOM tags
                 if (Wi3::inst()->routing->controller == "adminarea")
                 {
