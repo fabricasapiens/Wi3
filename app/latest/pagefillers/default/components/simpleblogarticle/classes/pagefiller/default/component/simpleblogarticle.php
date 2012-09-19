@@ -25,7 +25,7 @@
         public function render($field)
         {
 			$dataobject = $this->fielddata($field);
-			return $this->view("render")->set("data", $dataobject)->render();
+			return $this->view("render")->set("data", $dataobject)->set("field", $field)->render();
         }
         
         public function fieldactions($field)

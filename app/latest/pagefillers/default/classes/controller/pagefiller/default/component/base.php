@@ -54,7 +54,7 @@
         }
 		
 		protected function fielddata($field) {
-			$dataobject = Wi3::inst()->model->factory("site_array")->setref($field)->setname("image")->load();
+			$dataobject = Wi3::inst()->model->factory("site_array")->setref($field)->setname("data")->load();
 			return $dataobject;
 		}
 		
@@ -68,6 +68,17 @@
             {
                 $dataobject->create();
             }
+			// Check if every part of the model is present in the data, and if not: create it
+			$changed = false;
+			foreach($this::$model as $key => $info) {
+				if (!isset($dataobject->{$key})) {
+					$dataobject->{$key} = "";
+					$changed = true;
+				}
+			}
+			if ($changed) {
+				$dataobject->update();
+			}
             $html = $this->view("component_base_edit", FALSE)->set("field", $field)->set("model", $this::$model)->set("data", $dataobject)->set("componentname", $this::$componentname)->render();
             echo json_encode(
                 Array(

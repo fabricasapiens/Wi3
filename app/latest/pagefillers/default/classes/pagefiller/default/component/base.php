@@ -22,7 +22,7 @@
         }
         
 		protected function fielddata($field) {
-			$dataobject = Wi3::inst()->model->factory("site_array")->setref($field)->setname("image")->load();
+			$dataobject = Wi3::inst()->model->factory("site_array")->setref($field)->setname("data")->load();
 			return $dataobject;
 		}
         
