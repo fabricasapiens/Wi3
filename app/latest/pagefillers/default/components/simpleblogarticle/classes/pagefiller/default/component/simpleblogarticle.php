@@ -25,7 +25,9 @@
         public function render($field)
         {
 			$dataobject = $this->fielddata($field);
-			return $this->view("render")->set("data", $dataobject)->set("field", $field)->render();
+            $image = Wi3::inst()->model->factory("site_file")->values(Array("id"=>$dataobject->image))->load();
+            $imageurl = Wi3::inst()->urlof->image($image,300);
+			return $this->view("render")->set("data", $dataobject)->set("field", $field)->set("imageurl", $imageurl)->render();
         }
         
         public function fieldactions($field)

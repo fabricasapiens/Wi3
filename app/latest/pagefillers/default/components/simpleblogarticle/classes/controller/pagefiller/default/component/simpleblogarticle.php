@@ -12,7 +12,7 @@
 			"keywords" => Array("type" => "list", "model" => Array(
 				"keyword" => Array("type" => "text")
 			)),
-			"text" => Array("type" => "text", "length" => "nolimit", "default" => "Dit is de blogtekst"),
+			"text" => Array("type" => "text", "length" => "nolimit", "default" => "Dit is de blogtekst", "showoneditscreen" => false),
 			"summary" => Array("type" => "text", "default" => "Dit is de samenvatting")
 		);
 		
