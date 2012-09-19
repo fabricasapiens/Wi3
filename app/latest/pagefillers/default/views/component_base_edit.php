@@ -15,7 +15,7 @@
 			if ($info["type"] == "text") {
 				if (isset($info["length"]) && (!is_numeric($info["length"]) || $info["length"] == 0 || $info["length"] > 50)) {
 					$input = Wi3::inst()->formbuilder->textarea();
-				} else if ($info["type"] == "textarea") {
+				} else {
 					$input = Wi3::inst()->formbuilder->input();
 				}
 			} else if ($info["type"] == "date") {
