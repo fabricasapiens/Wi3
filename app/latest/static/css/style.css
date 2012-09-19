@@ -139,6 +139,7 @@
 	}
 	
 	#wi3_add_pages, #wi3_add_file { width: 450px; background: url('../images/crystal/30/page.png') no-repeat; }
+	#wi3_add_pages { width: 550px; }
 	#wi3_add_folder { width: 50px; margin-left: 8px; background: url('../images/crystal/30/folder.png') no-repeat; vertical-align: top; }
 	#wi3_add_pages, #wi3_add_file, #wi3_add_folder
 	{
