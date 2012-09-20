@@ -109,7 +109,7 @@ class Model_Site_Field extends Sprig
         return $this;
     }
     
-    public function render()
+    public function render($editmode = null)
     {
         if (!empty($this->type))
         {
@@ -168,7 +168,11 @@ class Model_Site_Field extends Sprig
                 // Ensure that inner CMS blocks have the same display (i.e. block or inline) as its parent
                 $style = "style='display: inherit'";
                 // Replace the <cms type='editableblock'> blocks into DOM tags
-                if (Wi3::inst()->routing->controller == "adminarea")
+                if ($editmode === null) {
+                    // Determine from controller. Note: this implies that component-controllers will *not* automatically turn into edit-mode
+                    $editmode = Wi3::inst()->routing->controller == "adminarea";
+                }
+                if ($editmode)
                 {
                     // edit-mode
                     $blockcontent = "<div " . $style ." type='editableblock' ref='" . $refname . "' name='" . $name . "' contenteditable='true'>" . $content . "</div>";

@@ -114,7 +114,7 @@
             echo json_encode(
                 Array(
                     "scriptsbefore" => Array(
-                        "0" => "wi3.pagefillers.default.renderFieldHtml('" . $fieldid . "', '" . base64_encode($field->render()) . "');"
+                        "0" => "wi3.pagefillers.default.edittoolbar.renderFieldHtml('" . $fieldid . "', '" . base64_encode($field->render(true)) . "');"
                     )
                 )
             );
