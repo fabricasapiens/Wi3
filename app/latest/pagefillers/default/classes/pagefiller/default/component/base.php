@@ -2,6 +2,19 @@
 
     Class Pagefiller_Default_Component_Base extends Wi3_Base 
     {
+
+        public static $model = Array(
+            "title" => Array("type" => "text"),
+            "image" => Array("type" => "image"),
+            "keywords" => Array("type" => "list", "model" => Array(
+                "keyword" => Array("type" => "text")
+            )),
+            "text" => Array("type" => "text", "length" => "nolimit", "default" => "Dit is de blogtekst", "showoneditscreen" => false),
+            "summary" => Array("type" => "text", "default" => "Dit is de samenvatting"),
+            "entertimestamp" => Array("type" => "text", "showoneditscreen" => false),
+            "publicationtimestamp" => Array("type" => "text", "showoneditscreen" => false),
+            "edittimestamp" => Array("type" => "text", "showoneditscreen" => false)
+        );
     
         public static function view($viewname)
         {
@@ -20,11 +33,53 @@
             $componentview->set_filepath($componentpath.'views/'.$viewname.EXT); // set_filepath sets a complete filename on the View
             return $componentview;
         }
+
+        protected function getModel() {
+            return $this::$model;
+        }
+
+        protected function ensureModelExists($dataobject,$savedata=true) {
+            $changed = false;
+            foreach($this->getModel() as $key => $info) {
+                if (!isset($dataobject->{$key})) {
+                    $dataobject->{$key} = "";
+                    $changed = true;
+                }
+            }
+            if ($changed && $savedata) {
+                $dataobject->update();
+            }
+        }
         
-		protected function fielddata($field) {
-			$dataobject = Wi3::inst()->model->factory("site_array")->setref($field)->setname("data")->load();
-			return $dataobject;
-		}
+		protected function fielddata($field=null, $key=null, $value=null) {
+            if ($field === null) {
+                return false;
+            } else {
+                if (is_string($field)) {
+                    $field = Wi3::inst()->model->factory("site_field")->set("id", $field)->load();
+                }
+            }
+            $dataobject = Wi3::inst()->model->factory("site_array")->setref($field)->setname("data")->load();
+            if ($key === null) {
+                // Ensure that all elements from the model exist
+                $this->ensureModelExists($dataobject, false);
+                return $dataobject;
+            } else {
+                if (is_object($key) && $value !== null) {
+                    // set object as data
+                    $key->setref($field)->setname("data")->update();
+                } elseif (is_string($key)) {
+                    if ($val === null) {
+                        // Return data-field
+                        return $dataobject->{$key};
+                    } else {
+                        // Set data-field
+                        $dataobject->{$key} = $val;
+                        $dataobject->update();
+                    }
+                }
+            }
+        }
         
         public static function css($filename)
         {

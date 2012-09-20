@@ -8,7 +8,8 @@
         public $template;
 		
 		// These are mandatory
-        public static $componentname = "";
+        public static $componentname = "abc";
+        public static $component = null;
 		public static $model = Array();
 		
 		public function before() 
@@ -52,16 +53,41 @@
             $componentview->set_filepath($componentpath.'views/'.$viewname.EXT); // set_filepath sets a complete filename on the View
             return $componentview;
         }
-		
-		protected function fielddata($field) {
-			$dataobject = Wi3::inst()->model->factory("site_array")->setref($field)->setname("data")->load();
-			return $dataobject;
-		}
+
+        protected function getComponent() {
+            if ($this::$component === null) {
+                $componentname = "Pagefiller_Default_Component_" . $this::$componentname;
+                $this::$component = new $componentname;
+            }
+            return $this::$component;
+        }
+
+        protected function getModel() {
+            $component = $this->getComponent();
+            return $component::$model;
+        }
+
+        protected function ensureModelExists($dataobject,$savedata=true) {
+            $changed = false;
+            foreach($this->getModel() as $key => $info) {
+                if (!isset($dataobject->{$key})) {
+                    $dataobject->{$key} = "";
+                    $changed = true;
+                }
+            }
+            if ($changed && $savedata) {
+                $dataobject->update();
+            }
+        }
 		
 		public function action_startEdit() 
         {
             $fieldid = $_POST["fieldid"];
             $field = Wi3::inst()->model->factory("site_field")->set("id", $fieldid)->load();
+            // check for 'callback'
+            if (method_exists($this, "startEdit")) {
+                $this->startEdit($field);
+            }
 			$dataobject = $this->fielddata($field);
             // If data does not exist, create it
             if (!$dataobject->loaded())
@@ -69,17 +95,8 @@
                 $dataobject->create();
             }
 			// Check if every part of the model is present in the data, and if not: create it
-			$changed = false;
-			foreach($this::$model as $key => $info) {
-				if (!isset($dataobject->{$key})) {
-					$dataobject->{$key} = "";
-					$changed = true;
-				}
-			}
-			if ($changed) {
-				$dataobject->update();
-			}
-            $html = $this->view("component_base_edit", FALSE)->set("field", $field)->set("model", $this::$model)->set("data", $dataobject)->set("componentname", $this::$componentname)->render();
+			$this->ensureModelExists($dataobject);
+            $html = $this->view("component_base_edit", FALSE)->set("field", $field)->set("model", $this->getModel())->set("data", $dataobject)->set("componentname", $this::$componentname)->render();
             echo json_encode(
                 Array(
                     "dom" => Array(
@@ -98,12 +115,18 @@
         {
             $fieldid = $_POST["fieldid"];
             $field = Wi3::inst()->model->factory("site_field")->set("id", $fieldid)->load();
+            // check for 'callback'
+            if (method_exists($this, "edit")) {
+                $this->edit($field);
+            }
             $dataobject = $this->fielddata($field);
             // If data does not exist, create it
             if (!$dataobject->loaded())
             {
                 $dataobject->create();
             }
+            // Check if every part of the model is present in the data, and if not: create it
+            $this->ensureModelExists($dataobject);
             // Update data field with data
             foreach($_POST as $index => $value) {
 				$dataobject->{$index} = $value;
@@ -118,6 +141,36 @@
                     )
                 )
             );
+        }
+
+        protected function fielddata($field=null, $key=null, $value=null) {
+            if ($field === null) {
+                return false;
+            } else {
+                if (is_string($field)) {
+                    $field = Wi3::inst()->model->factory("site_field")->set("id", $field)->load();
+                }
+            }
+            $dataobject = Wi3::inst()->model->factory("site_array")->setref($field)->setname("data")->load();
+            if ($key === null) {
+                // Ensure that all elements from the model exist
+                $this->ensureModelExists($dataobject, false);
+                return $dataobject;
+            } else {
+                if (is_object($key) && $value !== null) {
+                    // set object as data
+                    $key->setref($field)->setname("data")->update();
+                } elseif (is_string($key)) {
+                    if ($value === null) {
+                        // Return data-field
+                        return $dataobject->{$key};
+                    } else {
+                        // Set data-field
+                        $dataobject->{$key} = $value;
+                        $dataobject->update();
+                    }
+                }
+            }
         }
         
         public function field($fieldid) {
