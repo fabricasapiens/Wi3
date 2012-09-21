@@ -45,11 +45,6 @@
             $imageurl = Wi3::inst()->urlof->image($image,300);
 			return $this->view("render")->set("data", $dataobject)->set("field", $field)->set("imageurl", $imageurl)->render();
         }
-        
-        public function fieldactions($field)
-        {
-            return "<a href='javascript:void(0)' onclick='wi3.request(\"pagefiller_default_component_simpleblogarticle/startEdit\", {fieldid: " . $field->id . "})'>wijzigen</a>";
-        }
     }
 
 ?>

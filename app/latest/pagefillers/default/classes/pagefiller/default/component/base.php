@@ -86,6 +86,11 @@
             $callingClassLastpart = substr($callingClass, strrpos($callingClass, "_")+1);
             return $callingClassLastpart;
         }
+
+        public function fieldactions($field)
+        {
+            return "<a href='javascript:void(0)' onclick='wi3.request(\"pagefiller_default_component_" . self::get_calling_componentname() . "/startEdit\", {fieldid: " . $field->id . "})'>wijzigen</a>";
+        }
         
     }
     
