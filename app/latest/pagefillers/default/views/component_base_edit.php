@@ -41,7 +41,7 @@
 						$input->set("fileextensions", $info["extensions"]);
 					}
 				} else if ($info["type"] == "number") {
-					$input = Wi3::inst()->formbuilder->input();
+					$input = Wi3::inst()->formbuilder->input()->attr("type", "number");
 				} else if ($info["type"] == "list") {
 					// TODO: lists of elements with add/remove/move etc
 					// TODO: some lists like tags have a special list-interface
