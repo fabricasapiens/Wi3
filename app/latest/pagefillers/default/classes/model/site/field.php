@@ -14,24 +14,23 @@ class Model_Site_Field extends Sprig
     {
         // Overrule the names of the Roles and User_Token model to the Site_... version
         $this->_fields = array(
-        'id' => new Sprig_Field_Auto,
+            'id' => new Sprig_Field_Auto,
 
-        '_refclass' => new Sprig_Field_Char(array(
-                            'empty'  => TRUE, // Default FALSE
-                    )),
-        '_refid' => new Sprig_Field_Char(array(
-                            'empty'  => TRUE, // Default FALSE
-                    )),
+            '_refclass' => new Sprig_Field_Char(array(
+                'empty'  => TRUE, // Default FALSE
+            )),
+            '_refid' => new Sprig_Field_Char(array(
+                'empty'  => TRUE, // Default FALSE
+            )),
 
-        'name' => new Sprig_Field_Char(array(
-                            'empty'  => TRUE, // Default FALSE
-                    )),
+            'name' => new Sprig_Field_Char(array(
+                'empty'  => TRUE, // Default FALSE
+            )),
 
-                    'type' => new Sprig_Field_Char(array(
-                            'empty'  => TRUE, // Default FALSE
-                    ))
-
-            );
+            'type' => new Sprig_Field_Char(array(
+                'empty'  => TRUE, // Default FALSE
+            ))
+        );
     }
 
     public function create()
