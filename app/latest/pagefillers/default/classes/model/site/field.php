@@ -85,12 +85,15 @@ class Model_Site_Field extends Sprig
             }
         }
 
-        // Create component 
-        $componentname = "Pagefiller_default_component_" . $this->type;
-        $component = $componentname::inst();
+        // For robustness, do not assume a field-type
+        if (!empty($this->type)) {
+            // Create component 
+            $componentname = "Pagefiller_default_component_" . $this->type;
+            $component = $componentname::inst();
 
-            // Send the component of this field an event notice
-        $component->fieldevent("delete", $this);
+                // Send the component of this field an event notice
+            $component->fieldevent("delete", $this);
+        }
 
         // Finally delete the field
         return parent::delete($query); // Pass the create function to the parent
@@ -105,7 +108,7 @@ class Model_Site_Field extends Sprig
     public function setref($object)
     {
         $this->_refclass = get_class($object);
-        $this->_refid = $object->{$object->pk()}; // It is assumed that any object has an its primary key available through $obj->pk()
+        $this->_refid = $object->{$object->pk()}; // It is assumed that any object has a primary key available through $obj->pk()
         return $this;
     }
     
