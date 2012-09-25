@@ -167,6 +167,7 @@ class Controller_Pagefiller_Default_Edittoolbar_Ajax extends Controller_ACL {
     
     public function action_insertfield()
     {
+        // TODO: (?) use generic class functions and consolidate with pagefiller-fieldcreation at runtime
         // TODO: per-user checking for editing-access to this page
         // an admin-role is assumed for bare login-access to the adminarea, other roles should define access to individual pages
         $page = Wi3::inst()->model->factory("site_page")->set("id", $_POST["pageid"])->load();
