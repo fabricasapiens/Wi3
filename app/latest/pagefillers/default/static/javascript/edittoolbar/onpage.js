@@ -117,6 +117,14 @@ wi3.pagefillers.default.edittoolbar = {
             }
         }
     },
+	
+	renderFieldHtml : function(fieldid, html) {
+		// html is base64 encoded
+        html = $.base64.decode(html);
+		$("[fieldid=" + fieldid + "] [type=fieldcontent]").html(html);
+		// make the hover work that enables resizing, deletion etc for child components
+        wi3.pagefillers.default.edittoolbar.enableFieldActions($("[fieldid=" + fieldid + "] *[fieldid]"));
+	},
     
     insertFieldHtml : function(fieldid, html, replacetype)
     {

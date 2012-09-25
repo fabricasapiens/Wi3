@@ -5,7 +5,7 @@
  * @author	Willem Mulder
  */
  
-class Wi3_Formbuilder_Fileselector extends Wi3_Formbuilder_Base
+class Wi3_Formbuilder_Fileselector extends Wi3_HTML_FormElement
 {
    
     public function addextension($name)
@@ -34,12 +34,13 @@ class Wi3_Formbuilder_Fileselector extends Wi3_Formbuilder_Base
     {
         
         $id = Wi3::date_now();
+        $val = $this->val();
     
         if (isset($this->attributes->label))
         {
             echo "<label for='" . $this->attributes->name . "'></label>";
         }
-        echo "<input type='hidden' name='" . $this->attributes->name . "' id='input_" . $id . "' />";
+        echo "<input type='hidden' name='" . $this->attributes->name . "' id='input_" . $id . "' value='" . $val . "' />";
         echo "<div style='padding: 10px;'>";
         
 			if (isset($this->settings->extensions)) {
@@ -52,7 +53,7 @@ class Wi3_Formbuilder_Fileselector extends Wi3_Formbuilder_Base
             foreach($images as $image) {
                 $counter++;
                 echo "<div style='float: left; background: #eee; ";
-                if (isset($this->settings->selected) AND $image->id != $this->settings->selected)
+                if ($image->id != $val)
                 {
                     echo "opacity: 0.4; ";
                 }

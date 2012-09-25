@@ -5,7 +5,7 @@
  * @author	Willem Mulder
  */
  
-class Wi3_Formbuilder_Dateselector extends Wi3_Formbuilder_Base
+class Wi3_Formbuilder_Dateselector extends Wi3_HTML_FormElement
 {
    
     public function render()

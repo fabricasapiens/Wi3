@@ -14,24 +14,23 @@ class Model_Site_Field extends Sprig
     {
         // Overrule the names of the Roles and User_Token model to the Site_... version
         $this->_fields = array(
-        'id' => new Sprig_Field_Auto,
+            'id' => new Sprig_Field_Auto,
 
-        '_refclass' => new Sprig_Field_Char(array(
-                            'empty'  => TRUE, // Default FALSE
-                    )),
-        '_refid' => new Sprig_Field_Char(array(
-                            'empty'  => TRUE, // Default FALSE
-                    )),
+            '_refclass' => new Sprig_Field_Char(array(
+                'empty'  => TRUE, // Default FALSE
+            )),
+            '_refid' => new Sprig_Field_Char(array(
+                'empty'  => TRUE, // Default FALSE
+            )),
 
-        'name' => new Sprig_Field_Char(array(
-                            'empty'  => TRUE, // Default FALSE
-                    )),
+            'name' => new Sprig_Field_Char(array(
+                'empty'  => TRUE, // Default FALSE
+            )),
 
-                    'type' => new Sprig_Field_Char(array(
-                            'empty'  => TRUE, // Default FALSE
-                    ))
-
-            );
+            'type' => new Sprig_Field_Char(array(
+                'empty'  => TRUE, // Default FALSE
+            ))
+        );
     }
 
     public function create()
@@ -59,7 +58,7 @@ class Model_Site_Field extends Sprig
         $componentname = "Pagefiller_default_component_" . $this->type;
         $component = $componentname::inst();
 
-            // Send the component of this field an event notice
+        // Send the component of this field an event notice
         $component->fieldevent("create", $this);
 
         return $return;
@@ -91,7 +90,7 @@ class Model_Site_Field extends Sprig
             $componentname = "Pagefiller_default_component_" . $this->type;
             $component = $componentname::inst();
 
-                // Send the component of this field an event notice
+            // Send the component of this field an event notice
             $component->fieldevent("delete", $this);
         }
 
@@ -112,7 +111,7 @@ class Model_Site_Field extends Sprig
         return $this;
     }
     
-    public function render()
+    public function render($editmode = null)
     {
         if (!empty($this->type))
         {
@@ -168,17 +167,14 @@ class Model_Site_Field extends Sprig
                 {  
                     $content = pq($editableblock)->html(); // Get the default content
                 }
-                // If this field is inline, make sure the underlying blocks are inline as well...
-                if ($this->options["style"]["display"] == "inline")
-                {
-                    $style = "style='display: inline;' ";
-                }
-                else
-                {
-                    $style = "style='display: block;' ";
-                }
+                // Ensure that inner CMS blocks have the same display (i.e. block or inline) as its parent
+                $style = "style='display: inherit'";
                 // Replace the <cms type='editableblock'> blocks into DOM tags
-                if (Wi3::inst()->routing->controller == "adminarea")
+                if ($editmode === null) {
+                    // Determine from controller. Note: this implies that component-controllers will *not* automatically turn into edit-mode
+                    $editmode = Wi3::inst()->routing->controller == "adminarea";
+                }
+                if ($editmode)
                 {
                     // edit-mode
                     $blockcontent = "<div " . $style ." type='editableblock' ref='" . $refname . "' name='" . $name . "' contenteditable='true'>" . $content . "</div>";

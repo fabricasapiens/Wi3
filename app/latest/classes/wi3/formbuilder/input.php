@@ -5,20 +5,12 @@
  * @author	Willem Mulder
  */
  
-class Wi3_Formbuilder_Input extends Wi3_Formbuilder_Base
+class Wi3_Formbuilder_Input extends Wi3_HTML_Input
 {
-   
-    public function render()
-    {
-        $ret = "<label for='" . $this->attributes->name . "'/><input name='" . $this->attributes->name . "' ";
-        if (isset($this->attributes->value)) 
-        {
-            $ret .= "value='" . $this->attributes->value . "' ";
-        }
-        $ret .= "></input>";
-        return $ret;
-    }
-   
+   public function __construct($name) {
+		parent::__construct($name);
+		$this->attr("style", "width: 100%;");
+	}
 }
     
 ?>

@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die ('No direct script access.');
 /**
- * Sprig Auth User
+ * Model Site Data
  * @package Wi3
  * @author	Willem Mulder
  */

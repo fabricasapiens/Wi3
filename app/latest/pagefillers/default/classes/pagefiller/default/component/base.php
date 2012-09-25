@@ -20,7 +20,53 @@
             $componentview->set_filepath($componentpath.'views/'.$viewname.EXT); // set_filepath sets a complete filename on the View
             return $componentview;
         }
+
+        protected function getModel() {
+            return $this::$model;
+        }
+
+        protected function ensureModelExists($dataobject,$savedata=true) {
+            $changed = false;
+            foreach($this->getModel() as $key => $info) {
+                if (!isset($dataobject->{$key})) {
+                    $dataobject->{$key} = "";
+                    $changed = true;
+                }
+            }
+            if ($changed && $savedata) {
+                $dataobject->update();
+            }
+        }
         
+		protected function fielddata($field=null, $key=null, $value=null) {
+            if ($field === null) {
+                return false;
+            } else {
+                if (is_string($field)) {
+                    $field = Wi3::inst()->model->factory("site_field")->set("id", $field)->load();
+                }
+            }
+            $dataobject = Wi3::inst()->model->factory("site_array")->setref($field)->setname("data")->load();
+            if ($key === null) {
+                // Ensure that all elements from the model exist
+                $this->ensureModelExists($dataobject, false);
+                return $dataobject;
+            } else {
+                if (is_object($key) && $value !== null) {
+                    // set object as data
+                    $key->setref($field)->setname("data")->update();
+                } elseif (is_string($key)) {
+                    if ($value === null) {
+                        // Return data-field
+                        return $dataobject->{$key};
+                    } else {
+                        // Set data-field
+                        $dataobject->{$key} = $value;
+                        $dataobject->update();
+                    }
+                }
+            }
+        }
         
         public static function css($filename)
         {
@@ -39,6 +85,11 @@
             $callingClass = get_called_class(); // Uses late static binding
             $callingClassLastpart = substr($callingClass, strrpos($callingClass, "_")+1);
             return $callingClassLastpart;
+        }
+
+        public function fieldactions($field)
+        {
+            return "<a href='javascript:void(0)' onclick='wi3.request(\"pagefiller_default_component_" . self::get_calling_componentname() . "/startEdit\", {fieldid: " . $field->id . "})'>wijzigen</a>";
         }
         
     }

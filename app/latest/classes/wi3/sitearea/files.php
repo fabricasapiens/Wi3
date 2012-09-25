@@ -163,9 +163,8 @@ class Wi3_Sitearea_Files extends Wi3_Base {
         // Do a very inefficient fetch of all folders
         // TODO: make this more efficient
         $file = Wi3::inst()->model->factory("site_file");
-        // where("type", "=", "folder")->and_ does not work
-        // TODO: use 'type' to determine whether file is a folder
-        $query = DB::select()->where("ABS(\"".$file->right_column."\"-\"".$file->left_column."\")", ">", 1)->order_by($file->left_column);
+		// old: ->where("ABS(\"".$file->right_column."\"-\"".$file->left_column."\")", ">", 1)
+        $query = DB::select()->where("type", "=", "folder")->order_by($file->left_column);
         $folders = $file->load($query, NULL);
         // Limit the folders to those that contain files that satisfy the filteroptions
         if (isset($filteroptions["fileextensions"])) {
