@@ -1,5 +1,13 @@
 <?php
 
+    // Dummy class used as reference for sitefields. See below.
+    Class siteFieldObject {
+        public $id = "0";
+        public function pk() { 
+            return "id"; 
+        }
+    }
+
     Class Pagefiller_default extends Wi3_Base 
     {
     
@@ -95,6 +103,33 @@
             $html = $templateview->render();
             
             //-------------------
+            // Helper functions for editing and viewing
+            //-------------------
+            function getAllFields($content) {
+                $fields = $content->find("cms[type=field]");
+                $sitefields = $content->find("cms[type=sitefield]");
+                $allfields = Array();
+                foreach($sitefields as $pqfield) {
+                    $allfields[] = $pqfield;
+                }
+                foreach($fields as $pqfield) {
+                    $allfields[] = $pqfield;
+                }
+                return $allfields;
+            }
+
+            function getField($pqfield, $page) {
+                $fieldid = pq($pqfield)->attr("fieldid");
+                $type = pq($pqfield)->attr("type");
+                if ($type == "field") {
+                    return Wi3::inst()->model->factory("site_field")->setref($page)->set("id", $fieldid)->load();
+                } else if ($type == "sitefield") {
+                    $siteFieldObject = new siteFieldObject();
+                    return Wi3::inst()->model->factory("site_field")->setref($siteFieldObject)->set("id", $fieldid)->load();
+                }
+            }
+
+            //-------------------
             // Editing
             //-------------------
             
@@ -117,7 +152,41 @@
                 
                 // Replace all the <cms> blocks with the appropriate content
                 $html = phpQuery::newDocument($html); // Give PHPQuery a context to work with
-                $editableblocks = pq("cms[type=editableblock]");
+
+                function replacePQFieldsWithAdminHTML($content,$page,$controller) {
+                    $allfields = getAllFields($content);
+                    foreach($allfields as $pqfield)
+                    {
+                        $field = getField($pqfield, $page);
+                        if (!$field->loaded())
+                        {
+                            // Create field
+                            $fieldtype = pq($pqfield)->attr("fieldtype");
+                            if (pq($pqfield)->attr("type") == "field") {
+                                $ref = $page;
+                            } else {
+                                $ref = new siteFieldObject();
+                            }
+                            $field = Wi3::inst()->model->factory("site_field")->setref($ref)->set("type", $fieldtype)->create();
+                        }
+                        if ($field->loaded())
+                        {
+                            $postprocessingid = Wi3::inst()->date_now(); // a unique id for a field is necessary to be able to match properly in the case of nested fields
+                            $wraphtml = "<postprocessing" . $postprocessingid . ">" . $controller->view("fieldrender_edit")->set("field", $field)->set("pqfield", $pqfield)->render() . "</postprocessing" . $postprocessingid . ">"; // the <postprocessing> tags are, obviously, for postprocessing. See below
+                            pq($pqfield)->replaceWith($wraphtml);
+                        }
+                    }
+                }
+
+                //-------------------
+                // Fields outside editable blocks
+                //-------------------
+                replacePQFieldsWithAdminHTML($html,$page,$this);
+
+                //-------------------
+                // Editable blocks and the fields therein
+                //-------------------
+                $editableblocks = $html->find("cms[type=editableblock]");
                 foreach($editableblocks as $editableblock)
                 {
                     $name = pq($editableblock)->attr("name");
@@ -133,50 +202,38 @@
                     }
                     // Replace the <cms type='field'> blocks and expand them into real field-renders
                     $content = phpQuery::newDocument($content);
-                    $fields = $content->find("cms[type=field]");
-                    foreach($fields as $pqfield)
-                    {
-                        $fieldid = pq($pqfield)->attr("fieldid");
-                        $field = Wi3::inst()->model->factory("site_field")->setref($page)->set("id", $fieldid)->load();
-                        if ($field->loaded())
-                        {
-                            $postprocessingid = Wi3::inst()->date_now(); // a unique id for a field is necessary to be able to match properly in the case of nested fields
-                            $wraphtml = "<postprocessing" . $postprocessingid . ">" . $this->view("fieldrender_edit")->set("field", $field)->set("pqfield", $pqfield)->render() . "</postprocessing" . $postprocessingid . ">"; // the <postprocessing> tags are, obviously, for postprocessing. See below
-                            pq($pqfield)->replaceWith($wraphtml);
-                        }
-                    }
+                    replacePQFieldsWithAdminHTML($content,$page,$this);
                     $blockcontent = "<div type='editableblock' name='" . $name . "' contenteditable='true'>" . $content . "</div>";
                     pq($editableblock)->replaceWith($blockcontent);
                 }
             }
+            
+            //-------------------
+            // Pure viewing
+            //-------------------
+            
             else
             {
                 // Simply display the contents of the block, not making them editable
                 $html = phpQuery::newDocument($html); // Give PHPQuery a context to work with
-                $editableblocks = pq("cms[type=editableblock]");
-                foreach($editableblocks as $editableblock)
-                {
-                    $name = pq($editableblock)->attr("name");
-                    $id = pq($editableblock)->attr("id");
-                    // Try to load up to date content for this block, otherwise show the default content 
-                    $data = $data = Wi3::inst()->model->factory("site_data")->setref($page)->set("name",$name)->load();
-                    if ($data->loaded())
+
+                function replacePQFieldsWithViewHTML($content,$page) {
+                    $allfields = getAllFields($content);
+                    foreach($allfields as $pqfield)
                     {
-                        $content = $data->data;
-                    }
-                    else
-                    {  
-                        $content = pq($editableblock)->html(); // Get the default content
-                    }
-                    // Replace the <cms type='field'> blocks and expand them into real field-renders
-                    $content = phpQuery::newDocument($content);
-                    $fields = $content->find("cms[type=field]");
-                    foreach($fields as $pqfield)
-                    {
-                        $fieldid = pq($pqfield)->attr("fieldid");
-                        $field = Wi3::inst()->model->factory("site_field")->setref($page)->set("id", $fieldid)->load();
-                        if ($field->loaded())
+                        $field = getField($pqfield, $page);
+                        if (!$field->loaded())
                         {
+                            // Create field
+                            $fieldtype = pq($pqfield)->attr("fieldtype");
+                            if (pq($pqfield)->attr("type") == "field") {
+                                $ref = $page;
+                            } else {
+                                $ref = new siteFieldObject();
+                            }
+                            $field = Wi3::inst()->model->factory("site_field")->setref($ref)->set("type", $fieldtype)->create();
+                        }
+                        if ($field->loaded()){
                             // Get style options
                             $style = Array();
                             $style["float"] = pq($pqfield)->attr("style_float");
@@ -203,6 +260,43 @@
                             pq($pqfield)->replaceWith($wraphtml);
                         }
                     }
+                }
+
+                //-------------------
+                // Fields outside editable blocks
+                //-------------------
+                replacePQFieldsWithViewHTML($html,$page);
+
+                //-------------------
+                // Editable blocks and the fields therein
+                //-------------------
+                $editableblocks = $html->find("cms[type=editableblock]");
+                foreach($editableblocks as $editableblock)
+                {
+                    $name = pq($editableblock)->attr("name");
+                    $id = pq($editableblock)->attr("id");
+                    // Try to load up to date content for this block, otherwise show the default content 
+                    $data = $data = Wi3::inst()->model->factory("site_data")->setref($page)->set("name",$name)->load();
+                    if ($data->loaded())
+                    {
+                        $content = $data->data;
+                    }
+                    else
+                    {  
+                        $content = pq($editableblock)->html(); // Get the default content
+                    }
+                    // Replace the <cms type='field'> and <cms type='sitefield'> blocks and expand them into real field-renders
+                    // For normal fields, the fieldid is unique for the page
+                    // For sitefields, the fieldid is unique for the site, using the siteFieldObject
+                    // Example layout:
+                    /**
+                    * <cms type='field' fieldid='uniqueid' style_float="left" style_padding="20px">
+                    * </cms>
+                    */                   
+
+                    $content = phpQuery::newDocument($content);
+                    replacePQFieldsWithViewHTML($content,$page);
+                    
                     // Create block, and add id if it was present in the <cms> block
                     if (!empty($id))
                     {
