@@ -13,7 +13,7 @@
                 "keyword" => Array("type" => "text")
             )),
             "text" => Array("type" => "text", "length" => "nolimit", "default" => "Dit is de blogtekst", "showoneditscreen" => false),
-            "summary" => Array("type" => "text", "default" => "Dit is de samenvatting"),
+            "summary" => Array("type" => "text",  "length" => "nolimit", "default" => "Dit is de samenvatting"),
             "entertimestamp" => Array("type" => "text", "showoneditscreen" => false),
             "publicationtimestamp" => Array("type" => "text", "showoneditscreen" => false),
             "edittimestamp" => Array("type" => "text", "showoneditscreen" => false)
