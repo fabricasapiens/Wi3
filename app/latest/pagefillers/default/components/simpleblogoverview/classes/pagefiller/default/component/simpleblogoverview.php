@@ -53,7 +53,7 @@
                 $data = $this->fielddata($blogfield);
                 $data->pageurl = $pageurl;
                 $image = Wi3::inst()->model->factory("site_file")->values(Array("id"=>$data->image))->load();
-                $imageurl = Wi3::inst()->urlof->image($image,100);
+                $imageurl = Wi3::inst()->urlof->image($image,300);
                 $data->imageurl = $imageurl;
                 $articles[] = $data;
             }
