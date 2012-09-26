@@ -120,13 +120,24 @@
 
             function getField($pqfield, $page) {
                 $fieldid = pq($pqfield)->attr("fieldid");
+                $fieldname = pq($pqfield)->attr("fieldname");
                 $type = pq($pqfield)->attr("type");
+                $field = Wi3::inst()->model->factory("site_field");
                 if ($type == "field") {
-                    return Wi3::inst()->model->factory("site_field")->setref($page)->set("id", $fieldid)->load();
+                    if ($fieldid) {
+                        return $field->setref($page)->set("id", $fieldid)->load();
+                    } else if ($fieldname) {
+                        return $field->setref($page)->set("name", $fieldname)->load();
+                    }
                 } else if ($type == "sitefield") {
                     $siteFieldObject = new siteFieldObject();
-                    return Wi3::inst()->model->factory("site_field")->setref($siteFieldObject)->set("id", $fieldid)->load();
+                    if ($fieldid) {
+                        return $field->setref($siteFieldObject)->set("id", $fieldid)->load();
+                    } else if ($fieldname) {
+                        return $field->setref($siteFieldObject)->set("name", $fieldname)->load();
+                    }
                 }
+                return $field; // loaded() is false
             }
 
             //-------------------
@@ -167,7 +178,13 @@
                             } else {
                                 $ref = new siteFieldObject();
                             }
-                            $field = Wi3::inst()->model->factory("site_field")->setref($ref)->set("type", $fieldtype)->create();
+                            $field = Wi3::inst()->model->factory("site_field")->setref($ref)->set("type", $fieldtype);
+                            // Store name, if present
+                            $fieldname = pq($pqfield)->attr("fieldname");
+                            if ($fieldname) {
+                                $field->set("name", $fieldname);
+                            }
+                            $field->create();
                         }
                         if ($field->loaded())
                         {
@@ -224,6 +241,7 @@
                         $field = getField($pqfield, $page);
                         if (!$field->loaded())
                         {
+                          
                             // Create field
                             $fieldtype = pq($pqfield)->attr("fieldtype");
                             if (pq($pqfield)->attr("type") == "field") {
@@ -231,7 +249,13 @@
                             } else {
                                 $ref = new siteFieldObject();
                             }
-                            $field = Wi3::inst()->model->factory("site_field")->setref($ref)->set("type", $fieldtype)->create();
+                            $field = Wi3::inst()->model->factory("site_field")->setref($ref)->set("type", $fieldtype);
+                            // Store name, if present
+                            $fieldname = pq($pqfield)->attr("fieldname");
+                            if ($fieldname) {
+                                $field->set("name", $fieldname);
+                            }
+                            $field->create();
                         }
                         if ($field->loaded()){
                             // Get style options

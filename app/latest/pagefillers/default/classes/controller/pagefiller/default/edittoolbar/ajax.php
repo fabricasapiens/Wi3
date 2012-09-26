@@ -37,6 +37,7 @@ class Controller_Pagefiller_Default_Edittoolbar_Ajax extends Controller_ACL {
             "attributes" => Array(
                 'type' => 'Text',
                 'fieldid' => 'Text',
+                'fieldname' => 'Text',
                 'name' => 'Text',
                 'style_float' => 'Text',
                 'style_width' => 'Text',
@@ -140,7 +141,8 @@ class Controller_Pagefiller_Default_Edittoolbar_Ajax extends Controller_ACL {
         $fields = Wi3::inst()->model->factory("site_field")->setref($page)->load(Null, FALSE); // FALSE for no limit to the amount of results
         foreach($fields as $field)
         {
-            if (!isset($allfields[$field->id]))
+            // Skip the fields that have a name. Those are the sitefields or pagefields set in the templates.
+            if (empty($field->name) && !isset($allfields[$field->id]))
             {
                 $field->delete();
                 // Remove the different associated field-data, for as far that is not already done...
