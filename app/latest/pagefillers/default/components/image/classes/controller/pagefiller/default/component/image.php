@@ -2,39 +2,10 @@
 
 <?php
 
-    class Controller_Pagefiller_Default_Component_Image extends Controller_ACL
+    class Controller_Pagefiller_Default_Component_Image extends Controller_Pagefiller_Default_Component_Base
     {
-    
-        public $template;
-    
-        public function before() 
-        {
-            Wi3::inst()->acl->grant("*", $this, "login"); // Everybody can access login and logout function in this controller
-            Wi3::inst()->acl->grant("*", $this, "logout");
-            Wi3::inst()->acl->grant("admin", $this); // Admin role can access every function in this controller
-            Wi3::inst()->acl->check($this);
-        }
-        
-        public function login()
-        {
-            
-        }
-        
-        public static function view($viewname)
-        {
-            // Make this component view extend the base template, with their locations set to the component folders
-            $componenturl = Wi3::inst()->urlof->pagefillerfiles("default") . "components/image/";
-            $componentpath = Wi3::inst()->pathof->pagefiller("default") . "components/image/";
-            $componentbaseview = Wi3_Baseview::instance('imagecomponentbaseview', array(
-                'javascript_url' => $componenturl.'static/javascript/', 
-                'javascript_path' => $componentpath.'static/javascript/',
-                'css_url' => $componenturl.'static/css/',
-                'css_path' => $componentpath.'static/css/'
-            )); 
-            $componentview = View::factory()->set("this", $componentbaseview);
-            $componentview->set_filepath($componentpath.'views/'.$viewname.EXT); // set_filepath sets a complete filename on the View
-            return $componentview;
-        }
+
+        public static $componentname = "image";
     
         public function action_startEditImage() 
         {
