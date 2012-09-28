@@ -258,29 +258,42 @@
                             $field->create();
                         }
                         if ($field->loaded()){
-                            // Get style options
-                            $style = Array();
-                            $style["float"] = pq($pqfield)->attr("style_float");
-                            $style["padding"] = pq($pqfield)->attr("style_padding");
-                            $style["display"] = "block";
+                            // Get set style
+                            $style = pq($pqfield)->attr("style");
                             $field->options["style"] = $style;
+                            // Get style options
+                            $stylearray = Array();
+                            $stylearray["float"] = pq($pqfield)->attr("style_float");
+                            $stylearray["padding"] = pq($pqfield)->attr("style_padding");
+                            // Only set an explicit display block if no display is found in '$style'
+                            if (strpos($style, "display:") === false) {
+                                 $stylearray["display"] = "block";
+                            }
+                            $field->options["stylearray"] = $stylearray;
                             // Render the field, in which the field can also change the style options
                             $fieldhtml = $field->render();
                             // The field can override these options, if it wants
                             $style = $field->options["style"];
+                            $stylearray = $field->options["stylearray"];
                             // Once the field is rendered, it is known whether it wants to be an inline element, or a block element
+                            // Use float and padding only if element is not inline
+                            if (strpos($style, "display:inline") !== false || 
+                                (isset($stylearray["display"]) && $stylearray["display"] == "inline"))
+                            {
+                                unset($stylearray["float"]);
+                                unset($stylearray["padding"]);
+                            }
+                            // Calculate total style
+                            $totalstyle = $style;
+                            foreach($stylearray as $name => $val) {
+                                if (!empty($val)) {
+                                    $totalstyle .= "; " . $name . ":" . $val;
+                                }
+                            }
+                            $totalstyle .= "; position: relative;";
                             // Replace the <cms> part with a render of the field
                             $postprocessingid = Wi3::inst()->date_now(); // a unique id for a field is necessary to be able to match properly in the case of nested fields
-                            if ($style["display"] == "block")
-                            {
-                                // Block element, use float and padding
-                                $wraphtml = "<postprocessing" . $postprocessingid . "><div type='field' fieldid='" . $field->id . "' style='float: " . $style["float"] . "; display: " . $style["display"] . "; padding: " . $style["padding"] . "; position: relative;' contenteditable='false'>" . $fieldhtml . "</div></postprocessing" . $postprocessingid . ">";
-                            }
-                            else
-                            {
-                                // Inline element, do not use the float and padding property
-                                $wraphtml = "<postprocessing" . $postprocessingid . "><div type='field' fieldid='" . $field->id . "' style='display: " . $style["display"] . "; position: relative;' contenteditable='false'>" . $fieldhtml . "</div></postprocessing" . $postprocessingid . ">";
-                            }
+                            $wraphtml = "<postprocessing" . $postprocessingid . "><div type='field' fieldid='" . $field->id . "' style='" . $totalstyle . "' contenteditable='false'>" . $fieldhtml . "</div></postprocessing" . $postprocessingid . ">";
                             pq($pqfield)->replaceWith($wraphtml);
                         }
                     }
