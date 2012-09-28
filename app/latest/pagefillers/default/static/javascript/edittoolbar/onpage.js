@@ -249,6 +249,7 @@ wi3.pagefillers.default.edittoolbar = {
     
     enableFieldActions : function(jqueryobj)
     {
+        // jqueryobj is an array of elements
         jqueryobj = $(jqueryobj);
         jqueryobj.bind("mouseenter", function(event) {
             
@@ -269,6 +270,11 @@ wi3.pagefillers.default.edittoolbar = {
             
             // Hide the delete and placement buttons
             $(this).find("[type=fieldbuttons]").hide();
+        }).bind("click", function(event) {
+            if (event.ctrlKey === true) {
+                // Pick first edit-action
+                $(this).find("[block=fieldactions] a").first().click();
+            }
         });
         // Find the buttons inside the fields and attach the proper actions to them 
         jqueryobj.find("[type=fieldbuttons] [action=remove]").bind("click", function(event) {
