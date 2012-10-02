@@ -19,6 +19,14 @@ abstract class Sprig extends Sprig_Core
         // Now construct the Sprig
         return parent::__construct();
     }
+
+    public function updateorcreate() {
+        if ($this->loaded()) {
+            $this->update();
+        } else {
+            $this->create();
+        }
+    }
         
     static public function usedb($db) 
     {
