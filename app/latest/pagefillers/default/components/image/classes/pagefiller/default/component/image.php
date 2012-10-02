@@ -14,6 +14,7 @@
                 Controller_Pagefiller_Default_Edittoolbar_Ajax::$responseoptions["inserttype"] = "replace"; // Replace the current selection
                 // Create the data that is associated with this field
                 $imagedata = Wi3::inst()->model->factory("site_data")->setref($field)->setname("image")->create();
+                $imagewidth = Wi3::inst()->model->factory("site_data")->setref($field)->setname("width")->create();
             }
             else if ($eventtype == "delete")
             {
@@ -25,6 +26,22 @@
         {
             // Load the image that is associated with this field 
             $imagedata = Wi3::inst()->model->factory("site_data")->setref($field)->setname("image")->load();
+            $width = $field->options["stylearray"]["width"];
+            if (empty($width)) {
+                // No hard value for width means that we can fallback to our stored value
+                $width = Wi3::inst()->model->factory("site_data")->setref($field)->setname("width")->load()->data;
+                if (empty($width)) {
+                    $width = "200";
+                }
+            } else {
+                // Hard value is set. Save to fallback
+                if (strpos($width, "px") !== false) {
+                    $width = substr($width, 0, -2);
+                }
+                $widthobj = Wi3::inst()->model->factory("site_data")->setref($field)->setname("width")->load();
+                $widthobj->data = $width;
+                $widthobj->updateorcreate();
+            }
             if (empty($imagedata->data))
             {
                 return "<img src='" . Wi3::inst()->urlof->pagefillerfiles . "components/image/static/images/noimage.png'> <cms type='editableblock' name='description'>Beschrijving van afbeelding</cms>";
@@ -34,7 +51,7 @@
                 // fetch image-id and render the image
                 $fileid = $imagedata->data;
                 $file = Wi3::inst()->model->factory("site_file")->set("id", $fileid)->load();
-                return "<img src='" . Wi3::inst()->urlof->sitefiles . "data/uploads/200/" . $file->filename . "'> <cms type='editableblock' name='description'>Beschrijving van afbeelding</cms>";
+                return "<img src='" . Wi3::inst()->urlof->sitefiles . "data/uploads/" . $width . "/" . $file->filename . "'> <cms type='editableblock' name='description'>Beschrijving van afbeelding</cms>";
             }
         }
         

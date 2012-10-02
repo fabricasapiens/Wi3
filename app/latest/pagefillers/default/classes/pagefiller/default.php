@@ -265,6 +265,7 @@
                             $stylearray = Array();
                             $stylearray["float"] = pq($pqfield)->attr("style_float");
                             $stylearray["padding"] = pq($pqfield)->attr("style_padding");
+                            $stylearray["width"] = pq($pqfield)->attr("style_width");
                             // Only set an explicit display block if no display is found in '$style'
                             if (strpos($style, "display:") === false) {
                                  $stylearray["display"] = "block";
