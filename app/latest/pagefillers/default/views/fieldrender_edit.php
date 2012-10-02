@@ -5,42 +5,54 @@
     // If pqfield (the <cms> representation) is given, get the style options (e.g. float property and the margin property)
     if (isset($pqfield))
     {
-        // Get style options
-        $style = Array();
-        $style["float"] = pq($pqfield)->attr("style_float");
-        $style["padding"] = pq($pqfield)->attr("style_padding");
-        $style["width"] = pq($pqfield)->attr("style_width");
-        $style["display"] = "block"; // default, can be overridden by the field during its rendering process
+        // Get set style
+        $style = pq($pqfield)->attr("style");
         $field->options["style"] = $style;
+        // Get style options
+        $stylearray = Array();
+        $stylearray["float"] = pq($pqfield)->attr("style_float");
+        $stylearray["padding"] = pq($pqfield)->attr("style_padding");
+        $stylearray["width"] = pq($pqfield)->attr("style_width");
+        // Only set an explicit display block if no display is found in '$style'
+        if (strpos($style, "display:") === false) {
+             $stylearray["display"] = "block";
+        }
+        $field->options["stylearray"] = $stylearray;
     }
     else
     {
         // Default style options
-        $style = Array();
-        $style["float"] = "left";
-        $style["padding"] = "20px";
-        $style["width"] = "";
-        $style["display"] = "block"; // default, can be overridden by the field during its rendering process
-        $field->options["style"] = $style;
+        $stylearray = Array();
+        $stylearray["float"] = "left";
+        $stylearray["padding"] = "20px";
+        $stylearray["width"] = "";
+        $stylearray["display"] = "block"; // default, can be overridden by the field during its rendering process
+        $field->options["stylearray"] = $stylearray;
     }
     
-    // Get a render of the field. The field can change style options during its rendering process...
+    // Render the field, in which the field can also change the style options
     $fieldhtml = $field->render();
+    // The field can override these options, if it wants
     $style = $field->options["style"];
+    $stylearray = $field->options["stylearray"];
+    // Once the field is rendered, it is known whether it wants to be an inline element, or a block element
+    // Use float and padding only if element is not inline
+    if (strpos($style, "display:inline") !== false || 
+        (isset($stylearray["display"]) && $stylearray["display"] == "inline"))
+    {
+        unset($stylearray["float"]);
+        unset($stylearray["padding"]);
+    }
+    // Calculate total style
+    $totalstyle = $style;
+    foreach($stylearray as $name => $val) {
+        if (!empty($val)) {
+            $totalstyle .= "; " . $name . ":" . $val;
+        }
+    }
+    $totalstyle .= "; position: relative;";
     
-    // Replace the <cms> part with a render of the field
-    if ($style["display"] == "block")
-    {
-        // Block element, use float and padding
-        echo "<span type='field' fieldid='" . $field->id . "' style='float: " . $style["float"] . "; width: " . $style["width"] . "; display: block; padding: " . $style["padding"] . "; position: relative;' contenteditable='false'>";
-        $fieldcontentstyle = "style='display: block;' ";
-    }
-    else
-    {
-        // Inline element, do not use the float, width and padding property
-        echo "<span type='field' fieldid='" . $field->id . "' style='display: inline; position: relative;' contenteditable='false'>";
-        $fieldcontentstyle = "style='display: inline;' ";
-    }
+    echo "<span type='field' fieldid='" . $field->id . "' style='" . $totalstyle . "' contenteditable='false'>";
         echo "<span type='fieldbuttons' style='position: absolute; z-index: 1000; left: 0px; top: 0px; height: 80px; margin-top: -80px; width: 100%; min-width: 250px; display: none; font: 13px arial, verdana; font-weight: normal; background: #fff; overflow: hidden; -webkit-box-shadow: 0px 0px 10px #ccc; -mozilla-box-shadow: 0px 0px 10px #ccc; box-shadow: 0px 0px 10px #ccc;'><span style='display: inline-block; padding: 10px;'>";
             // Now there is three tabs: at the left the field-actions. At the right respectively the style-actions, and rigid actions like 'delete' or 'replace with other field'
             ?>
@@ -72,7 +84,7 @@
             </span>
         <?php 
         echo "</span></span>"; // PHPQuery 'markups' the html so that a stupid line-break / space (?) gets inserted here, mangling the markup of the page...
-        echo "<span " . $fieldcontentstyle . " type='fieldcontent'>" . $fieldhtml . "</span>";
+        echo "<span style='display: inherit;' type='fieldcontent'>" . $fieldhtml . "</span>";
     echo "</span>";
     
 ?>
