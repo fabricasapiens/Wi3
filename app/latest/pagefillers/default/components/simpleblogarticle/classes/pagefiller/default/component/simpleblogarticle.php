@@ -12,13 +12,12 @@
             "keywords" => Array("type" => "list", "model" => Array(
                 "keyword" => Array("type" => "text")
             )),
-            "text" => Array("type" => "text", "length" => "nolimit", "default" => "Dit is de blogtekst", "showoneditscreen" => false),
+            "text" => Array("type" => "text", "editableblockname" => "blogtext", "length" => "nolimit", "default" => "Dit is de blogtekst", "showoneditscreen" => false),
             "summary" => Array("type" => "text",  "length" => "nolimit", "default" => "Dit is de samenvatting"),
             "entertimestamp" => Array("type" => "text", "showoneditscreen" => false),
             "publicationtimestamp" => Array("type" => "text", "showoneditscreen" => false),
             "edittimestamp" => Array("type" => "text", "showoneditscreen" => false)
         );
-    
 
         // This function receives all sorts of events related to the field with this type
         public function fieldevent($eventtype, $field)

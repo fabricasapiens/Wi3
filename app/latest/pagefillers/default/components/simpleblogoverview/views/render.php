@@ -14,7 +14,7 @@
 					"</div>";
 					echo "<div style='text-align: justify;'>";
 						echo "<img style='float: left; margin-right: 20px;' src='" . $article->imageurl .  "'/>";
-						echo "<div>" . $article->summary . "</div>";
+						echo "<cms type='editableblock' name='field_" . $article->fieldid . "'>" . $article->summary . "</div>";
 						echo "<div style='clear:both; visibility: hidden; font-size: 1px;'>.</div>";
 					echo "</div>";
 				echo "</div>";
