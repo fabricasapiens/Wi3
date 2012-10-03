@@ -57,6 +57,11 @@ class Controller_Pagefiller_Default_Edittoolbar_Ajax extends Controller_ACL {
         foreach($editableblockswithinfields as $editableblock)
         {
             $name = pq($editableblock)->attr("name");
+            
+            // Fetch content
+            $content = pq($editableblock)->html();
+            $content = Security::xss_clean($content); // Clean the content, to prevent user XSS attacks
+            
             $refname = pq($editableblock)->attr("ref");
             if (empty($refname)) { $refname = "field"; }
             if ($refname == "field")
@@ -69,20 +74,7 @@ class Controller_Pagefiller_Default_Edittoolbar_Ajax extends Controller_ACL {
             {
                 $ref = $page;
             }
-            // Save in data object
-            $content = pq($editableblock)->html();
-            $content = Security::xss_clean($content); // Clean the content, to prevent user XSS attacks
-            $data = Wi3::inst()->model->factory("site_data")->setref($ref)->set("name",$name)->load();
-            $data->data = $content;
-            // Save the data
-            if ($data->loaded())
-            {
-                $data->update(); // If exists, then update
-            }
-            else
-            {
-                $data->create(); // If it does not yet exist, create it
-            }
+            $ref->saveEditableBlockContent($editableblock, $name, $content);
             // Remove the editableblocks, so that they won't get processed in the next part of this function
             pq($editableblock)->remove();
         }

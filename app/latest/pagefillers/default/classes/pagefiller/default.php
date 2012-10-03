@@ -208,15 +208,7 @@
                 {
                     $name = pq($editableblock)->attr("name");
                     // Try to load up to date content for this block, otherwise show the default content 
-                    $data = $data = Wi3::inst()->model->factory("site_data")->setref($page)->set("name",$name)->load();
-                    if ($data->loaded())
-                    {
-                        $content = $data->data;
-                    }
-                    else
-                    {  
-                        $content = pq($editableblock)->html(); // Get the default content
-                    }
+                    $content = $page->loadEditableBlockContent($editableblock, $name);
                     // Replace the <cms type='field'> blocks and expand them into real field-renders
                     $content = phpQuery::newDocument($content);
                     replacePQFieldsWithAdminHTML($content,$page,$this);
@@ -314,21 +306,13 @@
                     $name = pq($editableblock)->attr("name");
                     $id = pq($editableblock)->attr("id");
                     // Try to load up to date content for this block, otherwise show the default content 
-                    $data = $data = Wi3::inst()->model->factory("site_data")->setref($page)->set("name",$name)->load();
-                    if ($data->loaded())
-                    {
-                        $content = $data->data;
-                    }
-                    else
-                    {  
-                        $content = pq($editableblock)->html(); // Get the default content
-                    }
+                    $content = $page->loadEditableBlockContent($editableblock, $name);
                     // Replace the <cms type='field'> and <cms type='sitefield'> blocks and expand them into real field-renders
                     // For normal fields, the fieldid is unique for the page
                     // For sitefields, the fieldid is unique for the site, using the siteFieldObject
                     // Example layout:
                     /**
-                    * <cms type='field' fieldid='uniqueid' style_float="left" style_padding="20px">
+                    * <cms type='field' fieldtype='image' fieldname='uniqueid' style_float="left" style_padding="20px">
                     * </cms>
                     */                   
 

@@ -38,6 +38,27 @@ class Model_Site_Page extends Sprig
         return preg_replace("@<cms[^>]*>[^<]*</cms>@","",$content);
     }
 
+    // Funtion to retrieve editableBlockContent when editableBlocks have their reference set to a page
+    public function loadEditableBlockContent($editableblock, $blockname) {
+        $data = $data = Wi3::inst()->model->factory("site_data")->setref($this)->set("name",$blockname)->load();
+        if ($data->loaded())
+        {
+            $content = $data->data;
+        }
+        else
+        {  
+            $content = pq($editableblock)->html(); // Get the default content
+        }
+        return $content;
+    }
+
+    public function saveEditableBlockContent($editableblock, $blockname, $content) {
+        $data = Wi3::inst()->model->factory("site_data")->setref($this)->set("name",$blockname)->load();
+        $data->data = $content;
+        // Save the data
+        $data->updateorcreate();
+    }
+
 	protected function _init()
 	{
 		$this->_fields += array(

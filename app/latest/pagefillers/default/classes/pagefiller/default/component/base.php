@@ -21,6 +21,33 @@
             return $componentview;
         }
 
+        public function loadEditableBlockData($field, $blockName) {
+            $model = $this->getModel();
+            foreach($model as $index => $modelitem) {
+                if (isset($modelitem["editableblockname"])) {
+                    // Load data from there
+                    $dataobject = Wi3::inst()->model->factory("site_array")->setref($field)->setname("data")->load();
+                    return $dataobject->{$index};
+                }
+            }
+            return false;
+        }
+
+        public function saveEditableBlockData($field, $blockName, $content) {
+            $model = $this->getModel();
+            foreach($model as $index => $modelitem) {
+                if (isset($modelitem["editableblockname"])) {
+                    // Load data from there
+                    $dataobject = Wi3::inst()->model->factory("site_array")->setref($field)->setname("data")->load();
+                    $dataobject->{$index} = $content;
+                    $dataobject->updateorcreate();
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
         protected function getModel() {
             return $this::$model;
         }
