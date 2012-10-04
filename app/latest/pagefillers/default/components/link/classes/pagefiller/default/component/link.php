@@ -70,7 +70,7 @@
                 }
             }
             // Mark the field as a inline-element 
-            $field->options["style"]["display"] = "inline";
+            $field->options["stylearray"]["display"] = "inline";
             return "<a href='" . $url . "'>" . $data->linktext . "</a>";
         }
         
