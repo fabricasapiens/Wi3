@@ -59,7 +59,7 @@
             <span type='field_tabs_tabs' style='position: absolute; bottom: 0px; height: 20px;'>
                 <span tab='fieldactions' style='margin-right: 5px;'><a href='javascript:void(0);' onclick='$("span[block]").hide().filter("span[block=fieldactions]").fadeIn();'>veld acties...</a></span>
                 <?php 
-                if (isset($stylearray["display"] && $stylearray["display"] == "block") 
+                if (isset($stylearray["display"]) && $stylearray["display"] == "block") 
                 { ?>
                     <span tab='design' style='margin-right: 5px;'><a href='javascript:void(0);' onclick='$("span[block]").hide().filter("span[block=design]").fadeIn();'>opmaak...</a></span>
                 <?php } ?>
