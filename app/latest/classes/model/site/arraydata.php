@@ -23,7 +23,7 @@ class Model_Site_Arraydata extends Sprig
             'key' => new Sprig_Field_Char(array(
 				'empty'  => TRUE, // Default FALSE
 			)),
-            'val' => new Sprig_Field_Char(array(
+            'val' => new Sprig_Field_Text(array(
 				'empty'  => TRUE, // Default FALSE
 			)),
             
