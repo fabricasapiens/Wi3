@@ -6,7 +6,7 @@
     {
     
         public $template;
-        protected $componentname = "imageshop";
+        public static $componentname = "imageshop";
     
         public function before() 
         {
@@ -26,7 +26,7 @@
         {
             $fieldid = $_POST["fieldid"];
             $field = Wi3::inst()->model->factory("site_field")->set("id", $fieldid)->load();
-            $html = $this->view("edit".$this->componentname)->set("field", $field)->render();
+            $html = $this->view("edit".$this::$componentname)->set("field", $field)->render();
             echo json_encode(
                 Array(
                     "scriptsbefore" => Array(
