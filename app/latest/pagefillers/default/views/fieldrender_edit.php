@@ -33,7 +33,7 @@
     // Render the field, in which the field can also change the style options
     $fieldhtml = $field->render();
     // The field can override these options, if it wants
-    $style = $field->options["style"];
+    $style = (isset($field->options["style"]) ? $field->options["style"] : "");
     $stylearray = $field->options["stylearray"];
     // Once the field is rendered, it is known whether it wants to be an inline element, or a block element
     // Use float and padding only if element is not inline
