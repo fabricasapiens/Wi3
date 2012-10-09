@@ -39,6 +39,7 @@
             <button style='float: left; cursor:pointer;' onClick='$("#wi3_edit_iframe").get(0).contentWindow.wi3.pagefillers.default.edittoolbar.insertField("image");'>afbeelding</button>
 			<button style='float: left; cursor:pointer;' onClick='$("#wi3_edit_iframe").get(0).contentWindow.wi3.pagefillers.default.edittoolbar.insertField("simpleblogoverview");'>Overzicht van blogartikelen</button>
 			<button style='float: left; cursor:pointer;' onClick='$("#wi3_edit_iframe").get(0).contentWindow.wi3.pagefillers.default.edittoolbar.insertField("simpleblogarticle");'>Blogartikel</button>
+            <button style='float: left; cursor:pointer;' onClick='$("#wi3_edit_iframe").get(0).contentWindow.wi3.pagefillers.default.edittoolbar.insertField("contactform");'>Contactformulier</button>
             <button style='float: left; cursor:pointer;' onClick='$("#wi3_edit_iframe").get(0).contentWindow.wi3.pagefillers.default.edittoolbar.insertField("link");'>link</button>
             <button style='float: left; cursor:pointer;' onClick='$("#wi3_edit_iframe").get(0).contentWindow.wi3.pagefillers.default.edittoolbar.insertField("imageshop");'>fotowinkel</button>
             <?php // <button style='float: left; cursor:pointer;' onClick='$("#wi3_edit_iframe").get(0).contentWindow.wi3.pagefillers.default.edittoolbar.insertField("simpleblog");'>weblog</button> ?>
