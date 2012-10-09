@@ -307,6 +307,7 @@
                     $id = pq($editableblock)->attr("id");
                     // Try to load up to date content for this block, otherwise show the default content 
                     $content = $page->loadEditableBlockContent($editableblock, $name);
+                    
                     // Replace the <cms type='field'> and <cms type='sitefield'> blocks and expand them into real field-renders
                     // For normal fields, the fieldid is unique for the page
                     // For sitefields, the fieldid is unique for the site, using the siteFieldObject
@@ -315,18 +316,17 @@
                     * <cms type='field' fieldtype='image' fieldname='uniqueid' style_float="left" style_padding="20px">
                     * </cms>
                     */                   
-
                     $content = phpQuery::newDocument($content);
                     replacePQFieldsWithViewHTML($content,$page);
                     
-                    // Create block, and add id if it was present in the <cms> block
+                    // Create block, and add and id if it was present in the <cms> block
                     if (!empty($id))
                     {
-                        $blockcontent = "<div style='display:inline-block; width: 100%;' id='" . $id . "' type='contentblock' name='" . $name . "'>" . $content . "</div>";
+                        $blockcontent = "<div id='" . $id . "' type='contentblock' name='" . $name . "'>" . $content . "</div>";
                     }
                     else
                     {
-                        $blockcontent = "<div style='display:inline-block; width: 100%;' type='contentblock' name='" . $name . "'>" . $content . "</div>";
+                        $blockcontent = "<div type='contentblock' name='" . $name . "'>" . $content . "</div>";
                     }
                     pq($editableblock)->replaceWith($blockcontent);
                 }
