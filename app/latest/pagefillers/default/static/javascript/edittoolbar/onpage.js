@@ -85,7 +85,7 @@ wi3.pagefillers.default.edittoolbar = {
             // Simply using .css('padding') does not work, due to "Shorthand CSS properties (e.g. margin, background, border) are not supported" (http://api.jquery.com/css/)
             $(this).attr("style_padding", $(this).css("padding-left"));
             $(this).attr("style_float", $(this).css("float"));
-            $(this).attr("style_width", $(this).css("width")); 
+            $(this).attr("style_width", this.style.width || $(this).css("width")); 
         });
         // send the complete html of the page to the server. The server will distill the editable blocks, and save them 
         wi3.request("pagefiller_default_edittoolbar_ajax/savealleditableblocks", {pageid: $("#pagefiller_default_edittoolbar_pageid").text(), html:$("body").html()});
