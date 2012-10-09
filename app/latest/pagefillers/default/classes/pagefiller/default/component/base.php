@@ -5,7 +5,7 @@
     
         public static function view($viewname)
         {
-            $componentname = self::get_calling_componentname();
+            $componentname = strtolower(self::get_calling_componentname());
             // Make this component base view extend the base template, with their locations set to the component folders
             $componenturl = Wi3::inst()->urlof->pagefillerfiles("default") . "components/" . $componentname . "/";
             $componentpath = Wi3::inst()->pathof->pagefiller("default") . "components/" . $componentname . "/";
