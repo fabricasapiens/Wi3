@@ -274,8 +274,13 @@ wi3.pagefillers.default.edittoolbar = {
             if (event.ctrlKey === true) {
                 // Pick first edit-action
                 $(this).find("[block=fieldactions] a").first().click();
+                event.stopPropagation(); // Don't bubble clicks up the DOM tree
+                event.preventDefault();
             }
-            event.stopPropagation(); // Don't bubble clicks up the DOM tree
+        });
+        // Prevent clicks on text in editableblocks
+        jqueryobj.find("[type=editableblock]").bind("click", function(event) {
+            event.stopPropagation();
             event.preventDefault();
         });
         // Find the buttons inside the fields and attach the proper actions to them 
