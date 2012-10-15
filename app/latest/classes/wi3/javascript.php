@@ -5,20 +5,28 @@ class Wi3_Javascript extends Wi3_Base
 	static protected $scripts = array();
     static protected $will_already_be_auto_rendered = false;
 
-    //@input: $file should be an absolute URL to the javascript file
-	static public function add($file, $category = "wi3")
+    //@param file $file should be an absolute URL to the javascript file OR a bunch of raw JS that should be on the page (see externalfile param)
+    //@param externalfile indicates whether $file is a URL or raw JS
+	static public function add($file, $category = "wi3", $externalfile=true)
 	{
         if (is_array($file)) {
             foreach($file as $js) {
-                self::add($js, $category);
+                self::add($js, $category, $externalfile);
             }
         } else {
             //if there is not yet an array for this category, create it
-            if (!isset(self::$scripts[$category]))
+            if (!isset(self::$scripts[$category])) {
                 self::$scripts[$category] = Array();
+            }
             //if this file is not already present in this category, add it
-            if (!in_array($file, self::$scripts[$category]))
-                self::$scripts[$category][$file] = $file;
+            $id = md5($file."_".($externalfile?"true":"false"));
+            if (!in_array($id, self::$scripts[$category])) {
+                if ($externalfile) {
+                    self::$scripts[$category][$id] = Array("url" => $file);
+                } else {
+                    self::$scripts[$category][$id] = Array("javascript" => $file);
+                }
+            }
             //make sure the script tags are inserted in the header just before sending the page to the browser
             self::set_auto_render();
         }
@@ -29,22 +37,22 @@ class Wi3_Javascript extends Wi3_Base
 		$output = '';
         //first, render the Wi3-scripts
         if (isset(self::$scripts["wi3"])) {
-            foreach(self::$scripts["wi3"] as $script) {
-                $output .= self::script($script);
+            foreach(self::$scripts["wi3"] as $info) {
+                $output .= self::script($info);
             }
             unset(self::$scripts["wi3"]);
         }
         //then, render the Component-scripts
         if (isset(self::$scripts["component"])) {
-            foreach(self::$scripts["component"] as $script) {
-                $output .= self::script($script);
+            foreach(self::$scripts["component"] as $info) {
+                $output .= self::script($info);
             }
             unset(self::$scripts["component"]);
         }
         //finally, render the user-page scripts and other scripts
-		foreach (self::$scripts as $category => $filenames) {
-            foreach($filenames as $script) {
-                $output .= self::script($script);
+		foreach (self::$scripts as $category => $infoarray) {
+            foreach($infoarray as $info) {
+                $output .= self::script($info);
             }
         }
 
@@ -73,13 +81,17 @@ class Wi3_Javascript extends Wi3_Base
     /**
 	 * Creates a script link.
 	 *
-	 * @param   string|array  filename
+	 * @param   array    description of the javascript to be inserted
 	 * @param   boolean       include the index_page in the link
 	 * @return  string
 	 */
-	public static function script($script, $index = FALSE)
+	public static function script($info, $index = FALSE)
 	{
-        return '<script type="text/javascript" src="'.$script.'"></script>';
+        if (isset($info["url"])) {
+            return '<script type="text/javascript" src="' . $info["url"] . '"></script>';
+        } else if (isset($info["javascript"])) {
+            return '<script type="text/javascript">' . $info["javascript"] . '</script>';
+        }
 	}
     
 }
