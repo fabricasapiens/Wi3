@@ -12,6 +12,12 @@
         {
             $this->_params = $params;
         }
+
+        public function javascriptObject($varName, $array) 
+        {
+            $javascript = "wi3.makeExist('" . $varName . "'); " . $varName . " = " . json_encode($array) . ";";
+            Wi3::inst()->javascript->add($javascript, "view", false);
+        }
         
         public function javascript($name) 
         {
