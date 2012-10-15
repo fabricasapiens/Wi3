@@ -43,7 +43,7 @@
 				$componentpath = Wi3::inst()->pathof->pagefiller("default") . "components/" . $this::$componentname . "/";
 			}
             // Make this component view extend the base template, with their locations set to the above folders
-            $componentbaseview = Wi3_Baseview::instance($this::$componentname.'baseview', array(
+            $componentbaseview = Wi3_Baseview::instance($this::$componentname.'baseview_'.($usecomponentlocation?"true":"false"), array(
                 'javascript_url' => $componenturl.'static/javascript/', 
                 'javascript_path' => $componentpath.'static/javascript/',
                 'css_url' => $componenturl.'static/css/',
