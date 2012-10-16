@@ -65,7 +65,8 @@
                 $data->imageurl = $imageurl;
                 $articles[] = $data;
             }
-			return $this->view("render")->set("data", $dataobject)->set("articles", $articles)->render();
+            $pages = Wi3::inst()->sitearea->navigation->menu->loadPages(); // load pages under pagepositions
+			return $this->view("render")->set("pages", $pages)->set("data", $dataobject)->set("articles", $articles)->render();
         }
 
         private function getAllBlogFields($limit=0) {
