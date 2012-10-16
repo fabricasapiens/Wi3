@@ -12,6 +12,8 @@
         private $itemTag; // Should always be a li
         private $activeItemTag; // Should always be a li
 		private $pagePositions = NULL; // Should be a list of pagePositions
+
+        private $pages;
         
         public function setactivepage($page)
         {
@@ -36,6 +38,24 @@
 			}
 			return $this->pagePositions;
 		}
+
+        public function loadPages() {
+            if (!isset($this->pages)) {
+                $pages = Array();
+                if ($this->pagePositions() == null) {
+                    $this->pagePositions(Wi3::inst()->sitearea->pagepositions->getall());
+                }
+                $pagepositions = $this->pagePositions();
+                foreach($pagepositions as $pageposition)
+                {
+                    $pagepositionpages = $pageposition->pages;
+                    $page = $pagepositionpages[0]; // Simply get first page
+                    $pages[] = $page;
+                }
+                $this->pages = $pages;
+            }
+            return $this->pages;
+        }
         
         function __construct() {
             parent::__construct();
@@ -60,17 +80,13 @@
         
             // Get all pagepositions and render the menu
             ob_start();
-            if ($this->pagePositions() == null) {
-				$this->pagePositions(Wi3::inst()->sitearea->pagepositions->getall());
-			}
-			$pagepositions = $this->pagePositions();
+            $this->loadPages(); // Loads pages under all the pagePositions
+            $pagePositions = $this->pagePositions();
             $prevpageposition = NULL;
             $hiddenfromlevel = -1;
-            foreach($pagepositions as $pageposition)
+            foreach($pagePositions as $pageposition)
             {
-
-                $pages = $pageposition->pages;
-                $page = $pages[0]; // Simply get first page
+                $page = $pageposition->pages[0];
                 // Notice the level from where the menu is hidden
                 if ($page->visible == FALSE) {
                     if ($hiddenfromlevel == -1) { // Only the lowest hidden level is important. The rest under it is hidden anyways 
