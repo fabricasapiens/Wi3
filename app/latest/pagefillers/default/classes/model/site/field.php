@@ -230,6 +230,26 @@ class Model_Site_Field extends Sprig
         $componentname = "Pagefiller_default_component_" . $this->type;
         return $componentname::inst();
     }
+
+    /*
+    * Retrieves the parent page by bubbling up in the ref structure until a page is found
+    * @returns page
+    */
+    public function getParentPage() {
+        $ref = $this;
+        while(!$ref instanceof Site_Page) {
+            if(!isset($ref->_refclass) || empty($ref->_refclass) || !isset($ref->_refid) || empty($ref->_refid)) {
+                return false;
+            }
+            if (strpos($ref->_refclass, "Model_") === 0) {
+                $refclass = substr($ref->_refclass, 6);
+            } else {
+                $refclass = $ref->_refclass;
+            }
+            $ref = Wi3::inst()->model->factory($refclass)->values(Array("id"=>$ref->_refid))->load();
+        }
+        return $ref;
+    }
     
     // fieldactions
     public function fieldactions()
