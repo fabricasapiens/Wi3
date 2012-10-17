@@ -16,6 +16,7 @@
         {
     		// custom code
             $this->fielddata($field, "edittimestamp", time());
+            return parent::edit($field);
         }
         
     }

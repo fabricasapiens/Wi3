@@ -1,19 +1,24 @@
 <?php
 
-	$page = Wi3::inst()->sitearea->page;
-    $site = Wi3::inst()->sitearea->site;
-
 	// Dependencies
 	Wi3::inst()->plugins->load("plugin_jquery_wi3");
 
 	$this->css("style.css");
 
 	// Publish an array as JS object on the frontend
-	$results = Array("pages"=>Array());
+	$results = Array("pages"=>Array(),"articles"=>Array());
 	foreach($pages as $index => $page) {
 		$results["pages"][] = Array(
 			"title" => $page->longtitle,
+			"text" => "",
 			"url" => Wi3::instance()->urlof->page($page)
+		);
+	}
+	foreach($articles as $index => $article) {
+		$results["articles"][] = Array(
+			"title" => $article->title,
+			"text" => $article->summary,
+			"url" => $article->pageurl
 		);
 	}
 

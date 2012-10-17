@@ -54,7 +54,7 @@
             // 2. Grab their data
             foreach($fields as $blogfield) {
                 // Get page where this field is situated on and include its URL
-                $page = Wi3::inst()->model->factory("site_page")->values(Array("id"=>$blogfield->_refid))->load();
+                $page = $blogfield->getParentPage();
                 $pageurl = Wi3::inst()->urlof->page($page);
                 // Load data
                 $data = $this->fielddata($blogfield);
