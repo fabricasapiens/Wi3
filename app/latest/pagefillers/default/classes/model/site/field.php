@@ -237,7 +237,7 @@ class Model_Site_Field extends Sprig
     */
     public function getParentPage() {
         $ref = $this;
-        while(!$ref instanceof Site_Page) {
+        while(!$ref instanceof Model_Site_Page) {
             if(!isset($ref->_refclass) || empty($ref->_refclass) || !isset($ref->_refid) || empty($ref->_refid)) {
                 return false;
             }
