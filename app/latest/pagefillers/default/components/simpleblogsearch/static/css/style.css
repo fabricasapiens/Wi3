@@ -1,3 +1,4 @@
+.wi3_pagefiller_default_component_simpleblogsearch { padding: 4px; font-height: 1.5em; }
 .wi3_pagefiller_default_component_simpleblogsearch_result { border-bottom: 1px solid #eee; display: none; }
 .wi3_pagefiller_default_component_simpleblogsearch_result div { padding: 5px; }
 .wi3_pagefiller_default_component_simpleblogsearch_result div.selected { background: #eee; };
