@@ -84,36 +84,28 @@
             $pagePositions = $this->pagePositions();
             $prevpageposition = NULL;
             $hiddenfromlevel = -1;
+            $openedli = false;
             foreach($pagePositions as $pageposition)
             {
                 $page = $pageposition->pages[0];
-                // Notice the level from where the menu is hidden
-                if ($page->visible == FALSE) {
-                    // Only set hiddenfromlevel when no hiddenfromlevel is set (i.e. when it is -1)
-                    // If a hiddenfromlevel is set, we don't have to set more specific levels, since they are also hidden
-                    if ($hiddenfromlevel == -1) {
-                        $hiddenfromlevel = $pageposition->{$pageposition->level_column};
-                    }
-                }
                 // If there is a previous pageposition, we can check if we went up or down in the tree
                 if ($prevpageposition != NULL)
                 {
                     if ($pageposition->{$pageposition->level_column} > $prevpageposition->{$prevpageposition->level_column})
                     {
                          // Going a level deeper
-                         if($page->visible == TRUE) {
-                            // Don't start menu level if any parent is hidden
-                            // Only start if all tree up is visible
-                            if ($hiddenfromlevel == -1) {
-                                echo "<ul>";
-                            }
+                        // Don't start menu level if any parent is hidden
+                        // Only start if all tree up is visible
+                        if ($hiddenfromlevel == -1) {
+                            echo "<ul>";
+                            $openedli = false;
                         }
                     }
                     else if ($pageposition->{$pageposition->level_column} < $prevpageposition->{$prevpageposition->level_column})
                     {
                         // Going a level up, or maybe even more than 1 level 
                         // Find out how many levels we go up and close every level properly
-                        for($i=($prevpageposition->{$prevpageposition->level_column} - $pageposition->{$prevpageposition->level_column}); $i > 0; $i--)
+                        for($i=($prevpageposition->{$prevpageposition->level_column} - $pageposition->{$pageposition->level_column}); $i > 0; $i--)
                         {
                             // Only close menu parts that were indeed rendered (i.e. the page was not hidden)
                             // We know  that all menu parts are hidden that have a *higher or equal* level than hiddenfromlevel
@@ -125,7 +117,19 @@
                     } 
                     else 
                     {
-                        echo "</li>";
+                        // Only end LI if a previous page started one
+                        if ($openedli) {
+                            echo "</li>";
+                            $openedli = false;
+                        }
+                    }
+                }
+                // Notice the level from where the menu is hidden
+                if ($page->visible == FALSE) {
+                    // Only set hiddenfromlevel when no hiddenfromlevel is set (i.e. when it is -1)
+                    // If a hiddenfromlevel is set, we don't have to set more specific levels, since they are also hidden
+                    if ($hiddenfromlevel == -1) {
+                        $hiddenfromlevel = $pageposition->{$pageposition->level_column};
                     }
                 }
                 $prevpageposition = $pageposition;
@@ -159,6 +163,7 @@
                 }
                 // If page is the same as the 'activepage', then add class='active'
                 echo ($page->id == $this->activepage->id?$this->activeItemTag->renderOpenTag():$this->itemTag->renderOpenTag()) . "<span><a" . ($page->redirecttype == "external"?"target='_blank'":"") . " href='" . $url . "'>" . $page->longtitle . "</a></span>";
+                $openedli = true;
             }
             // Now, if we have ended far from root (i.e. a deep node), we need to add some </li></ul>
             if ($pageposition->{$prevpageposition->level_column} > 0)
