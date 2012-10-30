@@ -89,7 +89,9 @@
                 $page = $pageposition->pages[0];
                 // Notice the level from where the menu is hidden
                 if ($page->visible == FALSE) {
-                    if ($hiddenfromlevel == -1) { // Only the lowest hidden level is important. The rest under it is hidden anyways 
+                    // Only set hiddenfromlevel when no hiddenfromlevel is set (i.e. when it is -1)
+                    // If a hiddenfromlevel is set, we don't have to set more specific levels, since they are also hidden
+                    if ($hiddenfromlevel == -1) {
                         $hiddenfromlevel = $pageposition->{$pageposition->level_column};
                     }
                 }
@@ -100,7 +102,7 @@
                     {
                          // Going a level deeper
                          if($page->visible == TRUE) {
-                            // Don't start menu level if a parent is hidden anyway
+                            // Don't start menu level if any parent is hidden
                             // Only start if all tree up is visible
                             if ($hiddenfromlevel == -1) {
                                 echo "<ul>";
