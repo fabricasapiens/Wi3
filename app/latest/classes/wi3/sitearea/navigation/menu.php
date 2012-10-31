@@ -107,11 +107,16 @@
                         // Find out how many levels we go up and close every level properly
                         for($i=($prevpageposition->{$prevpageposition->level_column} - $pageposition->{$pageposition->level_column}); $i > 0; $i--)
                         {
+                            if ($openedli) {
+                                echo "</li>";
+                                $openedli = false;
+                            }
                             // Only close menu parts that were indeed rendered (i.e. the page was not hidden)
-                            // We know  that all menu parts are hidden that have a *higher or equal* level than hiddenfromlevel
+                            // Exactly those parts are rendered that are *not* lower than the hiddenfromlevel
                             $currentlevel = $pageposition->{$pageposition->level_column}+$i;
-                            if ($hiddenfromlevel == -1 || $currentlevel < $hiddenfromlevel) {
-                                echo "</li></ul>";
+                            if ($hiddenfromlevel == -1 || $currentlevel <= $hiddenfromlevel) {
+                                echo "</ul>";
+                                $openedli = true; // If we return a level higher, there *always* is a li that is still unclosed
                             }
                         }
                     } 
