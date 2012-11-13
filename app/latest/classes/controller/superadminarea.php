@@ -13,6 +13,9 @@ class Controller_Superadminarea extends Controller_ACL {
         Wi3::inst()->acl->grant("superadmin", $this);
         // Check whether this controller (fills in current action automatically) can be accessed
         Wi3::inst()->acl->check($this);
+        // Don't cache these pages
+        Wi3::inst()->cache->doNotCache();
+        parent::before();
     }
     
     // View functions
@@ -440,6 +443,57 @@ RewriteRule (.*) " . $vhostrootrelativefolder . $one->domain . "/httpdocs/$1/ [E
         else 
         {
             echo "Url kon niet aangemaakt worden!";
+        }
+        
+        // Redirect to get rid of the superadminarea/someaction URL and to prevent POST issues
+        Request::instance()->redirect(Wi3::inst()->urlof->controller("superadminarea"));
+    }
+
+    public function action_detachurl()
+    {
+        $site = Wi3::inst()->model->factory("site");
+        $site->name = $_POST["name"];
+        $site->load();
+        if (Validate::factory($_POST)
+            ->filter(TRUE, 'trim')
+            ->rule('url', 'not_empty')
+            ->rule('url', 'url')
+            ->check()
+        )
+        {
+            try 
+            {
+                $url = Wi3::inst()->model->factory("url");
+                $url->url = $_POST["url"];
+                $url->site = $site; // This alias will use the column $url->site_id and fill it with $site->id
+                // Get the domain and folder for this URL
+                $url = $url->load();
+                $domain = $url->domain;
+                $folder = $url->folder;
+                $vhostfolder = Wi3::inst()->unixpath(APPPATH . "../../vhosts/") . "/";
+                // Ensure that we are not deleting the complete vhosts folder
+                if (!empty($domain)) {
+                    // Adding the "/httpdocs/" part prevents us from deleting the complete domain, including possible subfolders
+                    $removefolder = $vhostfolder . $domain . "/httpdocs/" . (!empty($folder) ? $folder : "");
+                    if (is_dir($removefolder)) {
+                        @Wi3::inst()->unlink_recursive($removefolder);
+                        // TODO: if we removed a $folder-folder and the $folder-folder/../ is now empty
+                        // also remove that parent folder
+                    } else {
+                        echo "Map kon niet verwijderd worden. " . $removefolder;
+                    }
+                } else {
+                    echo "Domeinnaam van URL kon niet bepaald worden";
+                }
+                $url->delete();
+            }
+            catch(Exception $e) 
+            {
+                echo Kohana::debug($e);
+                return;
+            }
+        } else {
+            echo "Url kon niet verwijderd worden!";
         }
         
         // Redirect to get rid of the superadminarea/someaction URL and to prevent POST issues

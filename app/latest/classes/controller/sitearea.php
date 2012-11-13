@@ -46,6 +46,17 @@ class Controller_Sitearea extends Controller {
                 }
             }
         }
+        // Caching is per user
+        Wi3::inst()->cache->requireCacheParameter("user");
+        $user = Wi3::inst()->sitearea->auth->user;
+        if (is_object($user)) {
+            $username = $user->username;
+        } else {
+            $username = "";
+        }
+        Wi3::inst()->cache->fillCacheParameter("user", $username);
+        // Don't cache these pages
+        Wi3::inst()->cache->doNotCache();
     }
     
     public function action_index()
@@ -58,7 +69,7 @@ class Controller_Sitearea extends Controller {
         // Correct page has been loaded in the before() function
         // Render page
         $this->request->response = Wi3::inst()->sitearea->page->render(); 
-        // Page caching will be handled via an Event. See bootstrap.php and the Caching module
+        // Page caching will be handled via an Event. See bootstrap.php and the Caching plugin
     }
 
 }

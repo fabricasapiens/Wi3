@@ -104,6 +104,7 @@ Kohana::modules(array(
     'plugin_multilanguage' => APPPATH.'plugins/multilanguage',
     'plugin_jquery' => APPPATH.'plugins/jquery',
     'plugin_clientjavascriptvars' => APPPATH.'plugins/clientjavascriptvars',
+    'plugin_tikocache' => APPPATH.'plugins/tikocache',
     // Pagefillers
     'pagefiller_default' => APPPATH.'pagefillers/default',
     // HTMLPurifier XSS Prevention
@@ -132,6 +133,7 @@ if ( ! defined('SUPPRESS_REQUEST'))
     $request = Request::instance();
     try
     {
+
         Event::instance('wi3.beforeinit')->execute(); // Used by i.e. caching-mechanisms
         /**
         * Now init Wi3. The main Wi3 class in turn will load its subclasses
@@ -163,8 +165,7 @@ if ( ! defined('SUPPRESS_REQUEST'))
         // Internal: Change ID links to 'normal' links
         // Wi3::inst()->linkconverter->execute();
         // Content is ready for output. Last change to process the data (but not change it)
-        Event::instance('wi3.afterexecution.processcontent')->execute(); // Used by i.e. caching-mechanisms
-        
+        Event::instance('wi3.afterexecution.processcontent')->execute(); // Used by e.g. caching-mechanisms        
     }
     catch (ACL_Exception_401 $e)
     {

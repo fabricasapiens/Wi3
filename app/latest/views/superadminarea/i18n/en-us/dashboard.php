@@ -50,7 +50,11 @@
                 
                     foreach($site->urls as $url)
                     {
-                        echo "<span class='rightside'>" . $url->url . " (" . HTML::anchor( trim($url->url, "/"). "/adminarea", "adminarea") . ")</span><br />";
+                         echo "<form method='POST' action='" . Wi3::inst()->urlof->action('detachurl') . "'>";
+                            echo "<input type='hidden' name='url' value='" . $url->url . "'></input>";
+                            echo "<input type='hidden' name='name' value='" . $site->name . "'></input>";
+                            echo "<span class='rightside'>" . $url->url . " (" . HTML::anchor( trim($url->url, "/"). "/adminarea", "adminarea") . ") <button>detach</button></span><br />";
+                        echo "</form>";
                     }
                 
                 ?>

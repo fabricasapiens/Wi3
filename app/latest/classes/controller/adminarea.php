@@ -16,6 +16,9 @@ class Controller_Adminarea extends Controller_ACL {
         Wi3::inst()->acl->grant("*", $this, "logout");
         Wi3::inst()->acl->grant("admin", $this); // Admin can access every function in this controller
         Wi3::inst()->acl->check($this);
+        // Don't cache these pages
+        Wi3::inst()->cache->doNotCache();
+        parent::before();
     }
     
     protected function view($name)

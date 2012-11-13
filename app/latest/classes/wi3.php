@@ -30,6 +30,9 @@
         { 
             // Load session handler
             $this->session = Session::instance();
+
+            // Set cache handler
+            $this->cache = Wi3TikoCache::instance();
 			
 			// Define APPRELATIVEPATH, which is the path to the application relative to the web root
 			// We can retrieve this by using the SCRIPT_NAME from the front-controller ({pathfromroot}/app/index.php), and extracting the path-from-root

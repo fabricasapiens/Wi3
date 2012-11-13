@@ -3,6 +3,13 @@
 class Controller_Setup extends Controller_Base {
     
     public $template = "";
+
+    public function before() 
+    {
+        // Don't cache these pages
+        Wi3::inst()->cache->doNotCache();
+        parent::before();
+    }
     
 	public function action_index()
 	{
