@@ -244,6 +244,11 @@
             // Convert forward slashes to backslashes
             return str_replace(DIRECTORY_SEPARATOR, "/", $path);
         }
+
+        public function isFolderEmpty($folderpath) {
+            $files = @scandir($folderpath);
+            return ($files && (count($files) <= 2));
+        }
         
         // Return a nice path without .. and .
         /**

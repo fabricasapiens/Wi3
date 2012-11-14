@@ -476,9 +476,18 @@ RewriteRule (.*) " . $vhostrootrelativefolder . $one->domain . "/httpdocs/$1/ [E
                     // Adding the "/httpdocs/" part prevents us from deleting the complete domain, including possible subfolders
                     $removefolder = $vhostfolder . $domain . "/httpdocs/" . (!empty($folder) ? $folder : "");
                     if (is_dir($removefolder)) {
+                        // TODO: Check if we don't have subfolders, and if so, DONT remove this folder!
                         @Wi3::inst()->unlink_recursive($removefolder);
-                        // TODO: if we removed a $folder-folder and the $folder-folder/../ is now empty
-                        // also remove that parent folder
+                        // if we removed a $folder-folder and the $folder-folder/../ is now empty, then also remove that parent folder
+                        $parentfolder = $vhostfolder . $domain . "/httpdocs/";
+                        if (is_dir($parentfolder) && Wi3::inst()->isFolderEmpty($parentfolder)) {
+                            rmdir($parentfolder);
+                        }
+                        $parentfolder2 = $vhostfolder . $domain;
+                        if (is_dir($parentfolder2) && Wi3::inst()->isFolderEmpty($parentfolder2)) {
+                            rmdir($parentfolder2);
+                        }
+                       
                     } else {
                         echo "Map kon niet verwijderd worden. " . $removefolder;
                     }
