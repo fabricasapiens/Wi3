@@ -281,6 +281,11 @@
             //if(file_exists($path) && linkinfo($path)>0)$path=readlink($path);
             return $path;
         }
+
+        function firstUrlPart($path){
+            $parts = explode("/", $path);
+            return $parts[0];
+        }
         
         // Thanks PHP.net
         function copy_recursive( $path, $dest )
@@ -320,13 +325,13 @@
         
         // Function to unlink dirs and/or files recursively
         // Based on code found on php.net
-        function unlink_recursive($dir) 
+        function unlink_recursive($dir,$exceptTheseDirectSubFolders=array()) 
         { 
             if (is_dir($dir)) 
             { 
                 $objects = scandir($dir); 
                 foreach ($objects as $object) { 
-                    if ($object != "." && $object != "..") { 
+                    if ($object != "." && $object != ".." && !isset($exceptTheseDirectSubFolders[$object])) { 
                         if (filetype($dir."/".$object) == "dir")
                         {
                             $this->unlink_recursive($dir."/".$object); 

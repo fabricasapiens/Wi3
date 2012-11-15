@@ -474,16 +474,37 @@ RewriteRule (.*) " . $vhostrootrelativefolder . $one->domain . "/httpdocs/$1/ [E
                 // Ensure that we are not deleting the complete vhosts folder
                 if (!empty($domain)) {
                     // Adding the "/httpdocs/" part prevents us from deleting the complete domain, including possible subfolders
-                    $removefolder = $vhostfolder . $domain . "/httpdocs/" . (!empty($folder) ? $folder : "");
+                    $removefolder = Wi3::inst()->unixpath($vhostfolder . $domain . "/httpdocs/" . (!empty($folder) ? $folder : ""));
                     if (is_dir($removefolder)) {
-                        // TODO: Check if we don't have subfolders, and if so, DONT remove this folder!
-                        @Wi3::inst()->unlink_recursive($removefolder);
+                        // Check if the $removefolder has subfolders, and if so, DONT remove these folders!
+                        $otherurls = $site->urls;
+                        $subfoldersToLeaveIntact = Array();
+                        $folderlength = strlen($folder);
+                        foreach($otherurls as $otherurl) {
+                            if ($otherurl->domain === $domain) {
+                                if ($otherurl->folder === $folder) {
+                                    continue;
+                                }
+                                if ($folderlength === 0) {
+                                    // There is no folder set, so all other urls in this domain are subfolders
+                                    $firstpart = Wi3::inst()->firstUrlPart($otherurl->folder);
+                                    $subfoldersToLeaveIntact[$firstpart] = true;
+                                } else if (strpos($otherurl->folder,$folder) === 0) {
+                                    // Otherurl's folder is subfoler of url's folder in the same domain
+                                    $subfolderpart = substr($otherurl->folder, $folderlength);
+                                    $firstpart =  Wi3::inst()->firstUrlPart($subfolderpart);
+                                    $subfoldersToLeaveIntact[$firstpart] = true;
+                                }
+                            }
+                        }
+                        // Remove all files and folders, except those to leave intact
+                        @Wi3::inst()->unlink_recursive($removefolder,$subfoldersToLeaveIntact);
                         // if we removed a $folder-folder and the $folder-folder/../ is now empty, then also remove that parent folder
-                        $parentfolder = $vhostfolder . $domain . "/httpdocs/";
+                        $parentfolder = Wi3::inst()->unixpath($vhostfolder . $domain . "/httpdocs/");
                         if (is_dir($parentfolder) && Wi3::inst()->isFolderEmpty($parentfolder)) {
                             rmdir($parentfolder);
                         }
-                        $parentfolder2 = $vhostfolder . $domain;
+                        $parentfolder2 = Wi3::inst()->unixpath($vhostfolder . $domain);
                         if (is_dir($parentfolder2) && Wi3::inst()->isFolderEmpty($parentfolder2)) {
                             rmdir($parentfolder2);
                         }
