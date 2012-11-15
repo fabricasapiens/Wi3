@@ -329,6 +329,12 @@ class Controller_Superadminarea extends Controller_ACL {
                 if (!is_dir($vhostfolder.$domain))
                 {
                     Wi3::inst()->copy_recursive($vhostfolder.".template", $vhostfolder.$domain);
+                } 
+                else 
+                {
+                    // That the folder exists, does not mean that all files and subfolders are present
+                    // Warning: this overwrites existing files like example.htaccess!
+                    Wi3::inst()->copy_recursive($vhostfolder.".template", $vhostfolder.$domain);
                 }
                 // Create the correct folder
                 // TODO: This will probably not work for folders that are nested deeper than 1 level. Fix this recursively

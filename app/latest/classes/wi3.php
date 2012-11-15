@@ -298,9 +298,9 @@
                 {
                     foreach($objects as $file)
                     {
-                        if( $file == "." || $file == ".." )
+                        if( $file == "." || $file == ".." ) {
                             continue;
-                        // go on
+                        }
                         if( is_dir( $path.DIRECTORY_SEPARATOR.$file ) )
                         {
                             $this->copy_recursive( $path.DIRECTORY_SEPARATOR.$file, $dest.DIRECTORY_SEPARATOR.$file );
