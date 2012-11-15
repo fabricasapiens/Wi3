@@ -40,8 +40,9 @@
         
         // HTML that will be injected in the adminarea-topbar, just beneath the 'content' button
         public function getTopbarHTML($page) {
-            // Inject Javascript
+            // Inject Javascript and CSS
             $this->javascript("edittoolbar/ontopbar.js");
+            $this->css("edittoolbar.css");
             // Load and return HTML
             $iconurl = Wi3::inst()->urlof->pagefillerfiles . "static/images/edittoolbar/";
             $toolbarhtml = $this->view("edittoolbar")->set("iconurl", $iconurl)->set("page", $page)->render();
@@ -345,6 +346,11 @@
         public function javascript($filename)
         {
             Wi3::inst()->javascript->add(Wi3::inst()->urlof->pagefillerfiles("default") . "static/javascript/" . $filename, "view");
+        }
+
+        public function css($filename)
+        {
+            Wi3::inst()->css->add(Wi3::inst()->urlof->pagefillerfiles("default") . "static/css/" . $filename, "view");
         }
         
         //-----------
