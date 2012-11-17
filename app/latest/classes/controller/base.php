@@ -4,7 +4,8 @@ class Controller_Base extends Controller_Template {
     
 	public function before()
     {
-        // Load 
+        // By default, don't cache pages
+        Wi3::inst()->cache->doNotCache();
     }
 
-} // End Welcome
+} // End Base controller

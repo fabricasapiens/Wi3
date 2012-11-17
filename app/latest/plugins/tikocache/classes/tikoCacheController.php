@@ -38,7 +38,7 @@
 			$this->requiredCacheParameters[$parameterName] = true;
 		}
 
-		public function cache($item) { echo "CACHING RIGHT NOW!";
+		public function cache($item) {
 			// If all required praameters are not filled, we cannot cache
 			$this->cacheStringForURL = $this->createCacheStringForURL();
 			if ($this->cacheStringForURL === false) {
@@ -80,7 +80,6 @@
 			// Lookup in cache and return if it is found
 			$cachedItem = $this->cacheAPI->get("tiko_filledCacheParameters_" . $this->URL . "_" . $this->cacheStringForURL);
 			if ($cachedItem !== null) {
-				echo "GETTING FROM CACHE RIGHT NOW!";
 				$this->cacheAPI->resolve($cachedItem);
 			}
 		}
