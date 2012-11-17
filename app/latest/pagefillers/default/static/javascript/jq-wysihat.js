@@ -1134,9 +1134,11 @@ $(document).ready(function() {
   var $doc = $(document);
   if ('onselectionchange' in document) {
     var selectionChangeHandler = function() {
-      var range   = document.selection.createRange();
-      var element = range.parentElement();
-      $(element).trigger("selection:change");
+      if (document.selection) {
+        var range   = document.selection.createRange();
+        var element = range.parentElement();
+        $(element).trigger("selection:change");
+      }
     }
 
     $doc.bind("selectionchange", selectionChangeHandler);
