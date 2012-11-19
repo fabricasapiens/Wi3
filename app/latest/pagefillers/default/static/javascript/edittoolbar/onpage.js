@@ -340,7 +340,8 @@ wi3.pagefillers.default.edittoolbar = {
         }).bind("click", function(event) {
             if (event.ctrlKey === true) {
                 // Pick first edit-action
-                $(this).find("[block=fieldactions] a").first().click();
+                var container = getFieldButtonsContainerForField(this);
+                container.find("[block=fieldactions] a").first().click();
                 event.stopPropagation(); // Don't bubble clicks up the DOM tree
                 event.preventDefault();
             }
