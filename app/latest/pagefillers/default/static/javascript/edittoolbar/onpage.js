@@ -249,8 +249,48 @@ wi3.pagefillers.default.edittoolbar = {
     
     enableFieldActions : function(jqueryobj)
     {
+
+        function showFieldButtonsForField(field) {
+            var fieldid = field.attr("fieldid");
+            var container = $("[type=fieldbuttonscontainer][fieldid="+fieldid+"]");
+            if (!container.length) {
+                container = $("<div>").attr("type","fieldbuttonscontainer").attr("fieldid", fieldid);
+                container.append(field.data("fieldbuttons")).hide();
+                container.find("[type=fieldbuttons]").show(); // subcontainer is hidden by default, and can be shown once its container is hidden
+                $("body").append(container);
+            }
+            var top;
+            if ($(window).scrollTop() + 80 > field.offset().top) {
+                top = $(window).scrollTop() + 80;
+            } else {
+                top = field.offset().top;
+            }
+            container
+                .css("position", "absolute")
+                .css("z-index", 1000)
+                .css("top", top)
+                .css("left",field.offset().left)
+                .css("width",field.width())
+                .fadeIn();
+        }
+
+        function getFieldButtonsContainerForField(field) {
+            var fieldid = $(field).attr("fieldid");
+            return $("[type=fieldbuttonscontainer][fieldid="+fieldid+"]");
+        }
+
+        function hideFieldButtonsForField(field) {
+            getFieldButtonsContainerForField(field).fadeOut();
+        }
+
         // jqueryobj is an array of elements
         jqueryobj = $(jqueryobj);
+        // extract the fieldbuttons and move it out of the raw HTML, into a property on the field DOM element
+        jqueryobj.each(function(index,elm) {
+            var fieldButtons = $(elm).find("[type=fieldbuttons]").get(0).outerHTML;
+            $(elm).data("fieldbuttons", fieldButtons);
+            $(elm).find("[type=fieldbuttons]").remove();
+        });
         jqueryobj.bind("mouseenter", function(event) {
             
             // Show shadow
@@ -258,18 +298,45 @@ wi3.pagefillers.default.edittoolbar = {
             $(this).css("-mozilla-box-shadow", "0px 0px 10px #ccc");
             $(this).css("box-shadow", "0px 0px 10px #ccc");
             
-            // Show the delete and placement buttons
-            $(this).find("[type=fieldbuttons]").show();
+            var field = $(this);
+
+            // Show and position the fieldbuttons
+            showFieldButtonsForField(field);
+
+            // Reposition the elements on window scroll
+            var func = function(event) {
+                showFieldButtonsForField(field);
+            };
+            $(window).bind("scroll", func);
+            $(field).bind("mouseleave", function() {
+                $(window).unbind("scroll", func);
+            });
             
         }).bind("mouseleave", function(event) {
+            var that = this;
+            var hideFunction = function() {
+                // Hide shadow
+                $(that).css("-webkit-box-shadow", "none");
+                $(that).css("-mozilla-box-shadow", "none");
+                $(that).css("box-shadow", "none");
+                // Hide the delete and placement buttons
+                hideFieldButtonsForField($(that));
+            }
+            var fieldid = $(this).attr("fieldid");
+            if ($(event.toElement).closest("[type=fieldbuttonscontainer][fieldid="+fieldid+"]").length) { 
+                // If the mouse did move to the fieldbuttons container
+                var container = $("[type=fieldbuttonscontainer][fieldid="+fieldid+"]");
+                container.unbind("mouseleave");
+                container.bind("mouseleave", function(e) {
+                    if ($(e.toElement).closest("[type=field][fieldid="+fieldid+"]").length === 0) { 
+                        // Did not move back into field
+                        hideFunction();
+                    }
+                });
+            } else {
+                hideFunction();
+            }
             
-            // Hide shadow
-            $(this).css("-webkit-box-shadow", "none");
-            $(this).css("-mozilla-box-shadow", "none");
-            $(this).css("box-shadow", "none");
-            
-            // Hide the delete and placement buttons
-            $(this).find("[type=fieldbuttons]").hide();
         }).bind("click", function(event) {
             if (event.ctrlKey === true) {
                 // Pick first edit-action

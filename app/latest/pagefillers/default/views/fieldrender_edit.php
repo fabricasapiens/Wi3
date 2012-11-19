@@ -53,7 +53,7 @@
     $totalstyle .= "; position: relative;";
     
     echo "<span type='field' fieldid='" . $field->id . "' style='" . $totalstyle . "' contenteditable='false'>";
-        echo "<span type='fieldbuttons' style='position: absolute; z-index: 1000; left: 0px; top: 0px; height: 80px; margin-top: -80px; width: 100%; min-width: 250px; display: none; font: 13px arial, verdana; font-weight: normal; background: #fff; overflow: hidden; -webkit-box-shadow: 0px 0px 10px #ccc; -mozilla-box-shadow: 0px 0px 10px #ccc; box-shadow: 0px 0px 10px #ccc;'><span style='display: inline-block; padding: 10px;'>";
+        echo "<span type='fieldbuttons' style='position: absolute; left: 0px; top: 0px; height: 80px; margin-top: -80px; width: 100%; min-width: 250px; display: none; font: 13px arial, verdana; font-weight: normal; background: #fff; overflow: hidden; -webkit-box-shadow: 0px 0px 10px #ccc; -mozilla-box-shadow: 0px 0px 10px #ccc; box-shadow: 0px 0px 10px #ccc;'><span style='display: inline-block; padding: 10px;'>";
             // Now there is three tabs: at the left the field-actions. At the right respectively the style-actions, and rigid actions like 'delete' or 'replace with other field'
             ?>
             <span type='field_tabs_tabs' style='position: absolute; bottom: 0px; height: 20px;'>
