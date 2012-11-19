@@ -258,6 +258,28 @@ wi3.pagefillers.default.edittoolbar = {
                 container.append(field.data("fieldbuttons")).hide();
                 container.find("[type=fieldbuttons]").show(); // subcontainer is hidden by default, and can be shown once its container is hidden
                 $("body").append(container);
+                // Find the buttons inside the fieldbuttons and attach the proper actions to them 
+                container.find("[type=fieldbuttons] [action=remove]").bind("click", function(event) {
+                    wi3.pagefillers.default.edittoolbar.removeField(fieldid);
+                });
+                container.find("[type=fieldbuttons] [action=align_floatleft]").bind("click", function(event) {
+                    field.css("width","").css("float", "left");
+                });
+                container.find("[type=fieldbuttons] [action=align_floatright]").bind("click", function(event) {
+                    field.css("width","").css("float", "right");
+                });
+                container.find("[type=fieldbuttons]field [action=align_fullwidth]").bind("click", function(event) {
+                    field.css("float", "none").css("width", "100%");
+                });
+                container.find("[type=fieldbuttons] [action=margin_0px]").bind("click", function(event) {
+                    field.css("padding", "0px");
+                });
+                container.find("[type=fieldbuttons] [action=margin_20px]").bind("click", function(event) {
+                    field.css("padding", "20px");
+                });
+                container.find("[type=fieldbuttons] [action=margin_40px]").bind("click", function(event) {
+                    field.css("padding", "40px");
+                });
             }
             var top;
             if ($(window).scrollTop() + 80 > field.offset().top) {
@@ -270,7 +292,7 @@ wi3.pagefillers.default.edittoolbar = {
                 .css("z-index", 1000)
                 .css("top", top)
                 .css("left",field.offset().left)
-                .css("width",field.width())
+                .css("width",field.outerWidth(true))
                 .fadeIn();
         }
 
@@ -303,13 +325,15 @@ wi3.pagefillers.default.edittoolbar = {
             // Show and position the fieldbuttons
             showFieldButtonsForField(field);
 
-            // Reposition the elements on window scroll
-            var func = function(event) {
+            // Reposition the elements on window scroll and window resize
+            var updatePositionAndSize = function(event) {
                 showFieldButtonsForField(field);
             };
-            $(window).bind("scroll", func);
+            $(window).bind("scroll", updatePositionAndSize);
+            $(window).bind("resize", updatePositionAndSize);
             $(field).bind("mouseleave", function() {
-                $(window).unbind("scroll", func);
+                $(window).unbind("scroll", updatePositionAndSize);
+                $(window).unbind("resize", updatePositionAndSize);
             });
             
         }).bind("mouseleave", function(event) {
@@ -350,28 +374,6 @@ wi3.pagefillers.default.edittoolbar = {
         jqueryobj.find("[type=editableblock]").bind("click", function(event) {
             event.stopPropagation();
             event.preventDefault();
-        });
-        // Find the buttons inside the fields and attach the proper actions to them 
-        jqueryobj.find("[type=fieldbuttons] [action=remove]").bind("click", function(event) {
-            wi3.pagefillers.default.edittoolbar.removeField($(this).closest("[type=field]").attr("fieldid"));
-        });
-        jqueryobj.find("[type=fieldbuttons] [action=align_floatleft]").bind("click", function(event) {
-            $(this).closest("[type=field]").css("width","").css("float", "left");
-        });
-        jqueryobj.find("[type=fieldbuttons] [action=align_floatright]").bind("click", function(event) {
-            $(this).closest("[type=field]").css("width","").css("float", "right");
-        });
-        jqueryobj.find("[type=fieldbuttons] [action=align_fullwidth]").bind("click", function(event) {
-            $(this).closest("[type=field]").css("float", "none").css("width", "100%");
-        });
-        jqueryobj.find("[type=fieldbuttons] [action=margin_0px]").bind("click", function(event) {
-            $(this).closest("[type=field]").css("padding", "0px");
-        });
-        jqueryobj.find("[type=fieldbuttons] [action=margin_20px]").bind("click", function(event) {
-            $(this).closest("[type=field]").css("padding", "20px");
-        });
-        jqueryobj.find("[type=fieldbuttons] [action=margin_40px]").bind("click", function(event) {
-            $(this).closest("[type=field]").css("padding", "40px");
         });
     },
     
