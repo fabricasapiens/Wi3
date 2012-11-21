@@ -1,7 +1,7 @@
 <?php
 
-	include("tikoCacheController.php");
-	include("tikoCacheAPI.php");
+	include("tikocachecontroller.php");
+	include("tikocacheapi.php");
 
 	class cacheAPI implements TikoCacheAPI {
 
