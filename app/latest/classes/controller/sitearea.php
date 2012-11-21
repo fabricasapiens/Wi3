@@ -2,6 +2,7 @@
 
 class Controller_Sitearea extends Controller {
     
+    // TODO: rewrite with ACL, see adminarea
     public function before()
     {
         // Load the requested page
@@ -66,9 +67,11 @@ class Controller_Sitearea extends Controller {
     
     public function action_view()
     {
+        // We only get here when authorization has been executed
         // Correct page has been loaded in the before() function
         // Render page
-        $this->request->response = Wi3::inst()->sitearea->page->render(); 
+        $renderedinadminarea = false;
+        $this->request->response = Wi3::inst()->sitearea->page->render($renderedinadminarea); 
         // Page caching will be handled via an Event. See bootstrap.php and the Caching plugin
     }
 

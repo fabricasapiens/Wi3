@@ -95,7 +95,8 @@ class Controller_Adminarea extends Controller_ACL {
         Wi3::inst()->sitearea->setpage($pagename);
         // Render page
         // TODO: check if user is allowed to view this page
-        $this->template = Wi3::inst()->sitearea->page->render(); 
+        $renderedinadminarea = true;
+        $this->template = Wi3::inst()->sitearea->page->render($renderedinadminarea); 
         // Page caching will be handled via an Event. See bootstrap.php and the Caching module
     }
 	

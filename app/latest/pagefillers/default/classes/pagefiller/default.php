@@ -51,7 +51,7 @@
         }
         
         // Sitearea/Adminarea Render function
-        public function render($page)
+        public function render($page,$renderedinadminarea)
         {
         
             // Debug: Make sure the 'site_data' and 'site_field' table exists
@@ -145,10 +145,9 @@
             // Editing
             //-------------------
             
-            // Check whether the user is editing, and if so, inject the popupdiv and page-id at <body>
-            if (Wi3::inst()->routing->controller == "adminarea")
+            // Check whether the user is in adminarea, and if so, inject the popupdiv and page-id at <body>
+            if ($renderedinadminarea === true)
             {
-                // TODO: check if user has rights to do this
                 Wi3::inst()->plugins->load("plugin_jquery_wi3");
                 $this->javascript("edittoolbar/onpage.js");
                 $this->javascript("jq-wysihat.js");
@@ -224,6 +223,13 @@
             
             else
             {
+
+                // If user is logged in, enable the Control+Alt+E for editmode
+                if (Wi3::inst()->sitearea->auth->user) {
+                    echo "gebruiker!";
+                    echo Kohana::debug(Wi3::inst()->sitearea->auth->user);
+                }
+
                 // Simply display the contents of the block, not making them editable
                 $html = phpQuery::newDocument($html); // Give PHPQuery a context to work with
 
