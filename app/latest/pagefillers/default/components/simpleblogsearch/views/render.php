@@ -15,11 +15,13 @@
 		);
 	}
 	foreach($articles as $index => $article) {
-		$results["articles"][] = Array(
-			"title" => $article->title,
-			"text" => $article->summary,
-			"url" => $article->pageurl
-		);
+		if (isset($article->title) && isset($article->summary) && isset($article->pageurl)) {
+			$results["articles"][] = Array(
+				"title" => $article->title,
+				"text" => $article->summary,
+				"url" => $article->pageurl
+			);
+		}
 	}
 
 	$this->javascriptObject("wi3.pagefiller.default.simpleblogsearch.searchdata",$results);

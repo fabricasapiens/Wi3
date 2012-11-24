@@ -60,6 +60,10 @@
                 $data = $this->fielddata($blogfield);
                 $data->fieldid = $blogfield->id;
                 $data->pageurl = $pageurl;
+                if (!isset($data->image)) {
+                    $data->image = "notset";
+                    $data->update();
+                }
                 $image = Wi3::inst()->model->factory("site_file")->values(Array("id"=>$data->image))->load();
                 $imageurl = Wi3::inst()->urlof->image($image,300);
                 $data->imageurl = $imageurl;
