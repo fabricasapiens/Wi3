@@ -268,7 +268,7 @@ wi3.pagefillers.default.edittoolbar = {
                 container.find("[type=fieldbuttons] [action=align_floatright]").bind("click", function(event) {
                     field.css("width","").css("float", "right");
                 });
-                container.find("[type=fieldbuttons]field [action=align_fullwidth]").bind("click", function(event) {
+                container.find("[type=fieldbuttons] [action=align_fullwidth]").bind("click", function(event) {
                     field.css("float", "none").css("width", "100%");
                 });
                 container.find("[type=fieldbuttons] [action=margin_0px]").bind("click", function(event) {
