@@ -14,7 +14,7 @@
         }
 
         public function getUrl() {
-            return $_SERVER["SCRIPT_URI"];
+            return $_SERVER["REQUEST_URI"];
         }
 
         public function get($key) {
