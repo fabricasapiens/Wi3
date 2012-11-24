@@ -30,7 +30,7 @@
                 // Create the data that is associated with this field
                 $data = Wi3::inst()->model->factory("site_array")->setref($field)->setname("data")->create();
                 $this->fielddata($field, "entertimestamp", time());
-                $this->fielddata($field, "image", false);
+                $this->fielddata($field, "image", "notset");
             }
             else if ($eventtype == "delete")
             {
@@ -42,7 +42,8 @@
         {
 			$dataobject = $this->fielddata($field);
             if (!isset($dataobject->image)) {
-                $dataobject->image = false;
+                $dataobject->image = "notset";
+                $dataobject->update();
             }
             $image = Wi3::inst()->model->factory("site_file")->values(Array("id"=>$dataobject->image))->load();
             $imageurl = Wi3::inst()->urlof->image($image,300);
