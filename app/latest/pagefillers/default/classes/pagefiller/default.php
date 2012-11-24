@@ -226,8 +226,7 @@
 
                 // If user is logged in, enable the Control+Alt+E for editmode
                 if (Wi3::inst()->sitearea->auth->user) {
-                    echo "gebruiker!";
-                    echo Kohana::debug(Wi3::inst()->sitearea->auth->user);
+                    // TODO
                 }
 
                 // Simply display the contents of the block, not making them editable
