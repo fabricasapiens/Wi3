@@ -88,7 +88,12 @@ wi3.pagefillers.default.edittoolbar = {
             $(this).attr("style_width", this.style.width || $(this).css("width")); 
         });
         // send the complete html of the page to the server. The server will distill the editable blocks, and save them 
-        wi3.request("pagefiller_default_edittoolbar_ajax/savealleditableblocks", {pageid: $("#pagefiller_default_edittoolbar_pageid").text(), html:$("body").html()});
+        if (parent && parent.wi3) {
+            var usedwi3 = parent.wi3; // Do request via parent if possible, so that ajax request indicator works
+        } else {
+            var usedwi3 = wi3;
+        }
+        usedwi3.request("pagefiller_default_edittoolbar_ajax/savealleditableblocks", {pageid: $("#pagefiller_default_edittoolbar_pageid").text(), html:$("body").html()});
     },
     
     formatblock : function(blocktype)

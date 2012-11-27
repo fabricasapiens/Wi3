@@ -26,17 +26,17 @@ jQuery( function($) {
 	    adminarea.users_users_tree();              //for creating a nice user-list in the users menu
 	}
 	//make the ajax request indicator work
-	 $("#wi3_ajax_menu #wi3_ajax_indicator").bind("ajaxSend", function(){
-       var amount = ($(this).html()*1)+1;
+	$("#wi3_ajax_menu #wi3_ajax_indicator").bind("ajaxSend", function(){	 	
+        var amount = ($(this).html()*1)+1;
         $(this).html(amount);
-     }).bind("ajaxComplete", function(){
-         var amount = ($(this).html()*1)-1;
-         $(this).html(amount);
-     }).bind("ajaxStart", function(){
-         $(this).addClass("working");
-     }).bind("ajaxStop", function(){
-         $(this).removeClass("working");
-     });
+    }).bind("ajaxComplete", function(){
+        var amount = ($(this).html()*1)-1;
+        $(this).html(amount);
+    }).bind("ajaxStart", function(){
+        $(this).addClass("working");
+    }).bind("ajaxStop", function(){
+        $(this).removeClass("working");
+    });
 
 });
 
