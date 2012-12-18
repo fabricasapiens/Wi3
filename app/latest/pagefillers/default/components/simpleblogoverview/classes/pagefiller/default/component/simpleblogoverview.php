@@ -63,7 +63,7 @@
                 // TODO: when page is removed, also remove its related fields
                 // TODO: have a function to clean up orphaned fields/arrays etc
                 if (!$page->loaded()) {
-                    $field->remove();
+                    $field->delete();
                     continue;
                 }
                 $pageurl = Wi3::inst()->urlof->page($page);
