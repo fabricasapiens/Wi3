@@ -48,8 +48,7 @@ class View extends Kohana_View {
 	
 	// Chainable
 	public function set_filename($file) 
-	{	
-	    Kohana::$log->add("bla", $file);
+	{
 	    // Get path for possible translations
         if (strrpos($file, "/") !== FALSE)
         {
