@@ -58,7 +58,9 @@
             // 2. Grab their data
             foreach($fields as $blogfield) {
                 // Get page where this field is situated on and include its URL
+                echo Kohana::debug($blogfield);
                 $page = Wi3::inst()->model->factory("site_page")->values(Array("id"=>$blogfield->_refid))->load();
+                echo Kohana::debug($page);
                 $pageurl = Wi3::inst()->urlof->page($page);
                 // Load data
                 $data = $this->fielddata($blogfield);
