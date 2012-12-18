@@ -4,6 +4,8 @@
 		echo "Er zijn op dit moment geen artikelen.";
 	} else {
 		foreach($articles as $index => $article) {
+			echo Kohana::debug($article);
+			continue;
 			echo "<a href='" . $article->pageurl . "' style='display: block; margin-bottom: 30px; color: inherit;'>";
 				echo "<div>";
 					echo "<h2 style='width: 100%;'>" . $article->title . "</h2>";
