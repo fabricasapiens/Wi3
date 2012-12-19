@@ -132,10 +132,12 @@
                     }
                 } else if ($type == "sitefield") {
                     $siteFieldObject = new siteFieldObject();
-                    if ($fieldid) {
+                    if (!empty($fieldid)) {
                         return $field->setref($siteFieldObject)->set("id", $fieldid)->load();
-                    } else if ($fieldname) {
+                    } else if (!empty($fieldname)) {
                         return $field->setref($siteFieldObject)->set("name", $fieldname)->load();
+                    } else {
+                        throw new Exception("either fieldid or fieldname should be set on sitefield");
                     }
                 }
                 return $field; // loaded() is false
@@ -239,7 +241,6 @@
                         $field = getField($pqfield, $page);
                         if (!$field->loaded())
                         {
-                          
                             // Create field
                             $fieldtype = pq($pqfield)->attr("fieldtype");
                             if (pq($pqfield)->attr("type") == "field") {
