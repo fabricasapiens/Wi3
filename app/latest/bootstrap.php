@@ -117,7 +117,8 @@ try {
         ->response;
     exit;
 } catch(Exception $e) {
-    // Something went horribly wrong. Do as if nothing happend and continue
+    // Something went horribly wrong with the caching. Log the error and continue as if caching were not used.
+    Kohana::$log->add(Kohana::ERROR, Kohana::exception_text($e));
 }
 
 
