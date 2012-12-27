@@ -51,12 +51,14 @@ class Controller_Sitearea extends Controller {
         Wi3::inst()->cache->requireCacheParameter("user");
         $user = Wi3::inst()->sitearea->auth->user;
         if (is_object($user)) {
-            $username = $user->username;
+            $userid = $user->id;
         } else {
-            $username = "";
+            $userid = "";
         }
-        Wi3::inst()->cache->fillCacheParameter("user", $username);
-        // Don't cache these pages
+        //Wi3::inst()->cache->doRemoveCacheWhenAllRequiredCacheParametersAreFilled();
+        Wi3::inst()->cache->fillCacheParameter("user", $userid);
+        // By default, don't cache pages
+        // This can be overridden in the user template, if desired
         Wi3::inst()->cache->doNotCache();
     }
     

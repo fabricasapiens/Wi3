@@ -65,6 +65,14 @@
             self::$doCache = false;
         }
 
+        public function doCache() {
+            self::$doCache = true;
+        }
+
+        public function doRemoveCacheWhenAllRequiredCacheParametersAreFilled() {
+            self::$tiko->doRemoveCacheWhenAllRequiredCacheParametersAreFilled();
+        }
+
         public function requireCacheParameter($key) {
             return self::$tiko->requireCacheParameter($key);
         }

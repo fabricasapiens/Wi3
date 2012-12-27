@@ -8,7 +8,7 @@
  * @see  http://kohanaframework.org/guide/using.configuration
  * @see  http://php.net/timezones
  */
-date_default_timezone_set('Europe/Amsterdam');
+date_default_timezone_set('Europe/Amsterdam'); 
 
 /**
  * Set the default locale.
@@ -78,6 +78,49 @@ Kohana::$log->attach(new Kohana_Log_File(APPPATH.'logs'));
  */
 Kohana::$config->attach(new Kohana_Config_File);
 
+Kohana::modules(array(
+    'event' => MODPATH.'event', // Event library
+    'cache'      => MODPATH.'cache',      // Caching with multiple backends
+    'plugin_tikocache' => APPPATH.'plugins/tikocache'
+));
+
+/**
+ * Set the routes. Each route must have a minimum of a name, a URI and a set of
+ * defaults for the URI.
+ */
+Route::set('default', '(<controller>(/<action>(/<args>)))', array('args' => '.*'))
+    ->defaults(array(
+        'controller' => 'welcome',
+        'action'     => 'index',
+    ));
+
+
+/**
+ * Caching
+ */
+// Set up Cache-mechanism
+Wi3TikoCache::beforeInit();
+ // If that didn't immediately fullfill the cache-parameters, load the user, and fill that as a cache-parameter
+$usersession = Session::instance()->get("auth_user");
+ // See if filling the user parameter already fullfills the required cache parameters
+if (isset($usersession["id"])) {
+    $userid = $usersession["id"];
+} else {
+    $userid = "";
+}
+try {
+    Wi3TikoCache::inst()->fillCacheParameter("user", $userid);
+} catch(Exception_Continue $e) {
+    // A Exception_Continue means that caching was successful
+    echo Request::instance()
+        ->send_headers()
+        ->response;
+    exit;
+} catch(Exception $e) {
+    // Something went horribly wrong. Do as if nothing happend and continue
+}
+
+
 /**
  * Enable modules. Modules are referenced by a relative or absolute path.
  */
@@ -99,7 +142,7 @@ Kohana::modules(array(
 	// 'oauth'      => MODPATH.'oauth',      // OAuth authentication
 	// 'pagination' => MODPATH.'pagination', // Paging of results
 	// 'unittest'   => MODPATH.'unittest',   // Unit testing
-	'userguide'  => MODPATH.'userguide',  // User guide and API documentation
+	// 'userguide'  => MODPATH.'userguide',  // User guide and API documentation
     // Plugins
     'plugin_multilanguage' => APPPATH.'plugins/multilanguage',
     'plugin_jquery' => APPPATH.'plugins/jquery',
@@ -110,16 +153,6 @@ Kohana::modules(array(
     // HTMLPurifier XSS Prevention
     'htmlpurifier' => MODPATH.'htmlpurifier'
 ));
-
-/**
- * Set the routes. Each route must have a minimum of a name, a URI and a set of
- * defaults for the URI.
- */
-Route::set('default', '(<controller>(/<action>(/<args>)))', array('args' => '.*'))
-	->defaults(array(
-		'controller' => 'welcome',
-		'action'     => 'index',
-	));
 	
 // Enable the Supercache (don't for the moment, it won't help performance-wise)
 // $super_cache = Super_Cache::instance();

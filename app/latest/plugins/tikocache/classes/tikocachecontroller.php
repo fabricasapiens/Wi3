@@ -8,6 +8,7 @@
 		private $requiredCacheParametersWereLoadedFromCache = false;
 		private $filledCacheParameters = Array();
 		private $cacheStringForURL;
+		private $removeCacheWhenAllRequiredCacheParametersAreFilled = false;
 
 		public function __construct($cacheAPI) {
 			$this->cacheAPI = $cacheAPI;
@@ -19,14 +20,14 @@
 				$this->requiredCacheParameters = json_decode($requiredCacheParameters);
 				$this->requiredCacheParametersWereLoadedFromCache = true;
 				// Check if all requiredparameters are already filled
-				$this->getFromCacheIfAllRequiredParametersAreFilled();
+				$this->getFromCacheOrRemoveFromCacheWhenAllRequiredParametersAreFilled();
 			}
 		}
 
 		public function fillCacheParameter($parameterName, $parameterValue) {
 			$this->filledCacheParameters[$parameterName] = $parameterValue;
 			// If all requiredCacheParameters are filled, try to load the item from cache
-			$this->getFromCacheIfAllRequiredParametersAreFilled();
+			$this->getFromCacheOrRemoveFromCacheWhenAllRequiredParametersAreFilled();
 		}
 
 		public function requireCacheParameter($parameterName) {
@@ -70,6 +71,30 @@
 			// Sort alphabetically on key
 			ksort($cacheArray);
 			return json_encode($cacheArray);
+		}
+
+		public function doRemoveCacheWhenAllRequiredCacheParametersAreFilled() {
+			$this->removeCacheWhenAllRequiredCacheParametersAreFilled = true;
+		}
+
+		public function doNotRemoveCacheWhenAllRequiredCacheParametersAreFilled() {
+			$this->removeCacheWhenAllRequiredCacheParametersAreFilled = false;
+		}
+
+		private function getFromCacheOrRemoveFromCacheWhenAllRequiredParametersAreFilled() {
+			if ($this->removeCacheWhenAllRequiredCacheParametersAreFilled) {
+				$this->removeFromCacheWhenAllRequiredParametersAreFilled();
+			} else {
+				$this->getFromCacheIfAllRequiredParametersAreFilled();	
+			}
+		}
+
+		private function removeFromCacheWhenAllRequiredParametersAreFilled() {
+			$this->cacheStringForURL = $this->createCacheStringForURL();
+			if ($this->cacheStringForURL === false) {
+				return false;
+			}
+			$cachedItem = $this->cacheAPI->remove("tiko_filledCacheParameters_" . $this->URL . "_" . $this->cacheStringForURL);
 		}
 
 		private function getFromCacheIfAllRequiredParametersAreFilled() {
