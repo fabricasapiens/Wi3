@@ -11,6 +11,13 @@ $(function() {
 					if (getResult(currentlySelectedResult).find("a").length) {
 						document.location.href = getResult(currentlySelectedResult).find("a").first().attr("href");	
 					}
+				} else {
+					// Pick first result, if present
+					if (getResult(0)) {
+						if (getResult(0).find("a").length) {
+							document.location.href = getResult(0).find("a").first().attr("href");	
+						}
+					}
 				}
 			} else if (event.which == 38 || event.which == 40) {
 				// Go down or up in list
@@ -113,7 +120,7 @@ $(function() {
 					$(component).next("div").find(".wi3_pagefiller_default_component_simpleblogsearch_result").append(a);
 				}
 			} else {
-				$(component).next("div").find(".wi3_pagefiller_default_component_simpleblogsearch_result").html("<div>No results</div>");
+				$(component).next("div").find(".wi3_pagefiller_default_component_simpleblogsearch_result").html("<div><a>No results</a></div>");
 			}
 			$(component).next("div").find(".wi3_pagefiller_default_component_simpleblogsearch_result").show();
 		}
