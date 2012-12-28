@@ -27,6 +27,8 @@
 		public function fillCacheParameter($parameterName, $parameterValue) {
 			$this->filledCacheParameters[$parameterName] = $parameterValue;
 			// If all requiredCacheParameters are filled, try to load the item from cache
+			// If the item exists, we resolve with the found item
+			// If the item does not exist, this is (probably) the first run, and so the cace-parameters are later used to cache the item under the proper key
 			$this->getFromCacheOrRemoveFromCacheWhenAllRequiredParametersAreFilled();
 		}
 
