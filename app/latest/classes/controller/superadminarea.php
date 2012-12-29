@@ -324,6 +324,8 @@ class Controller_Superadminarea extends Controller_ACL {
                 $url->create();
                 
                 $vhostfolder = Wi3::inst()->unixpath(APPPATH . "../../vhosts/") . "/";
+
+                Kohana::$log->add(Kohana::INFO, "creating url for vhostfolder " . $vhostfolder . " and domain " . $domain);
                 
                 // Create the vhost. Do this by copying the .template folder.
                 if (!is_dir($vhostfolder.$domain))
