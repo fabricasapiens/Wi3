@@ -98,17 +98,17 @@ Route::set('default', '(<controller>(/<action>(/<args>)))', array('args' => '.*'
 /**
  * Caching
  */
-// Set up Cache-mechanism
-Wi3TikoCache::beforeInit();
- // If that didn't immediately fullfill the cache-parameters, load the user, and fill that as a cache-parameter
-$usersession = Session::instance()->get("auth_user");
- // See if filling the user parameter already fullfills the required cache parameters
-if (isset($usersession["id"])) {
-    $userid = $usersession["id"];
-} else {
-    $userid = "";
-}
 try {
+    // Set up Cache-mechanism
+    Wi3TikoCache::beforeInit();
+     // If that didn't immediately fullfill the cache-parameters, load the user, and fill that as a cache-parameter
+    $usersession = Session::instance()->get("auth_user");
+     // See if filling the user parameter already fullfills the required cache parameters
+    if (isset($usersession["id"])) {
+        $userid = $usersession["id"];
+    } else {
+        $userid = "";
+    }
     Wi3TikoCache::inst()->fillCacheParameter("user", $userid);
 } catch(Exception_Continue $e) {
     // A Exception_Continue means that caching was successful
