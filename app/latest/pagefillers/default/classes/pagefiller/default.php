@@ -99,7 +99,7 @@
                 'image_url' => $templates->$templatename->url.'static/images/',                
                 'view_path' => $templates->$templatename->path.'views/',                
             )); 
-            $templateview = View::factory()->set("this", $templatebaseview);
+            $templateview = View::factory()->set("this", $templatebaseview)->set("renderedinadminarea", $renderedinadminarea);
             $templateview->set_filepath($templateconfig->templateview); // set_filepath sets a complete filename on the View
             $html = $templateview->render();
             
