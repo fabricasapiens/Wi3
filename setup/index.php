@@ -189,6 +189,7 @@
             dirname(__FILE__ ). "/../app/latest/config/" => FALSE,
             dirname(__FILE__ ). "/../app/latest/cache/" => FALSE,
             dirname(__FILE__ ). "/../sites/" => FALSE,
+            dirname(__FILE__ ). "/../vhosts/" => FALSE,
         );
         $paths = Array();
         foreach($checkpaths as $path => $writable)
@@ -220,6 +221,7 @@
             dirname(__FILE__ ). "/../app/latest/config/" => FALSE,
             dirname(__FILE__ ). "/../app/latest/cache/" => FALSE,
             dirname(__FILE__ ). "/../sites/" => FALSE,
+            dirname(__FILE__ ). "/../vhosts/" => FALSE,
         );
         $paths = Array();
         foreach($checkpaths as $path => $writable)
