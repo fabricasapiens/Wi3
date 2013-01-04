@@ -1,6 +1,5 @@
 <?php
 
-	// TODO: move this to tikoCache plugin and listen for events in the init.php
     // Define the TikoCacheAPI. It is the interface between a Cache and the Application
     class Wi3TikoCacheAPI implements TikoCacheAPI {
 
@@ -47,10 +46,12 @@
     class Wi3TikoCache extends Wi3_Base {
 
     	static $tiko;
+        static $cache;
         static $doCache = true;
 
     	public static function beforeInit() {
 			$cache = Cache::instance('file');
+            self::$cache = $cache;
 		    $cacheAPI = new Wi3TikoCacheAPI($cache,Request::instance());
 		    self::$tiko = new tikoCacheController($cacheAPI);
     	}
@@ -79,6 +80,10 @@
 
         public function fillCacheParameter($key,$value) {
             return self::$tiko->fillCacheParameter($key,$value);
+        }
+
+        public function removeAll() {
+            self::$cache->delete_all();
         }
 
     }

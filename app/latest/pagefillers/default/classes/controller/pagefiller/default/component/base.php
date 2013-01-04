@@ -132,6 +132,9 @@
 				$dataobject->{$index} = $value;
 			}
             $dataobject->update();
+
+            // Remove cache of all pages, since we do not know how this change affects other pages
+            Wi3::inst()->cache->removeAll();
             
 			// Let the Front-End rerender the affected field
             echo json_encode(

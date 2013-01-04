@@ -132,6 +132,9 @@ class Controller_Pagefiller_Default_Edittoolbar_Ajax extends Controller_ACL {
                 }
             }
         }
+
+        // Remove cache of all pages, since we do not know how this change affects other pages
+        Wi3::inst()->cache->removeAll();
         
         // Return success
         echo json_encode(
