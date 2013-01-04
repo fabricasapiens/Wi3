@@ -166,6 +166,16 @@ wi3.pagefillers.default.edittoolbar = {
                 // replace selection
                 //wi3.pagefillers.default.edittoolbar.getActiveEditor().insertHTML(html);
                 start.replaceWith(startbeforetext + html + startaftertext); // the startbeforetext gets a line-break or something on the end??
+                
+                // This next section should ideally not happen, but we can not guarantee that all child-elements are spans
+                // If the parent of the field is an inline-element (<p>, <span> etc), we convert it to <div> while taking the existing metrics from the current parent
+                var tagname = parent.get(0).tagName;
+                // Recursively bubble to the top, until we encounter a block-level element (i.e. not P or SPAN)
+                while (tagname && (tagname == "P" || tagname == "SPAN"))
+                {
+                    var parent = changeTagName(parent, "div");
+                    tagname = parent.get(0).tagName;
+                }
             }            
         }
         else if (replacetype == "insertafter")
@@ -199,6 +209,16 @@ wi3.pagefillers.default.edittoolbar = {
                 // replace selection
                 //wi3.pagefillers.default.edittoolbar.getActiveEditor().insertHTML(html);
                 end.replaceWith(beforetext + html + aftertext); // the startbeforetext gets a line-break or something on the end??
+                
+                // This next section should ideally not happen, but we can not guarantee that all child-elements are spans
+                // If the parent of the field is an inline-element (<p>, <span> etc), we convert it to <div> while taking the existing metrics from the current parent
+                var tagname = parent.get(0).tagName;
+                // Recursively bubble to the top, until we encounter a block-level element (i.e. not P or SPAN)
+                while (tagname && (tagname == "P" || tagname == "SPAN"))
+                {
+                    var parent = changeTagName(parent, "div");
+                    tagname = parent.get(0).tagName;
+                }
             }            
         }
         else if (replacetype == "replace")
@@ -216,6 +236,16 @@ wi3.pagefillers.default.edittoolbar = {
             
             // replace selection
             start.replaceWith(startbeforetext + html + startaftertext); // the startbeforetext gets a line-break or something on the end??
+            
+            // This next section should ideally not happen, but we can not guarantee that all child-elements are spans
+            // If the parent of the field is an inline-element (<p>, <span> etc), we convert it to <div> while taking the existing metrics from the current parent
+            var tagname = parent.get(0).tagName;
+            // Recursively bubble to the top, until we encounter a block-level element (i.e. not P or SPAN)
+            while (tagname && (tagname == "P" || tagname == "SPAN"))
+            {
+                var parent = changeTagName(parent, "div");
+                tagname = parent.get(0).tagName;
+            }
         }
         
         // make the hover work that enables resizing, deletion etc
@@ -357,3 +387,130 @@ wi3.pagefillers.default.edittoolbar = {
         var request = wi3.request("pagefiller_default_edittoolbar_ajax/removefield", { pageid: $("#pagefiller_default_edittoolbar_pageid").text(), fieldid: fieldid, elementtext: $("[fieldid="+fieldid+"] [type=fieldcontent]").text() });
     }
 };
+
+// The style functions and changetag function 
+// TODO: move this into a JQuery plugin
+function changeTagName(parent, newTagName)
+{
+    parent = $(parent);
+    // Fetch the style of the <p> or <span> element
+    var parentstyles = getStyles(parent);
+    var parentcomputedstyles = getComputedStyles(parent);
+    if (!newTagName.length) { newTagName = "div"; }
+    // replace <p> or <span> with an element newTagName (e.g. a <div>)
+    parent.replaceWith("<" + newTagName + " findmeback='findmeback'>" + parent.html() + "</" + newTagName + ">"); // replace the <p> or <span> with its contents
+    var wrap = $("[findmeback=findmeback]").removeAttr("findmeback");
+    // Set the style from the original element. Make sure to only include those styles that are actually different from the div element.
+    divstyles = getStyles(wrap);
+    var style = "";
+    // include the parent styles that are different
+    for(index in parentstyles)
+    {
+        if (parentstyles[index] != divstyles[index])
+        {
+            style += index + ": " + parentstyles[index] + "; ";
+        }
+    }
+    // Reset the div styles that are not found in the parent
+    // The reset happens by setting the value to the computed style of the original parent
+    for(index in divstyles)
+    {
+        if (!parentstyles[index])
+        {
+            style += index + ": " + parentcomputedstyles[index] + ";";
+        }
+    }
+    wrap.attr("style", style); // set all the markup from the p/span element to the div element
+    return wrap; // Return the new parent
+}
+
+function getComputedStyles(element)
+{
+    var styles= [];
+    var element = $(element).get(0);
+    // The DOM Level 2 CSS way
+    if ('getComputedStyle' in window) {
+        var cs= getComputedStyle(element, '');
+        if (cs.length!==0)
+        {
+            for (var i= 0; i<cs.length; i++)
+            {
+                styles[cs.item(i)] = cs.getPropertyValue(cs.item(i));
+            }
+        }
+        else // Opera workaround. Opera doesn't support `item`/`length` on CSSStyleDeclaration.
+        {
+            for (var k in cs)
+            {
+                if (cs.hasOwnProperty(k))
+                {
+                    styles[k] = cs[k];
+                }
+            }
+        }
+    // The IE way
+    } else if ('currentStyle' in element) {
+        var cs= element.currentStyle;
+        for (var k in cs)
+        {
+            styles[k] = cs[k];
+        }
+    }
+    return styles;
+}
+
+function getStyles(element)
+{
+    var element = $(element).get(0);
+    var rules = []; var count = 0;
+    // NOTE: it is impossible to read the 'default stylesheet' so it is best to include a reset.css to have access to the 'base' rules
+    // Get all the explicit stylesheets (including <style> declaratinos) and extract the matching rules
+    for (index in document.styleSheets)
+    {
+        localrules = [];
+        if (document.styleSheets[index].cssRules)
+        {
+            localrules = document.styleSheets[index].cssRules;
+        }
+        else if (document.styleSheets[index].rules)
+        {
+            localrules = document.styleSheets[index].rules;
+        }
+        // Loop through the local rules, and add them to the rules if the rule is meant for the element under study
+        for(i in localrules)
+        {
+            if (localrules[i].selectorText && localrules[i].selectorText.length)
+            {
+                var selector = localrules[i].selectorText;
+                // JQuery chokes on :: in the selector, so we need to remove those...
+                if (selector.indexOf("::") != -1) { continue; }
+                // http://stackoverflow.com/questions/2218296/jquery-check-if-jquery-object-contains-exact-dom-element
+                if ( $(selector).filter(function() { return this == element; }).length ) { // selector does match element 
+                    // Loop over the rules belonging to this selector, and add them to the rules array
+                    for(r=0; r < localrules[i].style.length; r++)
+                    {
+                        rules[localrules[i].style[r]] = localrules[i].style[localrules[i].style[r]];
+                    }
+                }
+            }
+        }
+    }
+    // Loop over the inline style and add those rules
+    var inlinestyle = $(element).attr("style");
+    if (inlinestyle && inlinestyle.length > 0) 
+    { 
+        var inlinerules = inlinestyle.split(";");
+        for(ir in inlinerules)
+        {
+            if (inlinerules[ir].length > 0)
+            {
+                var inlinerule = inlinerules[ir].split(":");
+                if (inlinerule.length == 2)
+                {
+                    rules[inlinerule[0]] = inlinerule[1];
+                }
+            }
+        }
+    }
+    return rules;
+}

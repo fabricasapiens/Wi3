@@ -83,7 +83,7 @@
                 </div>
             </div>
         <?php 
-        echo "</div></div>"; // PHPQuery 'markups' the html so that a stupid line-break / space (?) gets inserted here, mangling the markup of the page...
+        echo "</div></div>"; // End of fieldbuttons. // PHPQuery 'markups' the html so that a stupid line-break / space (?) gets inserted here, mangling the markup of the page...
         echo "<div style='display: inherit;' type='fieldcontent'>" . $fieldhtml . "</div>";
     echo "</div>";
     
