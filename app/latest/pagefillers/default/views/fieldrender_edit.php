@@ -52,39 +52,39 @@
     }
     $totalstyle .= "; position: relative;";
     
-    echo "<span type='field' fieldid='" . $field->id . "' style='" . $totalstyle . "' contenteditable='false'>";
-        echo "<span type='fieldbuttons' style='position: absolute; left: 0px; top: 0px; height: 80px; margin-top: -80px; width: 100%; min-width: 250px; display: none; font: 13px arial, verdana; font-weight: normal; background: #fff; overflow: hidden; -webkit-box-shadow: 0px 0px 10px #ccc; -mozilla-box-shadow: 0px 0px 10px #ccc; box-shadow: 0px 0px 10px #ccc;'><span style='display: inline-block; padding: 10px;'>";
+    echo "<div type='field' fieldid='" . $field->id . "' style='" . $totalstyle . "' contenteditable='false'>";
+        echo "<div type='fieldbuttons' style='position: absolute; left: 0px; top: 0px; height: 80px; margin-top: -80px; width: 100%; min-width: 250px; display: none; font: 13px arial, verdana; font-weight: normal; background: #fff; overflow: hidden; -webkit-box-shadow: 0px 0px 10px #ccc; -mozilla-box-shadow: 0px 0px 10px #ccc; box-shadow: 0px 0px 10px #ccc;'><div style='display: inline-block; padding: 10px;'>";
             // Now there is three tabs: at the left the field-actions. At the right respectively the style-actions, and rigid actions like 'delete' or 'replace with other field'
             ?>
-            <span type='field_tabs_tabs' style='position: absolute; bottom: 0px; height: 20px;'>
-                <span tab='fieldactions' style='margin-right: 5px;'><a href='javascript:void(0);' onclick='$("span[block]").hide().filter("span[block=fieldactions]").fadeIn();'>veld acties...</a></span>
+            <div type='field_tabs_tabs' style='position: absolute; bottom: 0px; height: 20px;'>
+                <div tab='fieldactions' style='display: inline-block; margin-right: 5px;'><a href='javascript:void(0);' onclick='$("div[block]").hide().filter("div[block=fieldactions]").fadeIn();'>veld acties...</a></div>
                 <?php 
                 if (isset($stylearray["display"]) && $stylearray["display"] == "block") 
                 { ?>
-                    <span tab='design' style='margin-right: 5px;'><a href='javascript:void(0);' onclick='$("span[block]").hide().filter("span[block=design]").fadeIn();'>opmaak...</a></span>
+                    <div tab='design' style='display: inline-block; margin-right: 5px;'><a href='javascript:void(0);' onclick='$("div[block]").hide().filter("div[block=design]").fadeIn();'>opmaak...</a></div>
                 <?php } ?>
-                <span tab='settings' style='margin-right: 5px;'><a href='javascript:void(0);' onclick='$("span[block]").hide().filter("span[block=settings]").fadeIn();'>verwijderen...</a></span>
-            </span>
-            <span type='field_tabs_blocks' style='position:absolute; bottom: 20px; height: 50px; overflow: hidden;'>
-                <span block='fieldactions'>
+                <div tab='settings' style='display: inline-block; margin-right: 5px;'><a href='javascript:void(0);' onclick='$("div[block]").hide().filter("div[block=settings]").fadeIn();'>verwijderen...</a></div>
+            </div>
+            <div type='field_tabs_blocks' style='position:absolute; bottom: 20px; height: 50px; overflow: hidden;'>
+                <div block='fieldactions'>
                     <?php echo $field->fieldactions(); ?>
-                </span>
-                <span block='design' style='display: none;'>
+                </div>
+                <div block='design' style='display: none;'>
                     <?php 
                     // Padding of the field object
-                    echo "<span><span style='display: inline-block; width: 60px;'>Marge </span><a href='javascript:void(0)' action='margin_0px'>geen</a> <a href='javascript:void(0)' action='margin_20px'>gemiddeld</a> <a href='javascript:void(0)' action='margin_40px'>groot</a></span><br />";
+                    echo "<div><span style='display: inline-block; width: 60px;'>Marge </span><a href='javascript:void(0)' action='margin_0px'>geen</a> <a href='javascript:void(0)' action='margin_20px'>gemiddeld</a> <a href='javascript:void(0)' action='margin_40px'>groot</a></div>";
                     // Float left or right
                     // <img alt='veld links plaatsen' action='float_left' style='border: none; text-decoration: none;  vertical-align:middle;' src='" . Wi3::inst()->urlof->pagefillerfiles . "static/images/edittoolbar/float_left.png" . "'/><img alt='veld rechts plaatsen' action='float_right' style='border: none; text-decoration: none;  vertical-align:middle;' src='" . Wi3::inst()->urlof->pagefillerfiles . "static/images/edittoolbar/float_right.png" . "'/>
-                    echo "<span><span style='display: inline-block; width: 60px;'>Uitlijning</span><a href='javascript:void(0)' action='align_floatleft'>links</a> <a href='javascript:void(0)' action='align_floatright'>rechts</a> <a href='javascript:void(0)' action='align_fullwidth'>volle breedte</a></span><br />";
-                echo "</span>";
-                echo "<span block='settings' style='display: none;'>
+                    echo "<div><span style='display: inline-block; width: 60px;'>Uitlijning</span><a href='javascript:void(0)' action='align_floatleft'>links</a> <a href='javascript:void(0)' action='align_floatright'>rechts</a> <a href='javascript:void(0)' action='align_fullwidth'>volle breedte</a></div>";
+                echo "</div>";
+                echo "<div block='settings' style='display: none;'>
                     <img alt='veld verwijderen' action='remove' style='border: none; text-decoration: none;  vertical-align:middle;' src='" . Wi3::inst()->urlof->pagefillerfiles . "static/images/edittoolbar/remove.png" . "'/>";
                     ?>
-                </span>
-            </span>
+                </div>
+            </div>
         <?php 
-        echo "</span></span>"; // PHPQuery 'markups' the html so that a stupid line-break / space (?) gets inserted here, mangling the markup of the page...
-        echo "<span style='display: inherit;' type='fieldcontent'>" . $fieldhtml . "</span>";
-    echo "</span>";
+        echo "</div></div>"; // PHPQuery 'markups' the html so that a stupid line-break / space (?) gets inserted here, mangling the markup of the page...
+        echo "<div style='display: inherit;' type='fieldcontent'>" . $fieldhtml . "</div>";
+    echo "</div>";
     
 ?>

@@ -190,9 +190,8 @@
                         }
                         if ($field->loaded())
                         {
-                            $postprocessingid = Wi3::inst()->date_now(); // a unique id for a field is necessary to be able to match properly in the case of nested fields
-                            $wraphtml = "<postprocessing" . $postprocessingid . ">" . $controller->view("fieldrender_edit")->set("field", $field)->set("pqfield", $pqfield)->render() . "</postprocessing" . $postprocessingid . ">"; // the <postprocessing> tags are, obviously, for postprocessing. See below
-                            pq($pqfield)->replaceWith($wraphtml);
+                            $fieldedithtml = $controller->view("fieldrender_edit")->set("field", $field)->set("pqfield", $pqfield)->render();
+                            pq($pqfield)->replaceWith($fieldedithtml);
                         }
                     }
                 }
@@ -292,9 +291,8 @@
                             }
                             $totalstyle .= "; position: relative;";
                             // Replace the <cms> part with a render of the field
-                            $postprocessingid = Wi3::inst()->date_now(); // a unique id for a field is necessary to be able to match properly in the case of nested fields
-                            $wraphtml = "<postprocessing" . $postprocessingid . "><div type='field' fieldid='" . $field->id . "' style='" . $totalstyle . "' contenteditable='false'>" . $fieldhtml . "</div></postprocessing" . $postprocessingid . ">";
-                            pq($pqfield)->replaceWith($wraphtml);
+                            $fieldedithtml = "<div type='field' fieldid='" . $field->id . "' style='" . $totalstyle . "' contenteditable='false'>" . $fieldhtml . "</div>";
+                            pq($pqfield)->replaceWith($fieldedithtml);
                         }
                     }
                 }
@@ -338,12 +336,6 @@
                     pq($editableblock)->replaceWith($blockcontent);
                 }
             }
-            
-            // Postprocessing on the html (also executed while saving the blocks in controller/pagefiller/default/edittoolbar/ajax.php)
-            // There is a 'bug' within phpQuery that it wants no DIVs within P elements, even not when they are display: inline-block;
-            // To circumvent this, we have added <postprocessing[number]> tags, so that PHPQuery does not close the <p> before the </div>
-            // Now, we only have to remove the <postprocessing> tags again
-            $html = preg_replace("@<(postprocessing[0-9]*)>(.*)</\\1>@si", "$2", $html); // The \\1 is an in-pattern backreference. The flag i results in insensitivity for case. The s flag makes the string a single line without \r and \n
             
             return $html;
         }

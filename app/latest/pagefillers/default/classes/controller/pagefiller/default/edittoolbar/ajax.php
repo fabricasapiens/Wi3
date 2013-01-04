@@ -98,24 +98,6 @@ class Controller_Pagefiller_Default_Edittoolbar_Ajax extends Controller_ACL {
             }
             // Save in data object
             $content = pq($editableblock)->html();
-            // Postprocessing on the raw content (also executed while rendering the blocks in pagefiller/default.php)
-            /* Because there is a 'bug' within phpQuery that it wants no DIVs within P elements, even not when they are display: inline-block;
-               Thus, this
-               
-                <p>sometext
-                    <div>field</div>
-                othertext</p> 
-                
-                turns into 
-                
-                <p>sometext</p>
-                <div>field</div>
-                sometext</p>
-                
-               Thus, we need to remove that </p> before the <div>
-               It is easy to find only those </p> because there is one omitted *after* the div
-            */
-            $content = preg_replace("@</(.+)>[\n\r]*(<cms[^>]*></cms>)(?!<\\1>)@i", "$2", $content); // The \\1 is an in-pattern backreference. The flag i results in insensitivity for case. 
             $content = Security::xss_clean($content); // Clean the content, to prevent user XSS attacks
             $data = Wi3::inst()->model->factory("site_data")->setref($page)->set("name",$name)->load(); // the setref($page) ensures that it is impossible to illegally set data for a field not in the current page
             $data->data = $content;
