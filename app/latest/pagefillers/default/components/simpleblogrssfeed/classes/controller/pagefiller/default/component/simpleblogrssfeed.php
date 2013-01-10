@@ -7,6 +7,12 @@
     
 		public static $componentname = "simpleblogrssfeed";
 		
+        public function before() 
+        {
+            Wi3::inst()->acl->grant("*", $this, "rssfeed"); // Everybody can access rssfeed function in this controller
+            parent::before();
+        }
+
         public function startEdit($field) 
         {
             // Possibly custom code here
