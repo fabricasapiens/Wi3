@@ -1,6 +1,8 @@
 wi3.makeExist("wi3.pagefillers.default");
 
 $(document).ready( function(){
+    // Let all contenteditables use filteredPaste
+    $("[contenteditable]").filteredPaste();
     // Make toolbar ready for use
     wi3.pagefillers.default.edittoolbar.activeEditor = $("[contenteditable='true']");
     jQuery.extend(wi3.pagefillers.default.edittoolbar.activeEditor, WysiHat.Commands);
