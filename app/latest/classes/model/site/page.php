@@ -32,7 +32,7 @@ class Model_Site_Page extends Sprig
     {
         $pagefillername = "Pagefiller_" . $this->filler;
         $pagefiller = new $pagefillername;
-        $content = $pagefiller->render($this,$renderedinadminarea);
+        $content = $pagefiller->render($this, $renderedinadminarea);
         // Now remove all the <cms> blocks that were left over (i.e. not dealt with by the pagefiller)
         // TODO: do this with PHPQuery, if that does not cost too much performance-wise
         return preg_replace("@<cms[^>]*>[^<]*</cms>@","",$content);
