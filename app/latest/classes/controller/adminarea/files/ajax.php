@@ -46,9 +46,10 @@ class Controller_Adminarea_Files_Ajax extends Controller_ACL {
         // Add it
         $folder = Wi3::inst()->sitearea->files->add($properties, $settings);
         if ($folder) {
-            //#remove cache of the *complete* site!
-            //Wi3::$cache->field_delete_all_wheresite(Wi3::$site);
-            //#
+            
+            // Remove cache of everything, since we do not know how this change affects the site
+            Wi3::inst()->cache->removeAll();
+
             $li = html::anchor($folder->id, $folder->title);
             if ($folder->lft == 1 AND $folder->rgt == 2)
             {
@@ -85,7 +86,10 @@ class Controller_Adminarea_Files_Ajax extends Controller_ACL {
         $fileid = substr($movedfile,9);
         $refid = substr($referencefile,9);
         if (Wi3::inst()->sitearea->files->moveBefore($fileid, $refid)) {
-            // TODO: caching
+            
+            // Remove cache of everything, since we do not know how this change affects the site
+            Wi3::inst()->cache->removeAll();
+
             echo json_encode(
                 Array(
                     "alert" => "bestand is verhuisd"
@@ -106,7 +110,10 @@ class Controller_Adminarea_Files_Ajax extends Controller_ACL {
         $fileid = substr($movedfile,9);
         $refid = substr($referencefile,9);
         if (Wi3::inst()->sitearea->files->moveAfter($fileid, $refid)) {
-            // TODO: caching
+            
+            // Remove cache of everything, since we do not know how this change affects the site
+            Wi3::inst()->cache->removeAll();
+
             echo json_encode(
                 Array(
                     "alert" => "bestand is verhuisd"
@@ -127,9 +134,10 @@ class Controller_Adminarea_Files_Ajax extends Controller_ACL {
         $fileid = substr($movedfile,9);
         $refid = substr($referencefile,9);
         if (Wi3::inst()->sitearea->files->moveUnder($fileid, $refid)) {
-            //#remove cache of the *complete* site!
-            //Wi3::$cache->field_delete_all_wheresite(Wi3::$site);
-            //#
+            
+            // Remove cache of everything, since we do not know how this change affects the site
+            Wi3::inst()->cache->removeAll();
+
             echo json_encode(
                 Array(
                     "alert" => "bestand is verhuisd"
@@ -149,9 +157,10 @@ class Controller_Adminarea_Files_Ajax extends Controller_ACL {
         $fileid = substr($filename,9);
         // A call to files->delete will delete the files and descendants recursively, as well as their connected files
         if (Wi3::inst()->sitearea->files->delete($fileid)) {
-            //#remove cache of the *complete* site!
-            //Wi3::$cache->field_delete_all_wheresite(Wi3::$site);
-            //#
+            
+            // Remove cache of everything, since we do not know how this change affects the site
+            Wi3::inst()->cache->removeAll();
+
             echo json_encode(
                 Array(
                     "alert" => "bestand is verwijderd"
@@ -214,7 +223,8 @@ class Controller_Adminarea_Files_Ajax extends Controller_ACL {
                     }
                 }
                 
-                // TODO: caching
+                // Remove cache of everything, since we do not know how this change affects the site
+                Wi3::inst()->cache->removeAll();
                 
                 $file->update();
                 echo json_encode(
