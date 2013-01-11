@@ -150,6 +150,10 @@
             // Check whether the user is in adminarea, and if so, inject the popupdiv and page-id at <body>
             if ($renderedinadminarea === true)
             {
+
+                // Enable FilteredPaste.js for use in wi3 plugin
+                Wi3::inst()->plugins->load("plugin_jquery_filteredpaste");
+
                 Wi3::inst()->plugins->load("plugin_jquery_wi3");
                 $this->javascript("edittoolbar/onpage.js");
                 $this->javascript("jq-wysihat.js");
