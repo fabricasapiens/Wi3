@@ -11,7 +11,7 @@
     echo "</div>";
     echo "<div id='wi3_add_file'>";
         if (isset($message)) { echo "<div style='color: #cc0000; padding: 15px;'>" . $message . "</div>"; }
-        echo "<a href='javascript:void(0);' onClick='$(this).next().slideToggle();'><h2>Nieuw bestand</h2></a>";
+        echo "<a href='javascript:void(0);' onClick='$(this).next().slideToggle();'><h2>Bestand toevoegen</h2></a>";
         echo "<div style='display:none; margin:15px; margin-right: 55px;'>";
         echo View::factory("adminarea/files/addfile");
         echo "</div>";
@@ -19,6 +19,16 @@
     echo "<div id='wi3_add_folder'>";
         echo "<a href='javascript:void(0);' onClick='adminarea.addfolder();'><h2>+</h2></a>";
     echo "</div>";
+
+    function getextension($filename) {
+        $lastdotpos = strrpos($filename, ".");
+        return strtolower(substr($filename, $lastdotpos+1));
+    }
+
+    function isimage($file) {
+        $extensions = Array("jpg", "jpeg", "png", "bmp", "gif");
+        return $file->type === "file" && in_array(getextension($file->filename), $extensions);
+    }
     
     echo "<ul id='files_files' style='position: relative;' class='simpleTree'><li class='root'><span></span><ul>";
     // Get all files and render them in a tree
@@ -53,7 +63,8 @@
             }
             $prevfile = $file;
             
-            echo "<li class='treeItem " . ($file->type == "folder" ? "permanent-folder" : "") . "' id='treeItem_" . $file->id . "'><span>" . html::anchor(Wi3::inst()->urlof->site . "_uploads", $file->title) . "</span>";
+            echo "<li class='treeItem " . ($file->type == "folder" ? "permanent-folder" : "") . "' id='treeItem_" . $file->id . "'>";
+            echo "<span>" . html::anchor(Wi3::inst()->urlof->site . "_uploads/" . $file->filename, (isimage($file) ? "<img src='" . Wi3::inst()->urlof->site . "_uploads/30/" . $file->filename . "'/> " : "") . $file->title) . "</span>";
         }
         // Now, if we have ended far from root (i.e. a deep node), we need to add some </li></ul>
         if ($file->{$prevfile->level_column} > 0)
