@@ -69,6 +69,12 @@ var adminarea = {
 		// Hide any active panel about the currently selected page
 		$("#menu_pagesettings_tabs").fadeOut("fast");
 	},
+
+	hideAddPagePanel : function() {
+		$('#addPagePositionPanel').slideUp();
+		// Hide any active panel about the currently selected page
+		$("#menu_pagesettings_tabs").fadeOut("fast");
+	},
     
     addpageposition : function() {
         var selected = this.currentTree().getSelected();

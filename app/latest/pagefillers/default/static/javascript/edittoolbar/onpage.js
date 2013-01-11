@@ -14,6 +14,7 @@ $(document).ready( function(){
     wi3.pagefillers.default.edittoolbar.controlKeyDown = false;
     // TODO: make this work with the simple e.ctrlKey
     $(document).keydown(function (e) {
+        
         // Track some Control+key functions for e.g. saving (Control + s)
         if (e.which == 17)
         {

@@ -109,6 +109,7 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
                         //"dom" => Array("append" => Array("#menu_pages" => "<li class='treeItem' id='treeItem_" . $page->id . "'><span>" . html::anchor("engine/content/" . $page->id, $page->title) . "</span></li>")),
                         "scriptsafter" => Array(
                             "adminarea.currentTree().addNode('treeItem_" . $page->id . "','" . addslashes($li) . "')",
+                            "adminarea.hideAddPagePanel();"
                         )
                     )
                 );
