@@ -86,9 +86,8 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
             );
         } else {
         
-            //#remove cache of the *complete* site!
-            //Wi3::inst()->cache->field_delete_all_wheresite(Wi3::$site);
-            //#
+            // Remove cache of everything, since we do not know how this change affects the site
+            Wi3::inst()->cache->removeAll();
             
             if ($pageposition->lft == 1 AND $pageposition->rgt == 2)
             {
@@ -124,9 +123,10 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
         $pageid = substr($movedpage,9);
         $refid = substr($referencepage,9);
         if (Wi3::inst()->sitearea->pagepositions->moveBefore($pageid, $refid)) {
-            //#remove cache of the *complete* site!
-            //Wi3::$cache->field_delete_all_wheresite(Wi3::$site);
-            //#
+            
+            // Remove cache of everything, since we do not know how this change affects the site
+            Wi3::inst()->cache->removeAll();
+
             echo json_encode(
                 Array(
                     "alert" => "pagina is verhuisd"
@@ -147,9 +147,10 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
         $pageid = substr($movedpage,9);
         $refid = substr($referencepage,9);
         if (Wi3::inst()->sitearea->pagepositions->moveAfter($pageid, $refid)) {
-            //#remove cache of the *complete* site!
-            //Wi3::$cache->field_delete_all_wheresite(Wi3::$site);
-            //#
+            
+            // Remove cache of everything, since we do not know how this change affects the site
+            Wi3::inst()->cache->removeAll();
+
             echo json_encode(
                 Array(
                     "alert" => "pagina is verhuisd"
@@ -170,9 +171,10 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
         $pageid = substr($movedpage,9);
         $refid = substr($referencepage,9);
         if (Wi3::inst()->sitearea->pagepositions->moveUnder($pageid, $refid)) {
-            //#remove cache of the *complete* site!
-            //Wi3::$cache->field_delete_all_wheresite(Wi3::$site);
-            //#
+            
+            // Remove cache of everything, since we do not know how this change affects the site
+            Wi3::inst()->cache->removeAll();
+
             echo json_encode(
                 Array(
                     "alert" => "pagina is verhuisd"
@@ -192,9 +194,10 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
         $pageid = substr($pagename,9);
         // A call to pagepositions->delete will delete the pagepositions and descendants recursively, as well as their connected pages
         if (Wi3::inst()->sitearea->pagepositions->delete($pageid)) {
-            //#remove cache of the *complete* site!
-            //Wi3::$cache->field_delete_all_wheresite(Wi3::$site);
-            //#
+            
+            // Remove cache of everything, since we do not know how this change affects the site
+            Wi3::inst()->cache->removeAll();
+
             echo json_encode(
                 Array(
                     "alert" => "pagina is verwijderd"
@@ -304,8 +307,9 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
                     }
                 }
                 
-                //remove cache of the *complete* site!
-                // Wi3::$cache->field_delete_all_wheresite($site);
+                
+                // Remove cache of everything, since we do not know how this change affects the site
+                Wi3::inst()->cache->removeAll();
 
                 $page->update();
                 echo json_encode(
@@ -343,6 +347,9 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
                 $page->redirecttype = $_POST["redirect_type"];
                 $page->redirect_wi3 = $_POST["redirect_wi3"];
                 $page->redirect_external = $_POST["redirect_external"];
+
+                // Remove cache of everything, since we do not know how this change affects the site
+                Wi3::inst()->cache->removeAll();
                 
                 //save page and return
                 $page->update();

@@ -112,22 +112,6 @@ class Controller_Adminarea extends Controller_ACL {
         // Deal with folders and uploaded files 
         
         //--------------------
-        // Add folder, if one is sent along
-        //--------------------
-        /* Is implemented through AJAX call. Can we do this as well with file upload, please?        
-        if (isset($_POST["folder"]) AND !empty($_POST["folder"])) {
-            
-            // Create folder
-            $file = Wi3::inst()->model->factory("site_file");
-            $file->owner = Wi3::inst()->sitearea->auth->user;
-            $file->adminright = Wi3::inst()->sitearea->auth->user->username;
-            $file->title = $_POST["folder"];
-            $file->type = "folder";
-            // Add it
-            $file = Wi3::inst()->sitearea->files->add($file);
-        }*/
-        
-        //--------------------
         // Add file(s), if any are sent along
         //--------------------
         if (isset($_FILES['file']) AND is_array($_FILES['file']['name'])) {
@@ -166,7 +150,8 @@ class Controller_Adminarea extends Controller_ACL {
                 ini_set('memory_limit', '50M');
                 if (move_uploaded_file($_FILES['file']['tmp_name'][$i], $target)) {
 
-                    // TODO: caching?
+                    // Remove cache of everything, since we do not know how this change affects the site
+                    Wi3::inst()->cache->removeAll();
 
                     $file = Wi3::inst()->model->factory("site_file");
                     $file->owner = Wi3::inst()->sitearea->auth->user;
