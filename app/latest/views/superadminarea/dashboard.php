@@ -64,6 +64,11 @@
                 <label>Nieuwe URL</label><input class='rightside' name='url' value=''></input><br />
                 <label style='visibility: hidden;'>.</label><div style='display: inline-block;' class='rightside'><button>Nieuwe URL toevoegen</button></div>
             </form>
+            <form method='POST' action='<?php echo Wi3::inst()->urlof->action("resetadminpassword");?>'>
+                <input type='hidden' name='name' value='<?php echo $site->name; ?>'></input>
+                <label>Wachtwoord</label><input class='rightside' name='adminpassword' value=''></input><br />
+                <label style='visibility: hidden;'>.</label><div style='display: inline-block;' class='rightside'><button>Admin wachtwoord zetten</button></div>
+            </form>
             <form method='POST' action='<?php echo Wi3::inst()->urlof->action(($site->active ? "deactivatesite" : "activatesite"));?>'>
                 <input type='hidden' name='name' value='<?php echo $site->name; ?>'></input>
                 <label>Status van site</label><div style='display: inline-block;' class='rightside'> <?php echo ($site->active ? "actief" : "niet actief"); ?> <button><?php echo ($site->active ? "deactiveren" : "activeren"); ?></button></div>

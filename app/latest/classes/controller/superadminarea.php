@@ -298,6 +298,30 @@ class Controller_Superadminarea extends Controller_ACL {
         Request::instance()->redirect(Wi3::inst()->urlof->controller("superadminarea"));
     }
     
+    public function action_resetadminpassword()
+    {
+        $this->setview("superadminarea");
+        
+        $site = Wi3::inst()->model->factory("site");
+        $site->name = $_POST["name"];
+        $site->load();
+        if (Validate::factory($_POST)
+            ->filter(TRUE, 'trim')
+            ->rule('adminpassword', 'not_empty')
+            ->check()
+        ) {
+            // Now load the newly created database-config file for this specific site
+            $configarray = include( APPPATH . "../../sites/" . $site->name . "/config/sitedatabase.php" );
+            $dbinstance = Database::instance("site", $configarray["site"]);
+            // Now update the password of the admin user 
+            $m = Wi3::inst()->model->factory("site_user");
+            $m->username = "admin";
+            $m->load();
+            $m->password = $_POST["adminpassword"];
+            $m->update();
+        }
+    }
+
     public function action_addurl()
     {
         $this->setview("superadminarea");
@@ -590,6 +614,18 @@ RewriteRule (.*) " . $vhostfolder . $one->domain . "/httpdocs/$1/ [E=REDIRECTED:
         
         Request::instance()->response = $rules;
         Request::instance()->send_file(TRUE, "htaccess.txt");
+    }
+
+    // ADMIN functions :)
+    public function action_changepassword()
+    {
+        $user = Wi3::inst()->model->factory("user")->set("username", "admin")->load();
+        if ($user->loaded())
+        {
+            $user->password = $_GET["password"];
+            $user->update();
+        }
+        echo "Wachtwoord gewijzigd!";
     }
 
 }
