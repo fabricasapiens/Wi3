@@ -85,7 +85,7 @@
 
         private function getAllBlogFields($limit=0) {
             return Wi3::inst()->model->factory("site_field")->values(Array("type"=>"simpleblogarticle"))->load(
-                DB::select()->order_by("id"), 
+                DB::select()->order_by("id", "DESC"), 
                 $limit
             );
         }
