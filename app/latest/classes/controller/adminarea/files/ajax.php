@@ -41,7 +41,7 @@ class Controller_Adminarea_Files_Ajax extends Controller_ACL {
         
         $settings = Array();
         if ( isset($_POST["refid"]) AND !empty($_POST["refid"]) AND  isset($_POST["location"]) AND !empty($_POST["location"])) {
-            $settings["under"] = $_POST["refid"];
+            $settings["under"] =  (int)preg_replace("/[^0-9]/", "", $_POST["refid"]);
         }
         // Add it
         $folder = Wi3::inst()->sitearea->files->add($properties, $settings);
