@@ -42,16 +42,21 @@
                 $widthobj->data = $width;
                 $widthobj->updateorcreate();
             }
+            $description = ""; // TODO: store with image?
+            $addition = "";
+            if (strlen($description) > 0) {
+                $addition = "<span>" . $description . "</span>";
+            }
             if (empty($imagedata->data))
             {
-                return "<img src='" . Wi3::inst()->urlof->pagefillerfiles . "components/image/static/images/noimage.png'> <cms type='editableblock' name='description'>Beschrijving van afbeelding</cms>";
+                return "<img src='" . Wi3::inst()->urlof->pagefillerfiles . "components/image/static/images/noimage.png'>" . $addition;
             }
             else
             {
                 // fetch image-id and render the image
                 $fileid = $imagedata->data;
                 $file = Wi3::inst()->model->factory("site_file")->set("id", $fileid)->load();
-                return "<img src='" . Wi3::inst()->urlof->sitefiles . "data/uploads/" . $width . "/" . $file->filename . "'> <cms type='editableblock' name='description'>Beschrijving van afbeelding</cms>";
+                return "<img src='" . Wi3::inst()->urlof->sitefiles . "data/uploads/" . $width . "/" . $file->filename . "'>" . $addition;
             }
         }
         
