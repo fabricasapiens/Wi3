@@ -130,7 +130,7 @@
             return $this->controller($controller).$action."/";
         }
         
-        public function page($page) 
+        public function page($page, $permalink = FALSE) 
         {
             // Return the url to the page, dependent on whether the user is in edit_mode or not
             if (Wi3::inst()->routing->controller == "adminarea")
@@ -139,7 +139,11 @@
             }
             else
             {
-                return $this->site . (is_object($page) ? $page->slug : $page);
+                if ($permalink === TRUE) {
+                    return $this->site . (is_object($page) ? "_" . $page->id : $page);
+                } else {
+                    return $this->site . (is_object($page) ? $page->slug : $page);
+                }
             }
         }
         
