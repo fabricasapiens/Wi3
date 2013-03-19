@@ -50,67 +50,24 @@ class Controller_Pagefiller_Default_Edittoolbar_Ajax extends Controller_ACL {
         // an admin-role is assumed for bare login-access to the adminarea, other roles should define access to individual pages
         $page = Wi3::inst()->model->factory("site_page")->set("id", $_POST["pageid"])->load();
         $html = Wi3::inst()->originalpost["html"];
-        $allfields = Array(); // This is used to check which fields are in the HTML. If some have been removed, we should remove them here in the back-end as well: keep the DB clean :-)
+        // The ArrayObject $allfields is used to check which fields are in the HTML. If some have been removed, we should remove them here in the back-end as well: keep the DB clean :-)
+        // It is an ArrayObject so that it will be passed by reference
+        $allfields = new ArrayObject();
         // Get all editable blocks *within fields* and save them first
-        phpQuery::newDocument($html); // Give PHPQuery a context to work with
+        $document = phpQuery::newDocument($html); // Give PHPQuery a context to work with
         $editableblockswithinfields = pq("[type=field] [type=editableblock][contenteditable=true]");
         foreach($editableblockswithinfields as $editableblock)
         {
-            $name = pq($editableblock)->attr("name");
-            
-            // Fetch content
-            $content = pq($editableblock)->html();
-            $content = Security::xss_clean($content); // Clean the content, to prevent user XSS attacks
-            
-            $refname = pq($editableblock)->attr("ref");
-            if (empty($refname)) { $refname = "field"; }
-            if ($refname == "field")
-            {
-                // Get field id and set the ref accordingly!
-                $refid = pq($editableblock)->parents("[type=field]")->eq(0)->attr("fieldid");
-                $ref = Wi3::inst()->model->factory("site_field")->set("id", $refid)->load();
-            }
-            else if ($refname == "page")
-            {
-                $ref = $page;
-            }
-            $ref->saveEditableBlockContent($editableblock, $name, $content);
+            // Collapse fields to <cms> expressions
+            $this->saveFields($editableblock,$allfields);
+            // Now that the fields have been replaced with <cms> expressions, save the data to the block
+            $this->saveEditableBlockContent($editableblock, $page);
             // Remove the editableblocks, so that they won't get processed in the next part of this function
             pq($editableblock)->remove();
         }
-        // Get all editable blocks, collapse the fields therein, and save them 
-        $editableblocks = pq("[type=editableblock][contenteditable=true]");
-        foreach($editableblocks as $editableblock)
-        {
-            $name = pq($editableblock)->attr("name");
-            // Extract all fields, and replace them with <cms> expression
-            $fields = pq($editableblock)->find("[type=field]");
-            foreach($fields as $field)
-            {
-                $fieldid = pq($field)->attr("fieldid");
-                $allfields[$fieldid] = $fieldid; // For processing later
-                $padding = pq($field)->attr("style_padding");
-                $float = pq($field)->attr("style_float");
-                $width = pq($field)->attr("style_width");
-                //$parent = pq($field)->parent()->html();
-                pq($field)->replaceWith("<cms type='field' style_float='" . $float . "' style_width='" . $width. "' style_padding='" . $padding . "' fieldid='" . $fieldid . "'></cms>");
-                //$parent = pq($field)->parent()->html();
-            }
-            // Save in data object
-            $content = pq($editableblock)->html();
-            $content = Security::xss_clean($content); // Clean the content, to prevent user XSS attacks
-            $data = Wi3::inst()->model->factory("site_data")->setref($page)->set("name",$name)->load(); // the setref($page) ensures that it is impossible to illegally set data for a field not in the current page
-            $data->data = $content;
-            // Save the data
-            if ($data->loaded())
-            {
-                $data->update(); // If exists, then update
-            }
-            else
-            {
-                $data->create(); // If it does not yet exist, create it
-            }
-        }
+        // Process all editable blocks that are *not* within a field
+        $this->processEditableBlocks($document,$page,$allfields);
+        
         // Finally, check the fields that belong to this page, and remove those that are not in the $allfields array...
         $fields = Wi3::inst()->model->factory("site_field")->setref($page)->load(Null, FALSE); // FALSE for no limit to the amount of results
         foreach($fields as $field)
@@ -118,6 +75,7 @@ class Controller_Pagefiller_Default_Edittoolbar_Ajax extends Controller_ACL {
             // Skip the fields that have a name. Those are the sitefields or pagefields set in the templates.
             if (empty($field->name) && !isset($allfields[$field->id]))
             {
+                echo "DELETING!!";
                 $field->delete();
                 // Remove the different associated field-data, for as far that is not already done...
                 $datas = Wi3::inst()->model->factory("site_data")->setref($field)->load(NULL, FALSE);
@@ -142,6 +100,57 @@ class Controller_Pagefiller_Default_Edittoolbar_Ajax extends Controller_ACL {
                 "alert" => "inhoud opgeslagen."
             )
         );
+    }
+
+    private function processEditableBlocks($node,$page,$allfields) {
+        // Get all editable blocks, collapse the fields therein, and save them 
+        $editableblocks = $node->find("[type=editableblock][contenteditable=true]");
+        foreach($editableblocks as $editableblock)
+        {
+            // Collapse fields to <cms> expressions
+            $this->saveFields($editableblock,$allfields);
+            // Now that the fields have been replaced with <cms> expressions, save the data to the block
+            $this->saveEditableBlockContent($editableblock,$page);
+        }
+    }
+
+    private function saveFields($editableblock,$allfields) {
+        // Extract all fields, and replace them with <cms> expression
+        $fields = pq($editableblock)->find("[type=field]");
+        foreach($fields as $field)
+        {
+            $fieldid = pq($field)->attr("fieldid");
+            $allfields[$fieldid] = $fieldid; // !important! If a field does not end up in this array, it will get deleted!
+            $padding = pq($field)->attr("style_padding");
+            $float = pq($field)->attr("style_float");
+            $width = pq($field)->attr("style_width");
+            //$parent = pq($field)->parent()->html();
+            pq($field)->replaceWith("<cms type='field' style_float='" . $float . "' style_width='" . $width. "' style_padding='" . $padding . "' fieldid='" . $fieldid . "'></cms>");
+            //$parent = pq($field)->parent()->html();
+        }
+    }
+
+    private function saveEditableBlockContent($editableblock,$page) {
+        $name = pq($editableblock)->attr("name"); // used as id to save data
+        $refname = pq($editableblock)->attr("ref");
+        if (empty($refname)) { $refname = "field"; }
+        if ($refname == "field")
+        {
+            // Get field id and set the ref accordingly!
+            $refid = pq($editableblock)->parents("[type=field]")->eq(0)->attr("fieldid");
+            if (empty($refid)) {
+                $refname = "page";
+            }
+            $ref = Wi3::inst()->model->factory("site_field")->set("id", $refid)->load();
+        }
+        if ($refname == "page")
+        {
+            $ref = $page;
+        }
+        $content = pq($editableblock)->html();
+        $content = Security::xss_clean($content); // Clean the content, to prevent user XSS attacks
+        // Let the ref (either a field or a page) determine itself where to store the data
+        $ref->saveEditableBlockContent($editableblock, $name, $content);
     }
     
     public function action_insertfield()

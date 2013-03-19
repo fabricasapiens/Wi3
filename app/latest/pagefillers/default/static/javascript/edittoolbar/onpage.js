@@ -319,7 +319,7 @@ wi3.pagefillers.default.edittoolbar = {
         jqueryobj.each(function(index,elm) {
             var fieldButtons = $(elm).find("[type=fieldbuttons]").get(0).outerHTML;
             $(elm).data("fieldbuttons", fieldButtons);
-            $(elm).find("[type=fieldbuttons]").remove();
+            $(elm).find("[type=fieldbuttons]").first().remove();
         });
         jqueryobj.bind("mouseenter", function(event) {
             

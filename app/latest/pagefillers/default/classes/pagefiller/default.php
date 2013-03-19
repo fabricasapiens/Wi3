@@ -209,16 +209,24 @@
                 // Editable blocks and the fields therein
                 //-------------------
                 $editableblocks = $html->find("cms[type=editableblock]");
-                foreach($editableblocks as $editableblock)
-                {
-                    $name = pq($editableblock)->attr("name");
-                    // Try to load up to date content for this block, otherwise show the default content 
-                    $content = $page->loadEditableBlockContent($editableblock, $name);
-                    // Replace the <cms type='field'> blocks and expand them into real field-renders
-                    $content = phpQuery::newDocument($content);
-                    replacePQFieldsWithAdminHTML($content,$page,$this);
-                    $blockcontent = "<div type='editableblock' name='" . $name . "' contenteditable='true'>" . $content . "</div>";
-                    pq($editableblock)->replaceWith($blockcontent);
+                while(count($editableblocks->elements) > 0) {
+                    foreach($editableblocks as $editableblock)
+                    {
+                        $name = pq($editableblock)->attr("name");
+                        // Try to load up to date content for this block, otherwise show the default content 
+                        $content = $page->loadEditableBlockContent($editableblock, $name);
+                        // Replace the <cms type='field'> blocks and expand them into real field-renders
+                        $content = phpQuery::newDocument($content);
+                        $count = count(getAllFields($content));
+                        while($count > 0) {
+                            replacePQFieldsWithAdminHTML($content,$page,$this);
+                            $count = count(getAllFields($content));
+                        }
+                        $blockcontent = "<div type='editableblock' name='" . $name . "' contenteditable='true'>" . $content . "</div>";
+                        pq($editableblock)->replaceWith($blockcontent);
+                    }
+                    // Check if this rendering cycle might have yielded even more editable blocks that need to be processed
+                    $editableblocks = $html->find("cms[type=editableblock]");
                 }
             }
             
@@ -299,6 +307,8 @@
                             pq($pqfield)->replaceWith($fieldedithtml);
                         }
                     }
+                    // Return how many fields were replaced
+                    return count($allfields);
                 }
 
                 //-------------------
@@ -310,34 +320,42 @@
                 // Editable blocks and the fields therein
                 //-------------------
                 $editableblocks = $html->find("cms[type=editableblock]");
-                foreach($editableblocks as $editableblock)
-                {
-                    $name = pq($editableblock)->attr("name");
-                    $id = pq($editableblock)->attr("id");
-                    // Try to load up to date content for this block, otherwise show the default content 
-                    $content = $page->loadEditableBlockContent($editableblock, $name);
-                    
-                    // Replace the <cms type='field'> and <cms type='sitefield'> blocks and expand them into real field-renders
-                    // For normal fields, the fieldid is unique for the page
-                    // For sitefields, the fieldid is unique for the site, using the siteFieldObject
-                    // Example layout:
-                    /**
-                    * <cms type='field' fieldtype='image' fieldname='uniqueid' style_float="left" style_padding="20px">
-                    * </cms>
-                    */                   
-                    $content = phpQuery::newDocument($content);
-                    replacePQFieldsWithViewHTML($content,$page);
-                    
-                    // Create block, and add and id if it was present in the <cms> block
-                    if (!empty($id))
+                while(count($editableblocks->elements) > 0) { 
+                    foreach($editableblocks as $editableblock)
                     {
-                        $blockcontent = "<div id='" . $id . "' type='contentblock' name='" . $name . "'>" . $content . "</div>";
+                        $name = pq($editableblock)->attr("name");
+                        $id = pq($editableblock)->attr("id");
+                        // Try to load up to date content for this block, otherwise show the default content 
+                        $content = $page->loadEditableBlockContent($editableblock, $name);
+                        
+                        // Replace the <cms type='field'> and <cms type='sitefield'> blocks and expand them into real field-renders
+                        // For normal fields, the fieldid is unique for the page
+                        // For sitefields, the fieldid is unique for the site, using the siteFieldObject
+                        // Example layout:
+                        /**
+                        * <cms type='field' fieldtype='image' fieldname='uniqueid' style_float="left" style_padding="20px">
+                        * </cms>
+                        */                   
+                        $content = phpQuery::newDocument($content);
+                        $count = count(getAllFields($content));
+                        while($count > 0) {
+                            replacePQFieldsWithViewHTML($content,$page);
+                            $count = count(getAllFields($content));
+                        }
+                        
+                        // Create block, and add and id if it was present in the <cms> block
+                        if (!empty($id))
+                        {
+                            $blockcontent = "<div id='" . $id . "' type='contentblock' name='" . $name . "'>" . $content . "</div>";
+                        }
+                        else
+                        {
+                            $blockcontent = "<div type='contentblock' name='" . $name . "'>" . $content . "</div>";
+                        }
+                        pq($editableblock)->replaceWith($blockcontent);
                     }
-                    else
-                    {
-                        $blockcontent = "<div type='contentblock' name='" . $name . "'>" . $content . "</div>";
-                    }
-                    pq($editableblock)->replaceWith($blockcontent);
+                    // Check if this rendering cycle might have yielded even more editable blocks that need to be processed
+                    $editableblocks = $html->find("cms[type=editableblock]");
                 }
             }
             

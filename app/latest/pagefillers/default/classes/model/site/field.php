@@ -204,7 +204,7 @@ class Model_Site_Field extends Sprig
         $data = $data = Wi3::inst()->model->factory("site_data")->setref($this)->set("name",$blockname)->load();
         if ($data->loaded()) {
             return $data->data;
-        } else {  
+        } else {
             return pq($editableblock)->html(); // Get the default content
         }
     }
