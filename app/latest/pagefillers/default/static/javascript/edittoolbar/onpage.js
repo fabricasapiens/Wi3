@@ -125,6 +125,14 @@ wi3.pagefillers.default.edittoolbar = {
             }
         }
     },
+
+    toBase64 : function(val) {
+        return $.base64.encode(val);
+    },
+
+    fromBase64 : function(baseVal) {
+        return $.base64.decode(baseVal);
+    },
 	
 	renderFieldHtml : function(fieldid, html) {
 		// html is base64 encoded
