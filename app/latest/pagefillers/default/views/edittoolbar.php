@@ -36,12 +36,13 @@
             <button style='float: left; cursor:pointer;' onClick='$("#wi3_edit_iframe").get(0).contentWindow.wi3.pagefillers.default.edittoolbar.formatblock("<quote>");'>Quote</button>
         </div>
         <div id='pagefiller_default_edittoolbar_insertpanel' onMouseOver='wi3.pagefillers.default.edittoolbar.showInsertPanel();' onMouseOut='wi3.pagefillers.default.edittoolbar.hideInsertPanel();' style='display: none; position: absolute; z-index: 10; left: 300px; width: 200px; padding: 10px; overflow: auto; background: #fff; border: 1px solid #ddd; border-top: none;'>
-            <button style='float: left; cursor:pointer;' onClick='$("#wi3_edit_iframe").get(0).contentWindow.wi3.pagefillers.default.edittoolbar.insertField("image");'>afbeelding</button>
+            <button style='float: left; cursor:pointer;' onClick='$("#wi3_edit_iframe").get(0).contentWindow.wi3.pagefillers.default.edittoolbar.insertField("image");'>Afbeelding</button>
 			<button style='float: left; cursor:pointer;' onClick='$("#wi3_edit_iframe").get(0).contentWindow.wi3.pagefillers.default.edittoolbar.insertField("simpleblogoverview");'>Overzicht van blogartikelen</button>
 			<button style='float: left; cursor:pointer;' onClick='$("#wi3_edit_iframe").get(0).contentWindow.wi3.pagefillers.default.edittoolbar.insertField("simpleblogarticle");'>Blogartikel</button>
             <button style='float: left; cursor:pointer;' onClick='$("#wi3_edit_iframe").get(0).contentWindow.wi3.pagefillers.default.edittoolbar.insertField("contactform");'>Contactformulier</button>
-            <button style='float: left; cursor:pointer;' onClick='$("#wi3_edit_iframe").get(0).contentWindow.wi3.pagefillers.default.edittoolbar.insertField("link");'>link</button>
-            <button style='float: left; cursor:pointer;' onClick='$("#wi3_edit_iframe").get(0).contentWindow.wi3.pagefillers.default.edittoolbar.insertField("imageshop");'>fotowinkel</button>
+            <button style='float: left; cursor:pointer;' onClick='$("#wi3_edit_iframe").get(0).contentWindow.wi3.pagefillers.default.edittoolbar.insertField("link");'>Link</button>
+            <button style='float: left; cursor:pointer;' onClick='$("#wi3_edit_iframe").get(0).contentWindow.wi3.pagefillers.default.edittoolbar.insertField("livejavascript");'>Live Javascript</button>
+            <button style='float: left; cursor:pointer;' onClick='$("#wi3_edit_iframe").get(0).contentWindow.wi3.pagefillers.default.edittoolbar.insertField("imageshop");'>Fotowinkel</button>
             <?php // <button style='float: left; cursor:pointer;' onClick='$("#wi3_edit_iframe").get(0).contentWindow.wi3.pagefillers.default.edittoolbar.insertField("simpleblog");'>weblog</button> ?>
         </div>
     </div>
