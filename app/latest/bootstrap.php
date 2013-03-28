@@ -149,6 +149,7 @@ Kohana::modules(array(
     'plugin_jquery' => APPPATH.'plugins/jquery',
     'plugin_clientjavascriptvars' => APPPATH.'plugins/clientjavascriptvars',
     'plugin_tikocache' => APPPATH.'plugins/tikocache',
+    'plugin_betterexamples' => APPPATH.'plugins/betterexamples',
     // Pagefillers
     'pagefiller_default' => APPPATH.'pagefillers/default',
     // HTMLPurifier XSS Prevention
