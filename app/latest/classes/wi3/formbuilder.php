@@ -33,6 +33,11 @@ class Wi3_Formbuilder extends Wi3_Base
     {
         return Wi3_Formbuilder_Folderselector::inst(NULL, $settings);
     }
+
+    public function pageselector($settings = Array())
+    {
+        return Wi3_Formbuilder_Pageselector::inst(NULL, $settings);
+    }
    
 }
     
