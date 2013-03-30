@@ -1,3 +1,2 @@
 .livejavascript_input, .livejavascript_output { float: left; width: 50%; position: relative; padding: 0px; margin: 0px; font-family: monospace; overflow: visible; }
 .livejavascript_input *, .livejavascript_output * { font-size: 14px; }
-.livejavascript_output { padding-left: 10px; }
