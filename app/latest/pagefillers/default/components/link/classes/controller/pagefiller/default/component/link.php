@@ -68,13 +68,50 @@
 			} else if(isset($_POST["fileid"])) {
 				$data->fileid = $_POST["fileid"];
 				$data->destinationtype = "file";
-			}
+			} else if(isset($_POST["pageid"])) {
+                $data->pageid = $_POST["pageid"];
+                $data->destinationtype = "page";
+            }
             $data->update();
+
+            $url = "";
+            $destinationtype = $data->destinationtype;
+            // get proper URL
+            if ($destinationtype == "url")
+            {
+                $url = $data->url;
+            }
+            else if ($destinationtype == "file")
+            {
+                $fileid = $data->fileid;
+                $file = Wi3::inst()->model->factory("site_file")->set("id", $fileid)->load();
+                if ($file->loaded())
+                {
+                    $url = Wi3::inst()->urlof->file($file);
+                }
+                else
+                {
+                    $url = "";
+                }
+            } 
+            else if ($destinationtype == "page")
+            {
+                $pageid = $data->pageid;
+                $page = Wi3::inst()->model->factory("site_page")->set("id", $pageid)->load();
+                if ($page->loaded())
+                {
+                    $url = Wi3::inst()->urlof->page($page->slug);
+                }
+                else
+                {
+                    $url = "";
+                }
+            }
             
             echo json_encode(
                 Array(
                     "scriptsbefore" => Array(
-                        "0" => "$('[type=field][fieldid=" . $fieldid . "] [type=fieldcontent] > a').attr('href', '" . $data->url . "');",
+                        "0" => "$('[type=field][fieldid=" . $fieldid . "] [type=fieldcontent] > a').attr('href', '" . $url . "');",
                         "1" => "wi3.pagefillers.default.edittoolbar.hidePopup();"
                     )
                 )

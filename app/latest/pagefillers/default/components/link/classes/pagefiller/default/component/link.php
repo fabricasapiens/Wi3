@@ -58,7 +58,7 @@
             } 
 			else if ($destinationtype == "page")
             {
-                $pageid = Wi3::inst()->model->factory("site_data")->setref($field)->setname("url")->load();
+                $pageid = $data->pageid;
                 $page = Wi3::inst()->model->factory("site_page")->set("id", $pageid)->load();
                 if ($page->loaded())
                 {
