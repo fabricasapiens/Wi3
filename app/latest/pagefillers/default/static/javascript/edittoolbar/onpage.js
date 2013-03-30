@@ -90,13 +90,22 @@ wi3.pagefillers.default.edittoolbar = {
             $(this).attr("style_float", $(this).css("float"));
             $(this).attr("style_width", this.style.width || $(this).css("width")); 
         });
+
+        // Copy and process HTML
+        var $html = $("<body>").html($("body").html());
+        // Let all elements process their contents clientside, so that we send the intended content
+        $html.find("[type=field]").each(function(counter) {
+
+        });
+        var html = $html.html();
+
         // send the complete html of the page to the server. The server will distill the editable blocks, and save them 
         if (parent && parent.wi3) {
             var usedwi3 = parent.wi3; // Do request via parent if possible, so that ajax request indicator works
         } else {
             var usedwi3 = wi3;
         }
-        usedwi3.request("pagefiller_default_edittoolbar_ajax/savealleditableblocks", {pageid: $("#pagefiller_default_edittoolbar_pageid").text(), html:$("body").html()});
+        usedwi3.request("pagefiller_default_edittoolbar_ajax/savealleditableblocks", {pageid: $("#pagefiller_default_edittoolbar_pageid").text(), "html":html});
     },
     
     formatblock : function(blocktype)
