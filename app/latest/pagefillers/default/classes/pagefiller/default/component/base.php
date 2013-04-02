@@ -55,7 +55,7 @@
             if ($eventtype == "create") {
                 // Set the inserttype to "insert" by default
                 // TODO: think about this. It doesn't feel right.
-                Controller_Pagefiller_Default_Edittoolbar_Ajax::$responseoptions["inserttype"] = "insert";
+                Controller_Pagefiller_Default_Edittoolbar_Ajax::$responseoptions["inserttype"] = "insertbefore";
                 // Create the data that is associated with this field
                 $data = Wi3::inst()->model->factory("site_array")->setref($field)->setname("data")->create();
                 $this->ensureModelExists($data,true);
