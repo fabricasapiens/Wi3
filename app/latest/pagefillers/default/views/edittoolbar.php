@@ -42,6 +42,7 @@
             <button style='float: left; cursor:pointer;' onClick='$("#wi3_edit_iframe").get(0).contentWindow.wi3.pagefillers.default.edittoolbar.insertField("contactform");'>Contactformulier</button>
             <button style='float: left; cursor:pointer;' onClick='$("#wi3_edit_iframe").get(0).contentWindow.wi3.pagefillers.default.edittoolbar.insertField("link");'>Link</button>
             <button style='float: left; cursor:pointer;' onClick='$("#wi3_edit_iframe").get(0).contentWindow.wi3.pagefillers.default.edittoolbar.insertField("livejavascript");'>Live Javascript</button>
+            <button style='float: left; cursor:pointer;' onClick='$("#wi3_edit_iframe").get(0).contentWindow.wi3.pagefillers.default.edittoolbar.insertField("githubgist");'>Github gist</button>
             <button style='float: left; cursor:pointer;' onClick='$("#wi3_edit_iframe").get(0).contentWindow.wi3.pagefillers.default.edittoolbar.insertField("imageshop");'>Fotowinkel</button>
             <?php // <button style='float: left; cursor:pointer;' onClick='$("#wi3_edit_iframe").get(0).contentWindow.wi3.pagefillers.default.edittoolbar.insertField("simpleblog");'>weblog</button> ?>
         </div>
