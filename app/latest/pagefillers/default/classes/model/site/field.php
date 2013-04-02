@@ -201,7 +201,7 @@ class Model_Site_Field extends Sprig
             }
         }
         // Load data the standard way or use a fallback otherwise
-        $data = $data = Wi3::inst()->model->factory("site_data")->setref($this)->set("name",$blockname)->load();
+        $data = Wi3::inst()->model->factory("site_data")->setref($this)->set("name",$blockname)->load();
         if ($data->loaded()) {
             return $data->data;
         } else {
