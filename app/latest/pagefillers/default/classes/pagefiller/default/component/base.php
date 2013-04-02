@@ -21,6 +21,8 @@
             return $componentview;
         }
 
+        // This function determines where the data of the editable blocks within this field are retrieved from
+        // By default, they are loaded from the data-object that is tied to this field
         public function loadEditableBlockData($field, $blockName) {
             $model = $this->getModel();
             foreach($model as $index => $modelitem) {
@@ -33,6 +35,8 @@
             return false;
         }
 
+        // This function determines where the data of the editable blocks within this field are stored
+        // By default, they are stored on the data-object that is tied to this field
         public function saveEditableBlockData($field, $blockName, $content) {
             $model = $this->getModel();
             foreach($model as $index => $modelitem) {
@@ -47,6 +51,20 @@
             return false;
         }
 
+        public function event($eventtype, $field) {
+            if ($eventtype == "create") {
+                // Set the inserttype to "insert" by default
+                // TODO: think about this. It doesn't feel right.
+                Controller_Pagefiller_Default_Edittoolbar_Ajax::$responseoptions["inserttype"] = "insert";
+                // Create the data that is associated with this field
+                $data = Wi3::inst()->model->factory("site_array")->setref($field)->setname("data")->create();
+                $this->ensureModelExists($data,true);
+            }
+            // Delete data that was tied to this field
+            else if ($eventtype == "delete") {
+                Wi3::inst()->model->factory("site_array")->setref($field)->setname("data")->delete();
+            }
+        }
 
         protected function getModel() {
             return $this::$model;
