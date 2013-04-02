@@ -75,7 +75,6 @@ class Controller_Pagefiller_Default_Edittoolbar_Ajax extends Controller_ACL {
             // Skip the fields that have a name. Those are the sitefields or pagefields set in the templates.
             if (empty($field->name) && !isset($allfields[$field->id]))
             {
-                echo "DELETING!!";
                 $field->delete();
                 // Remove the different associated field-data, for as far that is not already done...
                 $datas = Wi3::inst()->model->factory("site_data")->setref($field)->load(NULL, FALSE);
