@@ -23,9 +23,6 @@
             // Set entertimestamp
             if ($eventtype == "create")
             {
-                // Set the inserttype
-				// TODO: think about this. It doesn't feel right.
-                Controller_Pagefiller_Default_Edittoolbar_Ajax::$responseoptions["inserttype"] = "insert";
                 // Set entertimestamp
                 $this->fielddata($field, "entertimestamp", time());
             }
@@ -34,10 +31,6 @@
         public function render($field)
         {
 			$dataobject = $this->fielddata($field);
-            if (!isset($dataobject->username) || empty($dataobject->username) || !isset($dataobject->id) || empty($dataobject->id)) {
-                return "";
-            }
-
 			return $this->view("render")->set("username", $dataobject->username)->set("id", $dataobject->id)->render();
         }
     }
