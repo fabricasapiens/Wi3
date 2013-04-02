@@ -43,8 +43,8 @@
         echo "<p>
         <label for='viewright'>voor bekijken: </label><input name='viewright' id='viewright' type='text' value='" . $file->viewright . "' /><br />
         <label for='editright'>voor wijzigen: </label><input name='editright' id='editright' type='text' value='" . $file->editright . "' /><br />
-        <label for='adminright'>voor admin: </label><input name='adminright' id='adminright' type='text' value='" . $file->adminright . "' /><br />
-        </p>";
+        ";//<label for='adminright'>voor admin: </label><input name='adminright' id='adminright' type='text' value='" . $file->adminright . "' /><br />
+        echo "</p>";
     }
     catch(Exception $e) 
     {
