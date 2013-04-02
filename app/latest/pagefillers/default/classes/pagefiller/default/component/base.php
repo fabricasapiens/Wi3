@@ -51,7 +51,7 @@
             return false;
         }
 
-        public function event($eventtype, $field) {
+        public function fieldevent($eventtype, $field) {
             if ($eventtype == "create") {
                 // Set the inserttype to "insert" by default
                 // TODO: think about this. It doesn't feel right.
