@@ -47,7 +47,7 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
         // Add some values
         $post = $_POST;
         if (!isset($post["longtitle"]) OR empty($post["longtitle"])) { $post["longtitle"] = "nieuwe pagina"; }
-        if (!isset($post["slug"])) { $post["slug"] = $post["longtitle"]; }
+        if (!isset($post["slug"])) { $post["slug"] = str_replace(" ", "-", $post["longtitle"]); }
         // Now make sure the page-slug is not yet taken
         $slug = strtolower($post["slug"]);
         $counter = 0;
