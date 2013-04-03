@@ -10,14 +10,13 @@
         public function startEdit($field) 
         {
             // Possibly custom code here
-            return parent::startEdit($field);
+            // This function is called from parent::action_startEdit (note the extra action_) so we don't have to call our parent function
         }
         
         public function edit($field) 
         {
     		// custom code
             $this->fielddata($field, "edittimestamp", time());
-            return parent::edit($field);
         }
         
     }
