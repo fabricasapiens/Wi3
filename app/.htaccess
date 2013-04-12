@@ -1,6 +1,11 @@
 # Turn on URL rewriting
 RewriteEngine On
 
+# PHP Upload settings
+php_value upload_max_filesize 50M
+php_value post_max_size 50M
+php_value memory_limit 500M
+
 # Prevent indexing and direct access to existing php files
 Options -Indexes
 RewriteCond %{REQUEST_FILENAME} -f

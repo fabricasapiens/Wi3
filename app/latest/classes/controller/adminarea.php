@@ -146,8 +146,7 @@ class Controller_Adminarea extends Controller_ACL {
                     }
 
                 }
-                ini_set("upload_max_filesize", "50M");
-                ini_set('memory_limit', '50M');
+                ini_set('memory_limit', '100M');
                 if (move_uploaded_file($_FILES['file']['tmp_name'][$i], $target)) {
 
                     // Remove cache of everything, since we do not know how this change affects the site
