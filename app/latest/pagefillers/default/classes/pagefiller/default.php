@@ -190,6 +190,11 @@
                             if ($fieldname) {
                                 $field->set("name", $fieldname);
                             }
+                            // This should not happen... Log it!
+                            if (empty($field->type)) {
+                                // TODO: log
+                                continue;
+                            }
                             $field->create();
                         }
                         if ($field->loaded())
