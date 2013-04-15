@@ -129,60 +129,7 @@ class Model_Site_Field extends Sprig
             
             $component = $this->getComponent();
             
-            $fieldhtml = $component->render($this);
-            
-            ///-------------------
-            // Process field html for <cms> tags
-            //-------------------   
-            $html = phpQuery::newDocument($fieldhtml); // Give PHPQuery a context to work with
-            $editableblocks = pq("cms[type=editableblock]");
-            foreach($editableblocks as $editableblock)
-            {
-                $name = pq($editableblock)->attr("name");
-                $id = pq($editableblock)->attr("id");
-                $refname = pq($editableblock)->attr("reference"); // TODO: consolidate field-cms/page-cms/site-cms logic with that of fields/sitefields ?
-                if (empty($refname)) { $refname = "field"; }
-                if ($refname == "field")
-                {
-                    $ref = $this;
-                    // Load content from field
-                    $content = $this->loadEditableBlockContent($editableblock, $name);
-                }
-                else if ($refname == "page")
-                {
-                    $ref = Wi3::inst()->sitearea->page;
-                    // Load content from page
-                    $content = $ref->loadEditableBlockContent($editableblock, $name);
-                }
-                
-                // Ensure that inner CMS blocks have the same display (i.e. block or inline) as its parent
-                $style = "style='display: inherit'";
-                // Replace the <cms type='editableblock'> blocks into DOM tags
-                if ($editmode === null) {
-                    // Determine editmode from controller. Note: this implies that component-controllers will *not* automatically turn into edit-mode
-                    $editmode = Wi3::inst()->routing->controller == "adminarea";
-                }
-                if ($editmode)
-                {
-                    // edit-mode
-                    $blockcontent = "<div " . $style ." type='editableblock' ref='" . $refname . "' name='" . $name . "' contenteditable='true'>" . $content . "</div>";
-                }
-                else
-                {
-                    // display-mode
-                    if (!empty($id))
-                    {
-                        $blockcontent = "<div " . $style . " id='" . $id . "' type='contentblock' ref='" . $refname . "' name='" . $name . "'>" . $content . "</div>";
-                    }
-                    else
-                    {
-                        $blockcontent = "<div " . $style . " type='contentblock' ref='" . $refname . "' name='" . $name . "'>" . $content . "</div>";
-                    }
-                }
-                pq($editableblock)->replaceWith($blockcontent);
-            }
-            
-            return $html;
+            return $component->render($this);
         
         }
         else
