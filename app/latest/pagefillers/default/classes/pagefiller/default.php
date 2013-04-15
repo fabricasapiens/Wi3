@@ -213,8 +213,32 @@
                     foreach($editableblocks as $editableblock)
                     {
                         $name = pq($editableblock)->attr("name");
-                        // Try to load up to date content for this block, otherwise show the default content 
-                        $content = $page->loadEditableBlockContent($editableblock, $name);
+
+                        // Try to load up to date content for this block, otherwise show the default content
+                        $refname = pq($editableblock)->attr("reference");
+
+                        // Check if we need to load from field or from the page
+                        // By default, if there's no refname, try to search for a wrapping field, otherwise fallback to the page
+                        if(empty($refname)) { $refname = "field"; }
+                        if ($refname == "field")
+                        {
+                            // Get the field in which this block is located
+                            $parentField = pq($editableblock)->parents("[type=field][fieldid]");
+                            if (count($parentField->elements) > 0) {
+                                $fieldid = $parentField->attr("fieldid");
+                                $ref = Wi3::inst()->model->factory("site_field")->set("id", $fieldid)->load();
+                                // Load content from field
+                                $content = $ref->loadEditableBlockContent($editableblock, $name);
+                            } else {
+                                $refname = "page";
+                            }
+                        }
+                        if ($refname == "page")
+                        {
+                            // Load content from page
+                            $content = $page->loadEditableBlockContent($editableblock, $name);
+                        }
+
                         // Replace the <cms type='field'> blocks and expand them into real field-renders
                         $content = phpQuery::newDocument($content);
                         $count = count(getAllFields($content));
@@ -222,7 +246,11 @@
                             replacePQFieldsWithAdminHTML($content,$page,$this);
                             $count = count(getAllFields($content));
                         }
-                        $blockcontent = "<div type='editableblock' name='" . $name . "' contenteditable='true'>" . $content . "</div>";
+
+                        // Ensure that inner CMS blocks have the same display (i.e. block or inline) as its parent
+                        $style = "style='display: inherit'";
+                        // Set block-content
+                        $blockcontent = "<div type='editableblock' " . $style . " name='" . $name . "' contenteditable='true'>" . $content . "</div>";
                         pq($editableblock)->replaceWith($blockcontent);
                     }
                     // Check if this rendering cycle might have yielded even more editable blocks that need to be processed
@@ -336,7 +364,6 @@
                     foreach($editableblocks as $editableblock)
                     {
                         $name = pq($editableblock)->attr("name");
-                        $id = pq($editableblock)->attr("id");
 
                         // Try to load up to date content for this block, otherwise show the default content
                         $refname = pq($editableblock)->attr("reference");
@@ -356,24 +383,6 @@
                             } else {
                                 $refname = "page";
                             }
-                            /*
-                            $fieldid = "";
-                            while(count($parent->elements) > 0) {  
-                                $possiblefieldid = $parent->attr("fieldid");     
-                                if ($parent->attr("type") == "field" && !empty($possiblefieldid)) {
-                                     $fieldid = $possiblefieldid;
-                                     break;
-                                }
-                                $parent = $parent->parent();
-                            }
-                            if (!empty($fieldid)) {
-                                $ref = Wi3::inst()->model->factory("site_field")->set("id", $fieldid)->load();
-                                // Load content from field
-                                $content = $ref->loadEditableBlockContent($editableblock, $name);
-                            } else {
-                                // There was no wrapping field. Fallback to the page as its parent
-                                $refname = "page";
-                            }*/
                         }
                         if ($refname == "page")
                         {
