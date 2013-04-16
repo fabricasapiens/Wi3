@@ -29,6 +29,21 @@ class Controller_Pagefiller_Default_Edittoolbar_Ajax extends Controller_ACL {
     {
         $this->template = View::factory($name);
     }
+
+    // Recursively save content, starting with the deepest
+    function collapseFieldsAndSaveBlocks($parentBlock, $page, $allfields) {
+    	$childBlocks = pq($parentBlock)->find("[type=field] [type=editableblock][contenteditable=true]");
+    	// Recursively go a level deeper
+    	foreach($childBlocks as $childBlock) {
+    		$this->collapseFieldsAndSaveBlocks($childBlock, $page, $allfields);
+    	}
+    	// Now collapse fields to <cms> expressions and store in $allfields which fields have been collapsed
+    	$this->saveFields($parentBlock, $allfields);
+    	// Save parent block, now that the fields have been replaced with <cms> expressions
+        $this->saveEditableBlockContent($parentBlock, $page);
+        // Remove the editableblocks, so that they won't get processed in the next part of this function
+        pq($parentBlock)->remove();
+    }
     
     public function action_saveAllEditableBlocks()
     {
@@ -53,20 +68,15 @@ class Controller_Pagefiller_Default_Edittoolbar_Ajax extends Controller_ACL {
         // The ArrayObject $allfields is used to check which fields are in the HTML. If some have been removed, we should remove them here in the back-end as well: keep the DB clean :-)
         // It is an ArrayObject so that it will be passed by reference
         $allfields = new ArrayObject();
-        // Get all editable blocks *within fields* and save them first
+        // Get all editable blocks *within fields* and save them, recursively, using recursive function
         $document = phpQuery::newDocument($html); // Give PHPQuery a context to work with
         $editableblockswithinfields = pq("[type=field] [type=editableblock][contenteditable=true]");
         foreach($editableblockswithinfields as $editableblock)
         {
-            // Collapse fields to <cms> expressions
-            $this->saveFields($editableblock,$allfields);
-            // Now that the fields have been replaced with <cms> expressions, save the data to the block
-            $this->saveEditableBlockContent($editableblock, $page);
-            // Remove the editableblocks, so that they won't get processed in the next part of this function
-            pq($editableblock)->remove();
+        	$this->collapseFieldsAndSaveBlocks($editableblock, $page, $allfields);
         }
         // Process all editable blocks that are *not* within a field
-        $this->processEditableBlocks($document,$page,$allfields);
+        $this->processEditableBlocks($document, $page, $allfields);
         
         // Finally, check the fields that belong to this page, and remove those that are not in the $allfields array...
         $fields = Wi3::inst()->model->factory("site_field")->setref($page)->load(Null, FALSE); // FALSE for no limit to the amount of results
