@@ -193,6 +193,7 @@
                             // This should not happen... Log it!
                             if (empty($field->type)) {
                                 // TODO: log
+                                pq($pqfield)->replaceWith("Could not be loaded");
                                 continue;
                             }
                             $field->create();
@@ -302,6 +303,7 @@
                             // This should not happen... Log it!
                             if (empty($field->type)) {
                                 // TODO: log
+                                pq($pqfield)->replaceWith("Could not be loaded");
                                 continue;
                             }
                             /*
