@@ -105,7 +105,7 @@ wi3.pagefillers.default.edittoolbar = {
         } else {
             var usedwi3 = wi3;
         }
-        usedwi3.request("pagefiller_default_edittoolbar_ajax/savealleditableblocks", {pageid: $("#pagefiller_default_edittoolbar_pageid").text(), "html":html});
+        usedwi3.request("pagefiller_default_edittoolbar_ajax/savealleditableblocks", {pageid: wi3.page.id, "html":html});
     },
     
     formatblock : function(blocktype)
@@ -126,7 +126,7 @@ wi3.pagefillers.default.edittoolbar = {
             {
                 wi3.pagefillers.default.edittoolbar.insertFieldRange = range;
                 // Insert a field
-                var request = wi3.request("pagefiller_default_edittoolbar_ajax/insertfield", { pageid: $("#pagefiller_default_edittoolbar_pageid").text(), fieldtype:fieldtype, selectiontext: range.toString() });
+                var request = wi3.request("pagefiller_default_edittoolbar_ajax/insertfield", { pageid: wi3.page.id, fieldtype:fieldtype, selectiontext: range.toString() });
             }
             else
             {
@@ -404,7 +404,7 @@ wi3.pagefillers.default.edittoolbar = {
     
     removeField : function(fieldid)
     {
-        var request = wi3.request("pagefiller_default_edittoolbar_ajax/removefield", { pageid: $("#pagefiller_default_edittoolbar_pageid").text(), fieldid: fieldid, elementtext: $("[fieldid="+fieldid+"] [type=fieldcontent]").text() });
+        var request = wi3.request("pagefiller_default_edittoolbar_ajax/removefield", { pageid: wi3.page.id, fieldid: fieldid, elementtext: $("[fieldid="+fieldid+"] [type=fieldcontent]").text() });
     }
 };
 
