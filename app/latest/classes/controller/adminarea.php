@@ -6,10 +6,10 @@
 // If the check fails, bootstrap.php should send the user to $controller/login
 // For the sitearea controller, there is no AACL check on the controller/action, but rather on a page. Redirect will then be to $site->errorpage
 class Controller_Adminarea extends Controller_ACL {
-        
+
     public $template;
-    
-    public function before() 
+
+    public function before()
     {
         // Check whether this controller (fills in current action automatically) can be accessed
         Wi3::inst()->acl->grant("*", $this, "login"); // Everybody can access login and logout function in this controller
@@ -20,22 +20,22 @@ class Controller_Adminarea extends Controller_ACL {
         Wi3::inst()->cache->doNotCache();
         parent::before();
     }
-    
+
     protected function view($name)
     {
         return View::factory($name)->set("this", Wi3::inst()->baseview_adminarea);
     }
-    
+
     protected function setview($name)
     {
         $this->template = $this->view($name);
     }
-    
+
     public function action_index()
 	{
 		Request::instance()->redirect(Wi3::inst()->urlof->action("menu"));
 	}
-    
+
     public function action_menu()
     {
         $this->setview("adminarea");
@@ -44,8 +44,8 @@ class Controller_Adminarea extends Controller_ACL {
         $this->template->content = View::factory("adminarea/menu");
         $this->template->content->ajaxcontroller = "adminarea_menu_ajax";
     }
-    
-    public function action_login() 
+
+    public function action_login()
     {
         $this->setview("adminarea/login");
         $this->template->title = "Log in op Wi3";
@@ -69,24 +69,24 @@ class Controller_Adminarea extends Controller_ACL {
                 return;
             }
         }
-        
+
         $this->template->content = $this->view("login/loginform");
     }
-    
+
     public function action_content()
     {
         $this->setview("adminarea");
         $this->template->contentclass = "contentpage";
         $this->template->navigation = View::factory("adminarea/navigation");
         $this->template->status= View::factory("adminarea/status");
-        
+
         // Load correct page
         $pageid = Wi3::inst()->routing->args[0];
         $page = Wi3::inst()->sitearea->setpage($pageid); // Will automatically distinguish between id-urls (/_number) and slug-urls (/string)
-        
+
         $this->template->content = View::factory("adminarea/content");
     }
-    
+
     public function action_content_edit()
     {
         // Load correct page. Pagename is the first argument from the URL
@@ -96,21 +96,21 @@ class Controller_Adminarea extends Controller_ACL {
         // Render page
         // TODO: check if user is allowed to view this page
         $renderedinadminarea = true;
-        $this->template = Wi3::inst()->sitearea->page->render($renderedinadminarea); 
+        $this->template = Wi3::inst()->sitearea->page->render($renderedinadminarea);
         // Page caching will be handled via an Event. See bootstrap.php and the Caching module
     }
-	
+
     public function action_files()
     {
         $this->setview("adminarea");
         $this->template->navigation = View::factory("adminarea/navigation");
         $this->template->status= View::factory("adminarea/status");
-        
+
         // Debug: ensure file table
         Wi3::inst()->database->create_table_from_sprig_model("site_file");
-        
-        // Deal with folders and uploaded files 
-        
+
+        // Deal with folders and uploaded files
+
         //--------------------
         // Add file(s), if any are sent along
         //--------------------
@@ -128,7 +128,7 @@ class Controller_Adminarea extends Controller_ACL {
                     $this->template->content->message = "Het toevoegen van .htaccess bestanden is niet toegestaan. Probeer het nog eens.";
                     return;
                 }
-                $target = Wi3::inst()->pathof->site. "data/uploads/" . $filename; 
+                $target = Wi3::inst()->pathof->site. "data/uploads/" . $filename;
                 if (!file_exists(Wi3::inst()->pathof->site. "data/uploads")) {
                     $this->template->content = View::factory("adminarea/files");
                     $this->template->content->message = "Fout bij wegschrijven van bestand. Dit is een permanente fout. Mail de beheerder van de site met uw probleem.";
@@ -169,7 +169,7 @@ class Controller_Adminarea extends Controller_ACL {
                     $file->filename = basename($target);
                     // Add it
                     $file = Wi3::inst()->sitearea->files->add($file);
-                    // Success message 
+                    // Success message
                     $this->template->content = View::factory("adminarea/files");
                     $this->template->content .= "<script>$(document).ready(function(){ adminarea.alert('Bestand is succesvol geüpload.'); });</script>";
                 } else {
@@ -184,27 +184,27 @@ class Controller_Adminarea extends Controller_ACL {
             $this->template->content = View::factory("adminarea/files");
         }
     }
-	
+
 	public function action_users()
     {
         $this->setview("adminarea");
         $this->template->navigation = View::factory("adminarea/navigation");
         $this->template->status= View::factory("adminarea/status");
-		
+
 		$this->template->content = View::factory("adminarea/users");
 	}
-    
+
     public function action_commits()
     {
         try {
         $this->setview("adminarea");
         $this->template->navigation = View::factory("adminarea/navigation");
         $this->template->status= View::factory("adminarea/status");
-        
+
         // This variables will store all the commit-info, sorted by UNIX timestamp of the commit
         global $commits;
         $commits = Array();
-        
+
         $headref = file_get_contents(Wi3::inst()->pathof->app . "../../.git/HEAD");
         $headhash = file_get_contents(Wi3::inst()->pathof->app . "../../.git/" . substr($headref, 5, -1));
         $head = file_get_contents(Wi3::inst()->pathof->app . "../../.git/objects/" . substr($headhash, 0, 2) . "/" . substr($headhash, 2, -1));
@@ -227,8 +227,8 @@ class Controller_Adminarea extends Controller_ACL {
             // The normal commits have only 1 parent, instead of 2. We can check whether the 2nd line is 'author', whereas with merge and branch it would be 'parent'
             else if (substr($commitarray[2], 0, 7) == "author ")
             {
-                // normal commit 
-                // Extract committer and date 
+                // normal commit
+                // Extract committer and date
                 // Fabrica Sapiens <info@fabricasapiens.nl> 1292706638 +0100
                 preg_match("@committer (.*) <([^>]*)> ([0-9]*) (\+[0-9]{4})$@i", $commitarray[3], $matches);
                 // Add commit to array
@@ -248,7 +248,7 @@ class Controller_Adminarea extends Controller_ACL {
             else
             {
                 // Branch or merge
-                // 
+                //
                 // When a merge has occured, take all two parents into consideration
                 preg_match("@committer (.*) <([^>]*)> ([0-9]*) (\+[0-9]{4})$@i", $commitarray[4], $matches);
                 // Add commit to array
@@ -272,12 +272,12 @@ class Controller_Adminarea extends Controller_ACL {
             }
         }
         loopcommit($commitarray);
-        } 
-        catch(Exception $e) 
-        {
-            echo Kohana::debug($e);   
         }
-        
+        catch(Exception $e)
+        {
+            echo Kohana::debug($e);
+        }
+
         // Loop over commits and display them in chronological order
         krsort($commits);
         $this->template->content = "<h1>Commits</h1><div>";
@@ -302,9 +302,9 @@ class Controller_Adminarea extends Controller_ACL {
             }
         }
         $this->template->content .= "</div>";
-        
+
     }
-    
+
     // ADMIN functions :)
     public function action_changepassword()
     {
@@ -316,7 +316,7 @@ class Controller_Adminarea extends Controller_ACL {
         }
         echo "Wachtwoord gewijzigd!";
     }
-    
+
     public function action_logout() {
         Wi3::inst()->sitearea->auth->logout(TRUE);
         Request::instance()->redirect(Wi3::inst()->urlof->controller);
