@@ -69,7 +69,7 @@ class Wi3_Formbuilder_Pageselector extends Wi3_HTML_FormElement
                 echo "<div style='padding-left: " . ($level * 10) . "px; ";
                 if ($pagePosition->id != $val)
                 {
-                    echo "opacity: 0.4; ";
+                    echo "opacity: 0.6; ";
                 }
                 echo "margin: 5px;' id='pagePosition_".$id."_".$counter."' class='pagePosition_".$id."'>";
                     echo "<a href='javascript:void(0)' style='text-decoration: none;' onClick='$(\"#input_".$id."\").val(\"".$pagePosition->id."\").has(\"xyz\").add(\"#pagePosition_".$id."_".$counter."\").fadeTo(50,1).has(\"xyz\").add(\".image_".$id."\").not(\"#pagePosition_".$id."_".$counter."\").fadeTo(50,0.40);'>";

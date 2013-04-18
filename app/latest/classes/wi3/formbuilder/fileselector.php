@@ -43,25 +43,26 @@ class Wi3_Formbuilder_Fileselector extends Wi3_HTML_FormElement
         echo "<input type='hidden' name='" . $this->attributes->name . "' id='input_" . $id . "' value='" . $val . "' />";
         echo "<div style='padding: 10px;'>";
 
-			if (isset($this->settings->extensions)) {
-				$images = Wi3::inst()->sitearea->files->find(array("extensions" => $this->settings->extensions));
-			} else {
-				$images = Wi3::inst()->sitearea->files->find(array());
-			}
+		if (isset($this->settings->extensions)) {
+			$images = Wi3::inst()->sitearea->files->find(array("extensions" => $this->settings->extensions));
+		} else {
+			$images = Wi3::inst()->sitearea->files->find(array());
+		}
 
-            $counter = 0;
-            foreach($images as $image) {
-                $counter++;
-                echo "<div style='float: left; background: #eee; ";
-                if ($image->id != $val)
-                {
-                    echo "opacity: 0.4; ";
-                }
-                echo "margin: 5px;' id='image_".$id."_".$counter."' class='image_".$id."'>";
-                    echo "<a href='javascript:void(0)' style='text-decoration: none;' onClick='$(\"#input_".$id."\").val(\"".$image->id."\").has(\"xyz\").add(\"#image_".$id."_".$counter."\").fadeTo(50,1).has(\"xyz\").add(\".image_".$id."\").not(\"#image_".$id."_".$counter."\").fadeTo(50,0.40);'>";
-                    echo "<div style='float: left; margin: 5px;'>" . $image->filename . "</div></a>";
-                echo "</div>";
+        $counter = 0;
+        foreach($images as $image) {
+        	$level = $image->{$image->level_column};
+            $counter++;
+            echo "<div style='padding-left: " . ($level * 10) . "px; ";
+            if ($image->id != $val)
+            {
+                echo "opacity: 0.6; ";
             }
+            echo "margin: 5px;' id='image_".$id."_".$counter."' class='image_".$id."'>";
+                echo "<a href='javascript:void(0)' style='text-decoration: none;' onClick='$(\"#input_".$id."\").val(\"".$image->id."\").has(\"xyz\").add(\"#image_".$id."_".$counter."\").fadeTo(50,1).has(\"xyz\").add(\".image_".$id."\").not(\"#image_".$id."_".$counter."\").fadeTo(50,0.40);'>";
+                echo "<div style='margin: 5px;'>" . $image->filename . "</div></a>";
+            echo "</div>";
+        }
 
         echo "<div style='font-size: 1px; visibility: hidden; clear:both;'>.</div>";
         echo "</div>";
