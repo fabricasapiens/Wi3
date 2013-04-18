@@ -5,12 +5,12 @@
 // If the check fails, bootstrap.php should send the user to $controller/login
 // For the sitearea controller, there is no AACL check on the controller/action, but rather on a page. Redirect will then be to $site->errorpage
 class Controller_Pagefiller_Default_Edittoolbar_Ajax extends Controller_ACL {
-        
+
     public $template;
-    
+
     public static $responseoptions = Array(); // Array that e.g. a component can use to put information in. The information is subsequently used for creating certain responses.
-    
-    public function before() 
+
+    public function before()
     {
         // Check whether this controller (fills in current action automatically) can be accessed
         Wi3::inst()->acl->grant("admin", $this); // Admin role can access every function in this controller
@@ -18,13 +18,13 @@ class Controller_Pagefiller_Default_Edittoolbar_Ajax extends Controller_ACL {
         // Check if the user gets here via an AJAX POST, and not via a sneaky GET in an Iframe on a weird site
         $ajaxpost = (Request::$is_ajax AND Request::$method=="POST");
         if (!$ajaxpost) { exit; }
-        // TODO: A non-admin user could have injected javascript code that calls saveAllEditableBlocks. This will go ahead once an admin opens the page, deleting all content... 
+        // TODO: A non-admin user could have injected javascript code that calls saveAllEditableBlocks. This will go ahead once an admin opens the page, deleting all content...
         // Thus: Non-admin users are NOT allowed to insert any script code, onclick, onmouseover events etc etc. That is complicated...
         // Go with a Whitelist, and only allow text inside spans, p, h1, h2, h3, div and that's it! Other elements like links and images should be done with fields...
-        
+
         // Nice idea for differentiating URLS between users, but does not work against injection because js code is on the page regardless of the URL: an editing-page should have the current username in the URL, and a check is executed, whether that username matches the current logged-in username. The attacker can still inject a document.location.href to an admin-url, in which then the attack can be executed. However, we should not allow admin-pages that come from a redirect...
     }
-    
+
     protected function setview($name)
     {
         $this->template = View::factory($name);
@@ -44,10 +44,10 @@ class Controller_Pagefiller_Default_Edittoolbar_Ajax extends Controller_ACL {
         // Remove the editableblocks, so that they won't get processed in the next part of this function
         pq($parentBlock)->remove();
     }
-    
+
     public function action_saveAllEditableBlocks()
     {
-        // Add the <cms> element to the Purifier settings 
+        // Add the <cms> element to the Purifier settings
         Security::addpurifierelement("cms", Array(
             "attributes" => Array(
                 'type' => 'Text',
@@ -56,11 +56,11 @@ class Controller_Pagefiller_Default_Edittoolbar_Ajax extends Controller_ACL {
                 'name' => 'Text',
                 'style_float' => 'Text',
                 'style_width' => 'Text',
-                'style_padding' => 'Text',       
-            )                 
+                'style_padding' => 'Text',
+            )
         ));
-        
-        
+
+
         // TODO: per-user checking for editing-access to this page
         // an admin-role is assumed for bare login-access to the adminarea, other roles should define access to individual pages
         $page = Wi3::inst()->model->factory("site_page")->set("id", $_POST["pageid"])->load();
@@ -77,7 +77,7 @@ class Controller_Pagefiller_Default_Edittoolbar_Ajax extends Controller_ACL {
         }
         // Process all editable blocks that are *not* within a field
         $this->processEditableBlocks($document, $page, $allfields);
-        
+
         // Finally, check the fields that belong to this page, and remove those that are not in the $allfields array...
         $fields = Wi3::inst()->model->factory("site_field")->setref($page)->load(Null, FALSE); // FALSE for no limit to the amount of results
         foreach($fields as $field)
@@ -102,7 +102,7 @@ class Controller_Pagefiller_Default_Edittoolbar_Ajax extends Controller_ACL {
 
         // Remove cache of all pages, since we do not know how this change affects other pages
         Wi3::inst()->cache->removeAll();
-        
+
         // Return success
         echo json_encode(
             Array(
@@ -112,7 +112,7 @@ class Controller_Pagefiller_Default_Edittoolbar_Ajax extends Controller_ACL {
     }
 
     private function processEditableBlocks($node,$page,$allfields) {
-        // Get all editable blocks, collapse the fields therein, and save them 
+        // Get all editable blocks, collapse the fields therein, and save them
         $editableblocks = $node->find("[type=editableblock][contenteditable=true]");
         foreach($editableblocks as $editableblock)
         {
@@ -161,7 +161,7 @@ class Controller_Pagefiller_Default_Edittoolbar_Ajax extends Controller_ACL {
         // Let the ref (either a field or a page) determine itself where to store the data
         $ref->saveEditableBlockContent($editableblock, $name, $content);
     }
-    
+
     public function action_insertfield()
     {
         // TODO: (?) use generic class functions and consolidate with pagefiller-fieldcreation at runtime
@@ -172,8 +172,8 @@ class Controller_Pagefiller_Default_Edittoolbar_Ajax extends Controller_ACL {
         // Create a new field, belonging to this page
         $fieldtype = $_POST["fieldtype"];
         $field = Wi3::inst()->model->factory("site_field")->setref($page)->set("type", $fieldtype)->create();
-        if (!isset($this::$responseoptions["inserttype"])) 
-        { 
+        if (!isset($this::$responseoptions["inserttype"]))
+        {
             $this->responseoptions["inserttype"] = "insertbefore";
         }
         // Return a render of the field
@@ -187,7 +187,7 @@ class Controller_Pagefiller_Default_Edittoolbar_Ajax extends Controller_ACL {
             )
         );
     }
-    
+
     public function action_removefield()
     {
         // TODO: per-user checking for editing-access to this page
@@ -195,7 +195,7 @@ class Controller_Pagefiller_Default_Edittoolbar_Ajax extends Controller_ACL {
         $page = Wi3::inst()->model->factory("site_page")->set("id", $_POST["pageid"])->load();
         $fieldid = $_POST["fieldid"];
         $field = Wi3::inst()->model->factory("site_field")->setref($page)->set("id", $fieldid)->load();
-        // Remove field, and let the field do some processing with its data, if it wants to 
+        // Remove field, and let the field do some processing with its data, if it wants to
         if ($field->delete())
         {
             // Remove the different associated field-data, for as far that is not already done...
@@ -209,8 +209,8 @@ class Controller_Pagefiller_Default_Edittoolbar_Ajax extends Controller_ACL {
             {
                 $array->delete();
             }
-            
-            // Base response on whether 'replacefieldwith' is set or not 
+
+            // Base response on whether 'replacefieldwith' is set or not
             if (isset($this::$responseoptions["replacefieldwith"]) AND !empty($this::$responseoptions["replacefieldwith"]))
             {
                 // Replace the field with the 'replacefieldwith'

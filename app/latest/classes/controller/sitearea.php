@@ -15,8 +15,8 @@ class Controller_Sitearea extends Controller {
         $pagename = Wi3::inst()->routing->args[0];
         $this->prepareForViewing($pagename);
         // Render page
-        $renderedinadminarea = false;
-        $this->request->response = Wi3::inst()->sitearea->page->render($renderedinadminarea); 
+        $renderedInAdminArea = false;
+        $this->request->response = Wi3_Renderer::renderPage($pagename, $renderedInAdminArea);
         // Page caching will be handled via an Event. See bootstrap.php and the Caching plugin
     }
 

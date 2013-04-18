@@ -135,12 +135,31 @@
 
             // Remove cache of all pages, since we do not know how this change affects other pages
             Wi3::inst()->cache->removeAll();
-            
+
 			// Let the Front-End rerender the affected field
+
+			// We however do not want *just* the rendered field with its own content (return e.g. a <cms> element), 
+			// we want to have the field as it would appear on the page (e.g. with expanded <cms> elements into <div field...> elements)
+			// including all mutations that any plugin or top-level element might do
+			// Thus we first render the complete page, and then extract the field from there
+			$pageid = $_POST["pageid"];
+			// TODO: do not render if user does not have proper rights
+			// Render page, and check if our field is within it
+			$page = $field = Wi3::inst()->model->factory("site_page")->set("id", $pageid)->load();
+			$renderedInAdminArea = true;
+			$pageHtml = Wi3_Renderer::renderPage($page, $renderedInAdminArea);
+			// Now get the proper part of the page
+			if (strpos($pageHtml, $fieldid) > 0) {
+				// The field probably exists. Search for it using phpQuery
+				$document = phpQuery::newDocument($pageHtml); // Give PHPQuery a context to work with
+        		$fieldHtml = pq("[type=field][fieldid=" . $fieldid . "]")->html();
+			} else {
+				$fieldHtml = "Field does not exist on the page.";
+			}
             echo json_encode(
                 Array(
                     "scriptsbefore" => Array(
-                        "0" => "wi3.pagefillers.default.edittoolbar.renderFieldHtml('" . $fieldid . "', '" . base64_encode($field->render(true)) . "');"
+                        "0" => "wi3.pagefillers.default.edittoolbar.renderFieldHtml('" . $fieldid . "', '" . base64_encode($fieldHtml) . "');"
                     )
                 )
             );
