@@ -4,7 +4,7 @@
  * @package Wi3
  * @author	Willem Mulder
  */
- 
+
 class Wi3_Formbuilder_Pageselector extends Wi3_HTML_FormElement
 {
 
@@ -43,30 +43,30 @@ class Wi3_Formbuilder_Pageselector extends Wi3_HTML_FormElement
         }
         return $this->pages;
     }
-    
+
     public function render()
     {
-        
+
         $id = Wi3::date_now();
         $val = $this->val();
-    
+
         if (isset($this->attributes->label))
         {
             echo "<label for='" . $this->attributes->name . "'></label>";
         }
         echo "<input type='hidden' name='" . $this->attributes->name . "' id='input_" . $id . "' value='" . $val . "' />";
         echo "<div style='padding: 10px;'>";
-        
+
         	$this->loadPages();
 			$pagePositions = $this->pagePositions();
-            
+
             $counter = 0;
             foreach($pagePositions as $pagePosition)
             {
                 $page = $pagePosition->pages[0];
                 $level = $pagePosition->{$pagePosition->level_column};
                 $counter++;
-                echo "<div style='padding-left: " . ($level * 5) . "px; ";
+                echo "<div style='padding-left: " . ($level * 10) . "px; ";
                 if ($pagePosition->id != $val)
                 {
                     echo "opacity: 0.4; ";
@@ -78,7 +78,7 @@ class Wi3_Formbuilder_Pageselector extends Wi3_HTML_FormElement
             }
         echo "</div>";
     }
-   
+
 }
-    
+
 ?>
