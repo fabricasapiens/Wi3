@@ -1,16 +1,32 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 class Controller_Sitearea extends Controller {
-    
-    // TODO: rewrite with ACL, see adminarea
-    public function before()
+
+
+    public function action_index()
     {
-        // Load the requested page
+        return $this->action_view();
+    }
+
+    public function action_view()
+    {
+        // We only get here when authorization has been executed
+        // Correct page has been loaded in the before() function
         $pagename = Wi3::inst()->routing->args[0];
+        $this->prepareForViewing($pagename);
+        // Render page
+        $renderedinadminarea = false;
+        $this->request->response = Wi3::inst()->sitearea->page->render($renderedinadminarea); 
+        // Page caching will be handled via an Event. See bootstrap.php and the Caching plugin
+    }
+
+    private function prepareForViewing($pagename) {
+    	// Load the requested page
         Wi3::inst()->sitearea->setpage($pagename); // Will also execute the "wi3.init.sitearea.page.loaded" event
-        // Now check the rights for this page 
+        // Now check the rights for this page
         // Pages can only be viewed if the page has not set any 'viewright' or if the user that requests the page is logged in and has that required viewright
         $page = Wi3::inst()->sitearea->page;
+        // TODO: rewrite with ACL, see adminarea
         if (!empty($page->viewright))
         {
             // Check for required role
@@ -60,21 +76,6 @@ class Controller_Sitearea extends Controller {
         // By default, don't cache pages
         // This can be overridden in the user template, if desired
         Wi3::inst()->cache->doNotCache();
-    }
-    
-    public function action_index()
-    {
-        return $this->action_view();
-    }
-    
-    public function action_view()
-    {
-        // We only get here when authorization has been executed
-        // Correct page has been loaded in the before() function
-        // Render page
-        $renderedinadminarea = false;
-        $this->request->response = Wi3::inst()->sitearea->page->render($renderedinadminarea); 
-        // Page caching will be handled via an Event. See bootstrap.php and the Caching plugin
     }
 
 }
