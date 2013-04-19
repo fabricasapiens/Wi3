@@ -1,9 +1,5 @@
 <form id='wi3_adminarea_files_addfileform' method='post' enctype='multipart/form-data'>
-    <label>Titel (leeglaten om bestandsnaam te gebruiken)</label>
-    <p>
-        <input name='title'/>
-    </p>
-    <label>Bestand(en)</label>
+    <label>Selecteer bestand(en)</label>
     <p>
         <input type='file' name='file[]' multiple='multiple'/>
     </p>
