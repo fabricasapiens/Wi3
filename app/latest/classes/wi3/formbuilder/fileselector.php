@@ -44,23 +44,30 @@ class Wi3_Formbuilder_Fileselector extends Wi3_HTML_FormElement
         echo "<div style='padding: 10px;'>";
 
 		if (isset($this->settings->extensions)) {
-			$images = Wi3::inst()->sitearea->files->find(array("extensions" => $this->settings->extensions));
+			$files = Wi3::inst()->sitearea->files->find(array("extensions" => $this->settings->extensions));
 		} else {
-			$images = Wi3::inst()->sitearea->files->find(array());
+			$files = Wi3::inst()->sitearea->files->find(array());
 		}
 
         $counter = 0;
-        foreach($images as $image) {
-        	$level = $image->{$image->level_column};
+        foreach($files as $file) {
+        	$level = $file->{$file->level_column};
             $counter++;
             echo "<div style='padding-left: " . ($level * 10) . "px; ";
-            if ($image->id != $val)
+            if ($file->id != $val)
             {
                 echo "opacity: 0.6; ";
             }
-            echo "margin: 5px;' id='image_".$id."_".$counter."' class='image_".$id."'>";
-                echo "<a href='javascript:void(0)' style='text-decoration: none;' onClick='$(\"#input_".$id."\").val(\"".$image->id."\").has(\"xyz\").add(\"#image_".$id."_".$counter."\").fadeTo(50,1).has(\"xyz\").add(\".image_".$id."\").not(\"#image_".$id."_".$counter."\").fadeTo(50,0.40);'>";
-                echo "<div style='margin: 5px;'>" . $image->filename . "</div></a>";
+            echo "margin: 5px;' id='file_".$id."_".$counter."' class='file_".$id."'>";
+                echo "<a href='javascript:void(0)' style='text-decoration: none;' onClick='$(\"#input_".$id."\").val(\"".$file->id."\").has(\"xyz\").add(\"#file_".$id."_".$counter."\").fadeTo(50,1).has(\"xyz\").add(\".file_".$id."\").not(\"#file_".$id."_".$counter."\").fadeTo(50,0.40);'>";
+                	echo "<div style='margin: 5px;'>";
+	                	// Add small thumbnail if file is an image
+	                	if ($file->isImage()) {
+	                		echo "<img src='" . Wi3::inst()->urlof->site . "_uploads/30/" . $file->filename . "'/> ";
+	                	}
+	                	echo $file->filename;
+                	echo "</div>";
+                echo "</a>";
             echo "</div>";
         }
 
