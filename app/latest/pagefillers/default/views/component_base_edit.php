@@ -60,6 +60,6 @@
     
     echo "</form>";
 
-    echo "<button onclick='wi3.request(\"pagefiller_default_component_" . $componentname . "/edit\", {fieldid: " . $field->id . $jscode . "});'>Opslaan</button>";
+    echo "<button onclick='wi3.request(\"pagefiller_default_component_" . $componentname . "/edit\", {fieldid: " . $field->id . $jscode . ", pageid: wi3.page.id});'>Opslaan</button>";
 
 ?>
