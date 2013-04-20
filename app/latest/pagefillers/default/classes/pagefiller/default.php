@@ -154,6 +154,9 @@
                 // Enable FilteredPaste.js for use in wi3 plugin
                 Wi3::inst()->plugins->load("plugin_jquery_filteredpaste");
 
+                // Enable jQuery UI
+                Wi3::inst()->plugins->load("plugin_jquery_ui");
+
                 Wi3::inst()->plugins->load("plugin_jquery_wi3");
                 $this->javascript("edittoolbar/onpage.js");
                 $this->javascript("jq-wysihat.js");
