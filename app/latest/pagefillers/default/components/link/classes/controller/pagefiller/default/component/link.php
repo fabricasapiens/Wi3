@@ -50,7 +50,7 @@
                     ),
                     "scriptsafter" => Array(
                         "0" => "wi3.pagefillers.default.edittoolbar.showPopup();",
-                        "1" => "$('.pagefiller_default_component_link_edit_tabs').tabs()"
+                        "1" => "$('.pagefiller_default_component_link_edit_tabs').tabs();"
                     )
                 )
             );

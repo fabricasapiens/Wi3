@@ -9,9 +9,9 @@
     <li><a href="#<?php echo $prefix; ?>url">Vrije URL</a></li>
 </ul>
 
-<?php 
+<?php
 
-	// Load the data that is associated with this field 
+	// Load the data that is associated with this field
     $data = Wi3::inst()->model->factory("site_array")->setref($field)->setname("data")->load();
 
 	echo "<div id='" . $prefix . "url'>";
