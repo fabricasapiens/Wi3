@@ -6,10 +6,10 @@
 // If the check fails, bootstrap.php should send the user to $controller/login
 // For the sitearea controller, there is no AACL check on the controller/action, but rather on a page. Redirect will then be to $site->errorpage
 class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
-        
+
     public $template;
-    
-    public function before() 
+
+    public function before()
     {
         // Check whether this controller (fills in current action automatically) can be accessed
         Wi3::inst()->acl->grant("admin", $this); // Admin (of this site!) can access every function in this controller
@@ -18,18 +18,18 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
         $ajaxpost = (Request::$is_ajax AND Request::$method=="POST");
         if (!$ajaxpost) { exit; }
     }
-    
+
     protected function view($name)
     {
         return View::factory($name)->set("this", Wi3::inst()->baseview_adminarea);
     }
-    
+
     protected function setview($name)
     {
         $this->template = $this->view($name);
     }
-    
-    public function action_addPageposition() 
+
+    public function action_addPageposition()
     {
         // Add a new pageposition
         if (isset($_POST["under"]) AND is_numeric(substr($_POST["under"],9)))
@@ -42,7 +42,7 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
         {
             $pageposition = Wi3::inst()->sitearea->pagepositions->add();
         }
-        
+
         // Add the page
         // Add some values
         $post = $_POST;
@@ -62,13 +62,13 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
 		}
         $post["owner"] = Wi3::inst()->sitearea->auth->user->username;
         $post["filler"] = "default"; // Assume default page filler
-        
+
         // Add the page itself
         $page = Wi3::inst()->sitearea->pages->add($post);
         // And now edit the created page...
         $page->pageposition = $pageposition; // Reference to its 'father'
         $page->versiontags = Wi3::inst()->model->factory("site_array")->setname("versiontags")->setref($page)->create();
-        
+
         // Let all the versionplugins do their job (like adding versiontags etc)
         // They *should* clean the $_POST from any stuff they injected there in the versionhtmlforaddpage() function
         foreach(Wi3::inst()->sitearea->pages->versionplugins() as $plugin)
@@ -77,7 +77,7 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
         }
         $page->update();
         $page->versiontags->update();
-        
+
         if ($page == false) {
             echo json_encode(
                 Array(
@@ -85,10 +85,10 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
                 )
             );
         } else {
-        
+
             // Remove cache of everything, since we do not know how this change affects the site
             Wi3::inst()->cache->removeAll();
-            
+
             if ($pageposition->lft == 1 AND $pageposition->rgt == 2)
             {
                 // The new pageposition is the only pageposition there is. For the javascript menu to work properly, we need to reload the page.
@@ -115,16 +115,16 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
                 );
             }
         }
-        
+
     }
-    
+
     public function action_movePagepositionBefore() {
         $movedpage = $_POST["source"];
         $referencepage = $_POST["destination"];
         $pageid = substr($movedpage,9);
         $refid = substr($referencepage,9);
         if (Wi3::inst()->sitearea->pagepositions->moveBefore($pageid, $refid)) {
-            
+
             // Remove cache of everything, since we do not know how this change affects the site
             Wi3::inst()->cache->removeAll();
 
@@ -141,14 +141,14 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
             );
         }
     }
-    
+
    public function action_movePagepositionAfter() {
         $movedpage = $_POST["source"];
         $referencepage = $_POST["destination"];
         $pageid = substr($movedpage,9);
         $refid = substr($referencepage,9);
         if (Wi3::inst()->sitearea->pagepositions->moveAfter($pageid, $refid)) {
-            
+
             // Remove cache of everything, since we do not know how this change affects the site
             Wi3::inst()->cache->removeAll();
 
@@ -165,14 +165,14 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
             );
         }
     }
-    
+
     public function action_movePagepositionUnder() {
         $movedpage = $_POST["source"];
         $referencepage = $_POST["destination"];
         $pageid = substr($movedpage,9);
         $refid = substr($referencepage,9);
         if (Wi3::inst()->sitearea->pagepositions->moveUnder($pageid, $refid)) {
-            
+
             // Remove cache of everything, since we do not know how this change affects the site
             Wi3::inst()->cache->removeAll();
 
@@ -189,13 +189,13 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
             );
         }
     }
-    
+
     public function action_deletePageposition() {
         $pagename = $_POST["pagename"];
         $pageid = substr($pagename,9);
         // A call to pagepositions->delete will delete the pagepositions and descendants recursively, as well as their connected pages
         if (Wi3::inst()->sitearea->pagepositions->delete($pageid)) {
-            
+
             // Remove cache of everything, since we do not know how this change affects the site
             Wi3::inst()->cache->removeAll();
 
@@ -212,10 +212,10 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
             );
         }
     }
-    
+
     public function action_startEditPagepositionSettings() {
         $pageid = substr($_POST["pagepositionname"],9);
-                
+
         // For now, just redirect immediately to the first page under this pageposition
         $pageposition = Wi3::inst()->model->factory("site_pageposition", Array("id" => $pageid))->load();
         Wi3::inst()->sitearea->pageposition  = $pageposition;
@@ -226,7 +226,7 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
             break;
         }
         return $this->action_startEditPageSettings();
-        
+
         // TODO: proper UI etc for multiple pages under one pageposition
         /*
         $editview = View::factory("adminarea/menu/ajax/pagepositionsettings");
@@ -249,7 +249,7 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
             }
         }*/
     }
-    
+
     public function action_startEditPageSettings() {
         //$pageid = substr($_POST["pagename"],9);
         $pageid = $_POST["pageid"];
@@ -271,7 +271,7 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
             }
         }
     }
-    
+
     public function action_editPageSettings($pageid) {
         if (is_numeric($pageid) AND !empty($_POST)) {
             $page = Wi3::inst()->sitearea->setpage("_".$pageid); // the _ prefixes a numeric page-ID
@@ -280,22 +280,22 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
                 // Check admin rights
                 Wi3::inst()->acl->check($page);
                 $oldname = $page->longtitle;
-                
+
                 // strip ID and Slug
                 unset($_POST["id"]);
                 unset($_POST["slug"]);
-                foreach($_POST as $name => $post) {                  
+                foreach($_POST as $name => $post) {
                     if ($name == "visible") {
                         $page->visible = ($post === "0" ? "0" : "1");
                     } else {
                         // Also change slug if title is changed
                         if ($name == "longtitle") {
                             // Find a unique slug
-                            $slug = strtolower($post);
+                            $slug = strtolower(str_replace(" ", "-", $post));
                             $counter = 0;
                             while($p = Wi3::inst()->model->factory("site_page")->set("slug", $slug)->load() AND $p->loaded() === true AND $p->id != $page->id AND $counter < 100) {
                                 $counter++;
-                                $slug = $post . " " . $counter;
+                                $slug = strtolower(str_replace(" ", "-", $post)) . " " . $counter;
                             }
                             // Only set if the slug has changed in something else than lowercase - uppercase
                             // A change in lower <> upper causes validation issues
@@ -307,8 +307,8 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
                         $page->{$name} = $post;
                     }
                 }
-                
-                
+
+
                 // Remove cache of everything, since we do not know how this change affects the site
                 Wi3::inst()->cache->removeAll();
 
@@ -338,7 +338,7 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
             );
         }
     }
-    
+
     public function action_editPageRedirectSettings($pageid) {
         if (is_numeric($pageid) AND !empty($_POST)) {
             $page = Wi3::inst()->sitearea->setpage("_".$pageid); // the _ prefixes a numeric page-ID
@@ -351,7 +351,7 @@ class Controller_Adminarea_Menu_Ajax extends Controller_ACL {
 
                 // Remove cache of everything, since we do not know how this change affects the site
                 Wi3::inst()->cache->removeAll();
-                
+
                 //save page and return
                 $page->update();
                 echo json_encode(
