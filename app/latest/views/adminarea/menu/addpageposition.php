@@ -3,6 +3,8 @@
     <input name='longtitle'/>
 <?php
 
+    // No matter how great this mechanism might be, it's not going to be used for now...
+	/*
     $versionhtml = "";
     foreach(Wi3::inst()->sitearea->pages->versionplugins() as $plugin)
     {
@@ -13,7 +15,8 @@
     {
         echo $versionhtml;
     }
-    
+    */
+
     echo "<div id='menu_addpageoptions'>";
     // Get pagefillers, and display the addpageoptions of the default one, along with a choice to pick another
     $pagefillers = Wi3::inst()->configof->wi3->pagefillers->pagefillers;
@@ -26,7 +29,7 @@
         echo $pagefiller->pageoptionshtml();
     }
     echo "</div>";
-    
+
 
 ?>
 </form>
