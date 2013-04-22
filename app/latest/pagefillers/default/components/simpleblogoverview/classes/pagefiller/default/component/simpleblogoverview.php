@@ -66,6 +66,10 @@
                     $blogfield->delete();
                     continue;
                 }
+                // If page is not visible or not active, also not show the article
+                if (!$page->active || !$page->visible) {
+                	continue;
+                }
                 $pageurl = Wi3::inst()->urlof->page($page);
                 // Load data
                 $data = $this->fielddata($blogfield);
@@ -84,8 +88,9 @@
         }
 
         private function getAllBlogFields($limit=0) {
+        	// TODO: sort on publication date
             return Wi3::inst()->model->factory("site_field")->values(Array("type"=>"simpleblogarticle"))->load(
-                DB::select()->order_by("id", "DESC"), 
+                DB::select()->order_by("id", "DESC"),
                 $limit
             );
         }
