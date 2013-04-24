@@ -2,31 +2,31 @@
 // Executes when full page is loaded (and as such, images etc are loaded as well)
 //-------------------------------------------------------------
 jQuery( function($) {
-	if (wi3.routing.action == "menu") 
+	if (wi3.routing.action == "menu")
 	{
-		//in "menu" 
-	    adminarea.menu_pages_tree();	 			//for moving the pages around in the menu_pages page 
-	} 
-	else if (wi3.routing.action == "content") 
-	{	
+		//in "menu"
+	    adminarea.menu_pages_tree();	 			//for moving the pages around in the menu_pages page
+	}
+	else if (wi3.routing.action == "content")
+	{
 	    // in "content", set the correct size of the Iframe, and make sure this stays that way during resizes of the window
         $("#wi3_edit_iframe").css("height", ($(window).height() - $("#wi3_edit_iframe").offset().top -3) + "px");
         $(window).bind("resize",function() {
             $("#wi3_edit_iframe").css("height", ($(window).height() - $("#wi3_edit_iframe").offset().top -3) + "px");
         });
     }
-	else if (wi3.routing.action == "files") 
+	else if (wi3.routing.action == "files")
 	{
 	    //in "files"
 	    adminarea.files_files_tree();              //for moving files around in the files menu
-	} 
-	else if (wi3.routing.action == "users") 
+	}
+	else if (wi3.routing.action == "users")
 	{
 	    //in "users"
 	    adminarea.users_users_tree();              //for creating a nice user-list in the users menu
 	}
 	//make the ajax request indicator work
-	$("#wi3_ajax_menu #wi3_ajax_indicator").bind("ajaxSend", function(){	 	
+	$("#wi3_ajax_menu #wi3_ajax_indicator").bind("ajaxSend", function(){
         var amount = ($(this).html()*1)+1;
         $(this).html(amount);
     }).bind("ajaxComplete", function(){
@@ -63,7 +63,7 @@ var adminarea = {
 		//set Timeout to hide the notification
 		adminarea.timeoutvar = setTimeout('$("#wi3_notification_top").slideUp()', 3000);
     },
-	
+
 	toggleAddPagePanel : function() {
 		$('#addPagePositionPanel').slideToggle();
 		// Hide any active panel about the currently selected page
@@ -75,10 +75,10 @@ var adminarea = {
 		// Hide any active panel about the currently selected page
 		$("#menu_pagesettings_tabs").fadeOut("fast");
 	},
-    
+
     addpageposition : function() {
         var selected = this.currentTree().getSelected();
-        if (selected.size() > 0) 
+        if (selected.size() > 0)
         {
             var id = $(selected.get(0)).attr("id");
             var options =  $("#wi3_adminarea_menu_addpageform").serializeArray();
@@ -90,10 +90,10 @@ var adminarea = {
             wi3.request("adminarea_menu_ajax/addpageposition", $("#wi3_adminarea_menu_addpageform").serializeArray() );
         }
     },
-    
+
     addfolder : function() {
         var selected = this.currentTree().getSelected();
-        if (selected.size() > 0) 
+        if (selected.size() > 0)
         {
             var id = $(selected.get(0)).attr("id");
             var options = {"location":"under", "refid":id};
@@ -117,21 +117,21 @@ var adminarea = {
 	    document.location.href = "";
 	    document.location.href = temp;
     },
-    
+
     simpleTreeCollection : {},
     currentTree : function() {
         return adminarea.simpleTreeCollection.get(0);
     },
 
     menu_pages_tree : function() {
-    
+
 		// TODO ? $('#menu_pages').prepend($("<div>", { class:"activeUnderHover" }));
-	
+
 	    //enable drag/drop within the tree and display the tree in a nice manner
 	    adminarea.simpleTreeCollection = $('#menu_pages').simpleTree({
 		    autoclose: false,
 		    whileHover:function(node){
-		        
+
 		    },
 		    afterHover:function(node){
 		        // todo
@@ -153,7 +153,7 @@ var adminarea = {
 			    } //en anders jammer
 		    },
 		    whileDrag:function(li, dest) {
-		    
+
 		    },
 		    afterDrag:function(li, dest) {
 		        // afterDrag will *only* be called if there was no move within the tree.
@@ -176,12 +176,12 @@ var adminarea = {
 	    });
 	    $('#menu_pages a').attr("href", "javascript:void(0)");
     },
-    
+
     menu_pagesettings_enable : function() {
         // Enable the tabs
         $("#menu_pagesettings_tabs").tabs('destroy'); //'reset'
         $("#menu_pagesettings_tabs").tabs();
-        // Make the redirect-switcher work 
+        // Make the redirect-switcher work
         $("#redirect_type").bind("change", function(event) {
             if ($(this).val() == "wi3")
             {
@@ -197,17 +197,17 @@ var adminarea = {
             {
                 $("#redirect_wi3").add("#redirect_external").hide();
             }
-            
+
         });
     },
 
     files_files_tree : function() {
-	    
+
 	    //enable drag/drop within the tree and display the tree in a nice manner
 	    adminarea.simpleTreeCollection = $('#files_files').simpleTree({
 		    autoclose: false,
 		    whileHover:function(node){
-		        
+
 		    },
 		    afterHover:function(node){
 		        // todo
@@ -230,7 +230,7 @@ var adminarea = {
 			    } //en anders jammer
 		    },
 		    whileDrag:function(li, dest) {
-		    
+
 		    },
 		    afterDrag:function(li, dest) {
 		        // afterDrag will *only* be called if there was no move within the tree.
@@ -253,13 +253,13 @@ var adminarea = {
 	    });
 	    $('#menu_files a').attr("href", "javascript:void(0)");
     },
-    
+
     files_filesettings_enable : function() {
         //enable the tabs
         $("#files_filesettings_tabs").tabs('destroy'); //'reset'
         $("#files_filesettings_tabs").tabs();
-    },    
-    
+    },
+
     users_users_tree : function() {
         adminarea.simpleTreeCollection = $('#users_users').simpleTree({
 		    autoclose: false,
@@ -270,14 +270,14 @@ var adminarea = {
 		    }
 		});
     },
-    
+
     users_usersettings_enable : function() {
         //enable the tabs
         $("#users_usersettings_tabs").tabs('destroy'); //'reset'
         $("#users_usersettings_tabs").tabs();
     }
-    
-    
+
+
     /*,
 
     wi3_edit_page_settings : function(elm) {

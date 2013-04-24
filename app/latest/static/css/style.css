@@ -8,60 +8,82 @@
     */
 	html { }
 	body { font: 13px verdana, arial, verdana; color: #000; background: #22242b;  }
-	
+
 	.color1 { color: #ffaf25; } /* yellow */
 	.color2 { color: #383a49; } /* grey blue */
 	.color3 { color: #6d6f71; } /* grey */
-	
+
 	p, form, ul, ol { padding-bottom: 15px; }
-	
+
 	h1 { font-size: 24px; font-weight: bold; margin-bottom: 10px; color: #383a49; }
 	h2 { font-size: 14px; margin-bottom: 5px; color:#383a49; }
-	
+
 	.bold { font-weight: bold; }
-	
+
 	.hidden { display: none; }
-	
+
 	.rightside { position: absolute; left: 150px; }
-	
+
 	input, select, button { padding: 5px; }
 	label { line-height: 36px; }
-	
+
 	.borderedbox { border: 1px solid #ccc; padding: 20px; }
 	.topbottomborderedbox { border-top: 1px solid #ccc; border-bottom: 1px solid #ccc; padding: 20px 0px; }
-	
+
 	/* width of actual content is 960px, container is 1000px to enable for fitting in the 1000px width background */
 	#container { width: 1000px; position: absolute; left:50%; top: 0px; margin-left: -500px; background: #FFF; }
-	
+
         .nopadding { padding: 0px; }
         .smallpadding { padding: 5px; }
         .mediumpadding { padding: 10px; }
         .largepadding { padding: 20px; }
-        
+
         .nomargin { margin: 0px; }
         .smallmargin { margin: 5px; }
         .mediummargin { margin: 10px; }
         .largemargin { margin: 20px; }
-        
+
         .relativepositioning { position: relative; }
-        
+
         .clearfix { clear: both; visibility: hidden; font-size: 1px; }
-        
+
         .mediumtransparentbackground { background-color: rgba(255,255,255,50); }
-        
+
+    /*
+    /----------------------------------------------------
+    / Top messages
+    /----------------------------------------------------
+    */
+    .topmessage {
+    	position: fixed;
+    	top: 0px;
+    	left: 50%;
+    	width: 400px;
+    	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+		box-sizing: border-box;         /* Opera/IE 8+ */
+    	margin-left: -200px;
+    	padding: 20px;
+    	background: #fff;
+    	color: #333;
+    	box-shadow: 0px 0px 20px rgba(0, 0, 0, 1);
+    	z-index: 1000;
+    }
+    .topmessage h1, .topmessage h2, .topmessage h3 { color: #dd2222; }
+
 	/*
     /----------------------------------------------------
     /login form
     /----------------------------------------------------
     */
-    #loginform { position: absolute; left: 50%; margin-left: -200px; width: 400px; top: 50%; margin-top: -180px; height: 300px; background: #fff; border-top: 1px solid #fff; border-bottom: 1px solid #000; box-shadow: 0px 0px 20px rgba(0, 0, 0, 1); }
+    #loginform { position: absolute; left: 50%; margin-left: -200px; width: 400px; top: 50%; margin-top: -150px; height: 300px; background: #fff; border-top: 1px solid #fff; border-bottom: 1px solid #000; box-shadow: 0px 0px 20px rgba(0, 0, 0, 1); }
     #loginform_title { width: 100px; height: 70px; border-right: 300px solid #eee; }
 	#loginform_content { margin: 30px; width: 340px; color: #0b5aa3;  }
 	    #loginform_content td { padding-top: 11px; }
-	    #loginform_content input { width: 205px; } 
+	    #loginform_content input { width: 205px; }
 	    #loginform_content input#loginform_button { float: right; width: 120px; margin-top: 5px; }
 	#loginform_copyright { position: absolute; bottom: 0px; left: 30px; font-size: 10px; color: #aaa; }
-	
+
 	/*
     /----------------------------------------------------
     / navigation, status and content
@@ -69,30 +91,30 @@
     /----------------------------------------------------
     */
 	#navigationandstatus { position: absolute; top: 15px; left: 0px; width: 1000px; height: 70px; background: #fff; z-index: 10; }
-	
+
 	#wi3logo { position: absolute; left: 20px; top: 13px; background: url("../images/wi3_logo_blue on white_60x42.png") no-repeat; width: 60px; height: 42px; text-align: right; color: #fff; padding-right: 80px; padding-top: 10px; }
-	
+
 	#navigation { position: absolute; width: 650px; left: 100px; z-index: 10; text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.8); }
 	#navigation li { display: block; float: left; background: #fff; padding: 25px; margin-right: 10px; height: 20px; overflow: hidden; line-height: 20px; }
 	#navigation a { color: #555; border: none; text-decoration: none; font-size: 18px; }
 	#navigation li.active { background: #eee; }
 	#navigation li.active a { color: #1891ff; }
-	
+
 	#status { position: absolute; right: 30px; top: 27px; color: #999; width: 350px; text-align: right; }
 	#status li { float: right; }
 	#status a { color: #1891ff; border: none; text-decoration: none; }
-	
+
         /* wi3 ajax indicator */
         #wi3_ajax_menu { display: inline; position: relative; }
         #wi3_ajax_menu #wi3_ajax_indicator { display: inline; background: url(../images/ajax-loader.png) no-repeat; padding-left: 20px; border-right: 2px solid #aaa; margin-right: 10px; padding-right: 10px;}
         #wi3_ajax_menu #wi3_ajax_indicator.working { background: url(../images/ajax-loader.gif) no-repeat; }
 	    #wi3_ajax_menu #wi3_notification_top, #wi3_ajax_menu #wi3_notification_bottom { position: absolute; left: 0px; display: none; background: #fff; border: 2px solid #22242B; border: none; border-top: none; top: 44px; width: 160px; padding: 20px; text-align: center; color: #1891FF; box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.4); }
-	
+
 	#content { position: absolute; left: 0px; top: 15px; width: 960px; padding: 20px; padding-top: 85px; background: #eee; border-top: 1px solid #fff; border-bottom: 1px solid #000; box-shadow: 0px 0px 20px rgba(0, 0, 0, 1);  min-height: 600px; }
 	    #content h1 { color: #1891ff; }
 	    #content h1, #content h2, #content h3 { text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.8); }
 		#copyright { font-size: 10px; color: #aaa; margin-top: 15px; }
-	
+
 	/*
     /----------------------------------------------------
     / control panel
@@ -101,43 +123,43 @@
 	.controlpanel#content table td { border-top: 1px dotted #ccc; }
 	#content table.padded td { padding: 2px; padding-right: 10px; }
 	#content table .zebrastreep td { background: #f1f1f1; }
-	
+
 	#controlpanel_user { background: url('../images/crystal/30/kuzer.png') no-repeat; height: 30px; padding-left: 40px; }
-	
+
 	#controlpanel_site_common { background: url('../images/crystal/30/network.png') no-repeat; height: 30px; padding-left: 40px; }
 	#controlpanel_site_template { background: url('../images/crystal/30/colorscm.png') no-repeat; height: 30px; padding-left: 40px; }
-	
+
 	.controlpanel#content { padding: 20px; }
 	.left { width: 50%; }
 	.right { width: 50%; position: absolute; left: 50%; top: 20px; }
-	
+
 	/*
     /----------------------------------------------------
     / menu & files & users
     /----------------------------------------------------
     */
-	
+
 	/*#content.menupages, #content.files {
 	    padding-top: 100px;
 	}*/
-	
-	#wi3_prullenbak 
+
+	#wi3_prullenbak
 	{
-	    position: absolute; 
-	    background: url('../images/crystal/30/trashcan_empty.png') no-repeat; 
-	    background-position: 10px 10px; 
+	    position: absolute;
+	    background: url('../images/crystal/30/trashcan_empty.png') no-repeat;
+	    background-position: 10px 10px;
 	    padding-left: 40px;
 	    left: 620px;
 	    width: 320px;
 		border: 1px solid #1891ff;
 		box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
 	}
-	#wi3_prullenbak #prullenbak_onder 
-    { 
+	#wi3_prullenbak #prullenbak_onder
+    {
 		margin: 15px;
 		background-position: 0px 30px;
 	}
-	
+
 	#wi3_add_pages, #wi3_add_file { width: 450px; background: url('../images/crystal/30/page.png') no-repeat; }
 	#wi3_add_pages { width: 550px; }
 	#wi3_add_folder { width: 50px; margin-left: 8px; background: url('../images/crystal/30/folder.png') no-repeat; vertical-align: top; }
@@ -145,71 +167,71 @@
 	{
 	    border: 1px solid #1891ff;
 	    background-position: 10px 10px;
-	    padding-left: 40px; 
+	    padding-left: 40px;
 	    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
 	    display: inline-block;
 	}
 	#wi3_add_pages a, #wi3_add_file a, #wi3_add_folder a { border: none; text-decoration: none; display: block; margin: 15px; }
-	
+
 	#wi3_add_user { width: 600px; }
 	#wi3_add_user #wi3_add_user_form label { float: left; width: 150px; }
-	
+
 	#wi3_add_pages_options {
 		height: 78px;
 		max-height: 78px;
 	}
 	#wi3_add_pages_options .wi3_add_pages_pagetype { width: 125px; float: left; }
-	
-    #wi3_adminarea_menu_addpageform 
-    { 
-        
+
+    #wi3_adminarea_menu_addpageform
+    {
+
     }
-    
+
     #wi3_adminarea_menu_addpageform input, #wi3_adminarea_files_addfileform input, #wi3_adminarea_menu_addpageform select, #wi3_adminarea_files_addfileform input select { width: 100%; padding: 3px; }
     #wi3_adminarea_menu_addpageform label, #wi3_adminarea_files_addfileform label { display: block; padding-top: 10px; padding-bottom: 5px; }
     #wi3_adminarea_menu_addpageform input, #wi3_adminarea_files_addfileform input { border: 1px solid #eee; height: 24px; font-size: 16px; }
     #wi3_adminarea_files_addfileform input[type=file] { font-size: inherit; }
-	
+
 	#menu_pages, #files_files, #users_users {
 	    font-size: 16px;
 	    margin-left: -5px;
 	    padding: 5px; padding-top: 20px; padding-right: 25px;
 	    width: 590px; min-height: 180px;
 	}
-	
+
 	#wi3_add_file td { padding-left: 10px; padding-bottom: 5px; }
-	
+
 	#menu_pagesettings, #files_filesettings, #users_usersettings { position: absolute; left: 620px; width: 360px; top: 140px; }
 	#menu_pagesettings h2, #files_filesettings h2, #users_usersettings h2 { margin-bottom: 5px; }
 	#menu_pagesettings label, #files_filesettings label, #users_usersettings label { float: left; width: 200px; line-height: 20px; }
 	#menu_pagesettings input, #files_filesettings input, #users_usersettings input { width: 300px; }
 	#menu_pagesettings #page_visibility { width: 20px; }
 	#menu_pagesettings td, #users_usersettings td { padding-right: 10px; padding-bottom: 5px; }
-	
-	
+
+
 	/*
     /----------------------------------------------------
     / content page
     /----------------------------------------------------
     */
-    
+
     #content.contentpage { min-height: 0px; border: none; padding: 10px; padding-top: 80px; width: 980px; height: 45px; }
 	#content.editcontent { display: none; }
-	
+
 	#adminarea_content_iframedivs{ margin-top: 130px; z-index: 1000; }
 	#adminarea_content_divisionbar { left: 0px; top:0px; width: 100%; height: 20px; background: #22242b; }
-	#wi3_edit_iframe { width: 100%; }	
-	#files_file_list { 
+	#wi3_edit_iframe { width: 100%; }
+	#files_file_list {
 	    border: 10px solid #ffff00;
 	    padding: 10px;
 	    margin-bottom: 10px;
 	}
 	#files_file_list .treeItem { cursor: pointer; }
-	
+
 	#files_file_list_left {
 	    width: 400px;
 	}
-	
+
 	/*
     /----------------------------------------------------
     / simpletree css
@@ -246,7 +268,7 @@
     }
     .simpleTree ul
     {
-	    margin:0; 
+	    margin:0;
 	    padding:0;
     }
     .simpleTree .root
@@ -340,7 +362,7 @@
     .simpleTree .ajax li
     {
 	    display:none;
-	    margin:0; 
+	    margin:0;
 	    padding:0;
     }
     .simpleTree .trigger
@@ -370,7 +392,7 @@
 	    padding:0px 2px;
 	    padding: 3px;
  	    //background-color:#F7BE77;
-	    //border: 1px dashed #444; 
+	    //border: 1px dashed #444;
     }
     #drag_container
     {
@@ -412,5 +434,5 @@
     {
 	    background: url(../images/tree/collapsable.gif) no-repeat -17px 0 #ffffff;
     }
-    
-	
+
+

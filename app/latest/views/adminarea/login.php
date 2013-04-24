@@ -6,12 +6,15 @@
 
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<title><?php if (isset($title)) { echo html::chars($title); } ?></title>
-    
+
     <?php
-    
+
         $this->css("reset.css");
         $this->css("style.css");
-    
+
+        Wi3::inst()->plugins->load("plugin_jquery_core");
+        $this->javascript("browsercheck.js");
+
     ?>
 
 </head>
@@ -29,11 +32,11 @@
             <div id='wi3logo'></div>
         </div>
         <div id='loginform_content'>
-            <?php 
-                //if (isset($title)) { echo "<h1>" . html::specialchars($title) . "</h1>"; } 
+            <?php
+                //if (isset($title)) { echo "<h1>" . html::specialchars($title) . "</h1>"; }
             ?>
             <?php if (isset($content)) { echo $content; } ?>
-           
+
             <p id="loginform_copyright">
                 Copyright ©2007–2011 Fabrica Sapiens
             </p>
