@@ -14,8 +14,8 @@
 		foreach($articles as $article) {
 			echo "<item>";
 				echo "<title><![CDATA[" . $article->title . "]]></title>";
-				echo "<link><![CDATA[" . urlencode($article->pageurl) . "]]></link>";
-				echo "<guid><![CDATA[" . urlencode($article->pageurl) . "]]></guid>";
+				echo "<link><![CDATA[" . $article->pageurl . "]]></link>";
+				echo "<guid><![CDATA[" . $article->pageurl . "]]></guid>";
 				echo "<description><![CDATA[" . $article->summary . "]]></description>";
 			echo "</item>";
 		}
