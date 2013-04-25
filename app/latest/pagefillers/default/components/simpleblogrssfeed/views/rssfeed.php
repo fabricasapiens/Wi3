@@ -1,5 +1,5 @@
 <?php
-	echo '<?xml version="1.0"?>';
+	echo '<?xml version="1.0" encoding="UTF-8" ?>';
 ?>
 <rss version="2.0">
 
@@ -13,9 +13,10 @@
 
 		foreach($articles as $article) {
 			echo "<item>";
-				echo "<title>" . $article->title . "</title>";
-				echo "<link>" . $article->pageurl . "</link>";
-				echo "<description>" . $article->summary . "</description>";
+				echo "<title><![CDATA[" . $article->title . "]]></title>";
+				echo "<link><![CDATA[" . $article->pageurl . "]]></link>";
+				echo "<guid><![CDATA[" . $article->pageurl . "]]></guid>";
+				echo "<description><![CDATA[" . $article->summary . "]]></description>";
 			echo "</item>";
 		}
 
