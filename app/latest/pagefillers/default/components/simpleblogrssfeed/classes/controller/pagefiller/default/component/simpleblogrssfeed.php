@@ -1,24 +1,22 @@
-<?php defined('SYSPATH') or die ('No direct script access.'); ?>
-
-<?php
+<?php defined('SYSPATH') or die ('No direct script access.');
 
     class Controller_Pagefiller_Default_Component_Simpleblogrssfeed extends Controller_Pagefiller_Default_Component_Base
     {
-    
+
 		public static $componentname = "simpleblogrssfeed";
-		
-        public function before() 
+
+        public function before()
         {
             Wi3::inst()->acl->grant("*", $this, "rssfeed"); // Everybody can access rssfeed function in this controller
             parent::before();
         }
 
-        public function startEdit($field) 
+        public function startEdit($field)
         {
             // Possibly custom code here
         }
-        
-        public function edit($field) 
+
+        public function edit($field)
         {
     		// custom code
             $this->fielddata($field, "edittimestamp", time());
@@ -33,7 +31,7 @@
             // TODO: Rework this or at least implement caching. Right now it is completely inefficient
             // 1. Fetch the latest [$amount] fields with type simpleblogarticle
             $fields = Wi3::inst()->model->factory("site_field")->values(Array("type"=>"simpleblogarticle"))->load(
-                DB::select()->order_by("id"), 
+                DB::select()->order_by("id"),
                 $amount
             );
             // 2. Grab their data
@@ -49,11 +47,10 @@
                 $data->imageurl = $imageurl;
                 $articles[] = $data;
             }
-            echo $this->view("rssfeed")->set("data", $dataobject)->set("articles", $articles)->render();
-            // Content-Type? Request::current()->headers["Content-Type"] = "xml/text";
-            // File? Request::current()->send_file(true,"rssfeed.xml");
+            $this->template = $this->view("rssfeed")->set("data", $dataobject)->set("articles", $articles)->render();
+            Request::current()->headers["Content-Type"] = "xml/text";
+            // Send as file? Request::current()->send_file(true,"rssfeed.xml");
         }
-        
     }
 
 ?>
