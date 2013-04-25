@@ -47,6 +47,9 @@
                 $data->imageurl = $imageurl;
                 $articles[] = $data;
             }
+            // Newest on top
+            $articles = array_reverse($articles);
+            // Generate!
             $this->template = $this->view("rssfeed")->set("data", $dataobject)->set("articles", $articles)->render();
             Request::current()->headers["Content-Type"] = "application/rss+xml";
             // Send as file? Request::current()->send_file(true,"rssfeed.xml");
