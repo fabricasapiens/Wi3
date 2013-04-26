@@ -11,49 +11,49 @@
 
     $this->css("reset.css");
     $this->css("style.css");
-    
+
     //load some JQuery plugins
     Wi3::inst()->plugins->load("plugin_jquery_core");
     Wi3::inst()->plugins->load("plugin_jquery_tree");
     Wi3::inst()->plugins->load("plugin_jquery_wi3");
-    
+
     //load the client Javascript information plugin
     Wi3::inst()->plugins->load("plugin_clientjavascriptvars");
-    
-   $this->javascript(array(     
+
+   $this->javascript(array(
         'adminarea.js', //creates the hovers, dragdropping etc in the 'menu' page and contains the Iframe-functions
-    )); 
-    
+    ));
+
     ?>
 
 </head>
 <body>
 
     <div id='container'>
-    
+
         <div id='navigationandstatus'>
-        
+
             <div id='wi3logo'></div>
-        
-            <?php 
+
+            <?php
                 //subnavigationleft, if set
-                if (isset($navigation)) { echo "<div id='navigation'>" .$navigation."</div>"; } 
+                if (isset($navigation)) { echo "<div id='navigation'>" .$navigation."</div>"; }
             ?>
-            
-            <?php 
+
+            <?php
                 //status, if set
-                if (isset($status)) { echo "<div id='status'>" .$status."</div>"; } 
+                if (isset($status)) { echo "<div id='status'>" .$status."</div>"; }
             ?>
-            
+
         </div>
-        
+
         <?php if (isset($totalcontent)) { echo $totalcontent; } ?>
 
         <div id='content' <?php if (isset($contentclass)) { echo "class='" . $contentclass . "'"; } ?>>
             <?php if (isset($title)) { echo "<h1>" . html::specialchars($title) . "</h1>"; } ?>
-            <?php if (isset($content)) { echo $content; } ?>        
+            <?php if (isset($content)) { echo $content; } ?>
         </div>
-        
+
     </div>
 
 </body>
