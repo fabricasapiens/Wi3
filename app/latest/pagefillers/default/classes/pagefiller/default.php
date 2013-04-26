@@ -212,7 +212,11 @@
                 //-------------------
                 // Fields outside editable blocks
                 //-------------------
-                replacePQFieldsWithAdminHTML($html,$page,$this);
+                $count = count(getAllFields($html));
+				while($count > 0) {
+                    replacePQFieldsWithAdminHTML($html,$page,$this);
+                    $count = count(getAllFields($html));
+                }
 
                 //-------------------
                 // Editable blocks and the fields therein
@@ -282,7 +286,7 @@
                 // Simply display the contents of the block, not making them editable
                 $html = phpQuery::newDocument($html); // Give PHPQuery a context to work with
 
-                function replacePQFieldsWithViewHTML($content,$page) {
+                function replacePQFieldsWithViewHTML($content, $page, $renderedinadminarea) {
                     $allfields = getAllFields($content);
                     foreach($allfields as $pqfield)
                     {
@@ -332,7 +336,7 @@
                             }
                             $field->options["stylearray"] = $stylearray;
                             // Render the field, in which the field can also change the style options
-                            $fieldhtml = $field->render();
+                            $fieldhtml = $field->render($renderedinadminarea, $pqfield);
                             // The field can override these options, if it wants
                             $style = $field->options["style"];
                             $stylearray = $field->options["stylearray"];
@@ -364,7 +368,11 @@
                 //-------------------
                 // Fields outside editable blocks
                 //-------------------
-                replacePQFieldsWithViewHTML($html, $page);
+                $count = count(getAllFields($html));
+				while($count > 0) {
+                    replacePQFieldsWithViewHTML($html, $page, $renderedinadminarea);
+                    $count = count(getAllFields($html));
+                }
 
                 //-------------------
                 // Editable blocks and the fields therein
@@ -411,7 +419,7 @@
                         $content = phpQuery::newDocument($content);
                         $count = count(getAllFields($content));
                         while($count > 0) {
-                            replacePQFieldsWithViewHTML($content,$page);
+                            replacePQFieldsWithViewHTML($content, $page, $renderedinadminarea);
                             $count = count(getAllFields($content));
                         }
 

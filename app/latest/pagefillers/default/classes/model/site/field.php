@@ -7,9 +7,9 @@
 class Model_Site_Field extends Sprig
 {
     public $_db = "site";
-    
+
     public $options = Array();
-    
+
     protected function _init()
     {
         // Overrule the names of the Roles and User_Token model to the Site_... version
@@ -39,15 +39,15 @@ class Model_Site_Field extends Sprig
 
         //-------------------
         // Add the related Component to the Autoloader-paths, so it can be found by Kohana
-        //-------------------   
+        //-------------------
 
         // Get component path
         $componentpath = Wi3::inst()->pathof->pagefiller("default") . "components/";
         // Loop over component-modules and add the one for this specific field
         $dir = new DirectoryIterator( $componentpath );
-        foreach($dir as $file) 
+        foreach($dir as $file)
         {
-            if ($file->isDir() AND !$file->isDot() AND $file->getFilename() == $this->type ) 
+            if ($file->isDir() AND !$file->isDot() AND $file->getFilename() == $this->type )
             {
                 Kohana::modules(Kohana::modules() + Array($file->getPathname()));
                 continue;
@@ -67,15 +67,15 @@ class Model_Site_Field extends Sprig
 
         //-------------------
         // Add the related Component to the Autoloader-paths, so it can be found by Kohana
-        //-------------------   
+        //-------------------
 
         // Get component path
         $componentpath = Wi3::inst()->pathof->pagefiller("default") . "components/";
         // Loop over component-modules and add the one for this specific field
         $dir = new DirectoryIterator( $componentpath );
-        foreach($dir as $file) 
+        foreach($dir as $file)
         {
-            if ($file->isDir() AND !$file->isDot() AND $file->getFilename() == $this->type ) 
+            if ($file->isDir() AND !$file->isDot() AND $file->getFilename() == $this->type )
             {
                 Kohana::modules(Kohana::modules() + Array($file->getPathname()));
                 continue;
@@ -91,46 +91,46 @@ class Model_Site_Field extends Sprig
 
         // Finally delete the field
         return parent::delete($query); // Pass the create function to the parent
-    }   
+    }
 
     public function setname($name)
     {
         $this->name = $name;
         return $this;
     }
-    
+
     public function setref($object)
     {
         $this->_refclass = get_class($object);
         $this->_refid = $object->{$object->pk()}; // It is assumed that any object has a primary key available through $obj->pk()
         return $this;
     }
-    
-    public function render($editmode = null)
+
+    public function render($renderedinadminarea, $pqfield)
     {
         if (!empty($this->type))
         {
             //-------------------
             // Add the related Component to the Autoloader-paths, so it can be found by Kohana
-            //-------------------  
-               
+            //-------------------
+
             // Get component path
             $componentpath = Wi3::inst()->pathof->pagefiller("default") . "components/";
             // Loop over component-modules and add the one for this specific field
             $dir = new DirectoryIterator( $componentpath );
-            foreach($dir as $file) 
+            foreach($dir as $file)
             {
-                if ($file->isDir() AND !$file->isDot() AND $file->getFilename() == $this->type ) 
+                if ($file->isDir() AND !$file->isDot() AND $file->getFilename() == $this->type )
                 {
                     Kohana::modules(Kohana::modules() + Array($file->getPathname()));
                     continue;
                 }
             }
-            
+
             $component = $this->getComponent();
-            
-            return $component->render($this);
-        
+
+            return $component->render($this, $renderedinadminarea, $pqfield);
+
         }
         else
         {
@@ -173,7 +173,7 @@ class Model_Site_Field extends Sprig
     }
 
     public function getComponent() {
-        // Create component 
+        // Create component
         $componentname = "Pagefiller_default_component_" . $this->type;
         return $componentname::inst();
     }
@@ -197,38 +197,38 @@ class Model_Site_Field extends Sprig
         }
         return $ref;
     }
-    
+
     // fieldactions
     public function fieldactions()
     {
         //-------------------
         // Add the related Component to the Autoloader-paths, so it can be found by Kohana
-        //-------------------   
-           
+        //-------------------
+
         // Get component path
         $componentpath = Wi3::inst()->pathof->pagefiller("default") . "components/";
         // Loop over component-modules and add the one for this specific field
         $dir = new DirectoryIterator( $componentpath );
-        foreach($dir as $file) 
+        foreach($dir as $file)
         {
-            if ($file->isDir() AND !$file->isDot() AND $file->getFilename() == $this->type ) 
+            if ($file->isDir() AND !$file->isDot() AND $file->getFilename() == $this->type )
             {
                 Kohana::modules(Kohana::modules() + Array($file->getPathname()));
                 continue;
             }
         }
-        
-        // Create component 
+
+        // Create component
         $componentname = "Pagefiller_default_component_" . $this->type;
         $component = $componentname::inst();
-        
+
         return $component->fieldactions($this);
     }
-    
-    // Returns whether a given user is allowed to 
+
+    // Returns whether a given user is allowed to
     public function isuserallowedto($user, $action) {
         //echo Kohana::debug($this);
         return true;// TODO: security implementation
     }
-    
+
 }

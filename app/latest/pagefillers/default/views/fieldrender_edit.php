@@ -29,15 +29,16 @@
         $stylearray["display"] = "block"; // default, can be overridden by the field during its rendering process
         $field->options["stylearray"] = $stylearray;
     }
-    
+
     // Render the field, in which the field can also change the style options
-    $fieldhtml = $field->render();
+    $renderedinadminarea = true;
+    $fieldhtml = $field->render($renderedinadminarea, $pqfield);
     // The field can override these options, if it wants
     $style = (isset($field->options["style"]) ? $field->options["style"] : "");
     $stylearray = $field->options["stylearray"];
     // Once the field is rendered, it is known whether it wants to be an inline element, or a block element
     // Use float and padding only if element is not inline
-    if (strpos($style, "display:inline") !== false || 
+    if (strpos($style, "display:inline") !== false ||
         (isset($stylearray["display"]) && $stylearray["display"] == "inline"))
     {
         unset($stylearray["float"]);
@@ -51,15 +52,15 @@
         }
     }
     $totalstyle .= "; position: relative;";
-    
+
     echo "<div type='field' fieldid='" . $field->id . "' style='" . $totalstyle . "' contenteditable='false'>";
         echo "<div type='fieldbuttons' style='position: absolute; left: 0px; top: 0px; height: 80px; margin-top: -80px; width: 100%; min-width: 250px; display: none; font: 13px arial, verdana; font-weight: normal; background: #fff; overflow: hidden; -webkit-box-shadow: 0px 0px 10px #ccc; -mozilla-box-shadow: 0px 0px 10px #ccc; box-shadow: 0px 0px 10px #ccc;'><div style='display: inline-block; padding: 10px;'>";
             // Now there is three tabs: at the left the field-actions. At the right respectively the style-actions, and rigid actions like 'delete' or 'replace with other field'
             ?>
             <div type='field_tabs_tabs' style='position: absolute; bottom: 0px; height: 20px;'>
                 <div tab='fieldactions' style='display: inline-block; margin-right: 5px;'><a href='javascript:void(0);' onclick='$("div[block]").hide().filter("div[block=fieldactions]").fadeIn();'>veld acties...</a></div>
-                <?php 
-                if (isset($stylearray["display"]) && $stylearray["display"] == "block") 
+                <?php
+                if (isset($stylearray["display"]) && $stylearray["display"] == "block")
                 { ?>
                     <div tab='design' style='display: inline-block; margin-right: 5px;'><a href='javascript:void(0);' onclick='$("div[block]").hide().filter("div[block=design]").fadeIn();'>opmaak...</a></div>
                 <?php } ?>
@@ -70,7 +71,7 @@
                     <?php echo $field->fieldactions(); ?>
                 </div>
                 <div block='design' style='display: none;'>
-                    <?php 
+                    <?php
                     // Padding of the field object
                     echo "<div><span style='display: inline-block; width: 60px;'>Marge </span><a href='javascript:void(0)' action='margin_0px'>geen</a> <a href='javascript:void(0)' action='margin_20px'>gemiddeld</a> <a href='javascript:void(0)' action='margin_40px'>groot</a></div>";
                     // Float left or right
@@ -82,9 +83,9 @@
                     ?>
                 </div>
             </div>
-        <?php 
+        <?php
         echo "</div></div>"; // End of fieldbuttons. // PHPQuery 'markups' the html so that a stupid line-break / space (?) gets inserted here, mangling the markup of the page...
         echo "<div style='display: inherit;' type='fieldcontent'>" . $fieldhtml . "</div>";
     echo "</div>";
-    
+
 ?>
