@@ -2,24 +2,25 @@
 
 <?php
 
-    class Controller_Pagefiller_Default_Component_Base extends Controller_ACL
+    class Controller_Pagefiller_Default_Component_Base extends Controller_ACLBase
     {
-    
+
         public $template;
-		
+
 		// These are mandatory
         public static $componentname = "abc";
         public static $component = null;
 		public static $model = Array();
-		
-		public function before() 
+
+		public function before()
         {
             Wi3::inst()->acl->grant("*", $this, "login"); // Everybody can access login and logout function in this controller
             Wi3::inst()->acl->grant("*", $this, "logout");
             Wi3::inst()->acl->grant("admin", $this); // Admin role can access every function in this controller
             Wi3::inst()->acl->check($this);
+            parent::before();
         }
-		
+
 		public function login() {
 			// Enforce the client to login again
 			echo json_encode(
@@ -30,7 +31,7 @@
                 )
             );
 		}
-    
+
         public function view($viewname, $usecomponentlocation = TRUE)
         {
 			if ($usecomponentlocation == FALSE) {
@@ -44,11 +45,11 @@
 			}
             // Make this component view extend the base template, with their locations set to the above folders
             $componentbaseview = Wi3_Baseview::instance($this::$componentname.'baseview_'.($usecomponentlocation?"true":"false"), array(
-                'javascript_url' => $componenturl.'static/javascript/', 
+                'javascript_url' => $componenturl.'static/javascript/',
                 'javascript_path' => $componentpath.'static/javascript/',
                 'css_url' => $componenturl.'static/css/',
                 'css_path' => $componentpath.'static/css/'
-            )); 
+            ));
             $componentview = View::factory()->set("this", $componentbaseview);
             $componentview->set_filepath($componentpath.'views/'.$viewname.EXT); // set_filepath sets a complete filename on the View
             return $componentview;
@@ -67,11 +68,26 @@
             return $component::$model;
         }
 
+        protected function getTypeForModelKey($key) {
+        	$model = $this->getModel();
+        	if (!isset($model[$key])) {
+        		return false;
+        	}
+        	return $model[$key]["type"];
+        }
+
         protected function ensureModelExists($dataobject,$savedata=true) {
             $changed = false;
             foreach($this->getModel() as $key => $info) {
                 if (!isset($dataobject->{$key})) {
-                    $dataobject->{$key} = "";
+                	$type = $this->getTypeForModelKey($key);
+                	if ($type === "number") {
+                		$dataobject->{$key} = 0;
+                	} else if ($type === "array") {
+                		$dataobject->{$key} = Array();
+                	} else {
+                		$dataobject->{$key} = "";
+                	}
                     $changed = true;
                 }
             }
@@ -79,8 +95,27 @@
                 $dataobject->update();
             }
         }
-		
-		public function action_startEdit() 
+
+        protected function ensureProperTypeForDataObject($dataobject) {
+        	foreach($this->getModel() as $key => $info) {
+                if (isset($dataobject->{$key})) {
+                	$type = $this->getTypeForModelKey($key);
+                	if ($type === "number") {
+                		$dataobject->{$key} = intval($dataobject->{$key});
+                	} else if ($type === "array") {
+                		if (is_string($dataobject->{$key})) {
+	                		$dataobject->{$key} = unserialize($dataobject->{$key});
+	                		// TODO: if type is not array, create new empty array
+                		}
+                	} else {
+                		// Ensure a string
+                		$dataobject->{$key} = strval($dataobject->{$key});
+                	}
+                }
+            }
+        }
+
+		public function action_startEdit()
         {
             $fieldid = $_POST["fieldid"];
             $field = Wi3::inst()->model->factory("site_field")->set("id", $fieldid)->load();
@@ -110,8 +145,8 @@
                 )
             );
         }
-		
-		public function action_edit() 
+
+		public function action_edit()
         {
             $fieldid = $_POST["fieldid"];
             $field = Wi3::inst()->model->factory("site_field")->set("id", $fieldid)->load();
@@ -138,7 +173,7 @@
 
 			// Let the Front-End rerender the affected field
 
-			// We however do not want *just* the rendered field with its own content (return e.g. a <cms> element), 
+			// We however do not want *just* the rendered field with its own content (return e.g. a <cms> element),
 			// we want to have the field as it would appear on the page (e.g. with expanded <cms> elements into <div field...> elements)
 			// including all mutations that any plugin or top-level element might do
 			// Thus we first render the complete page, and then extract the field from there
@@ -175,8 +210,9 @@
             }
             $dataobject = Wi3::inst()->model->factory("site_array")->setref($field)->setname("data")->load();
             if ($key === null) {
-                // Ensure that all elements from the model exist
+                // Ensure that all elements from the model exist and are of the proper type
                 $this->ensureModelExists($dataobject, false);
+                $this->ensureProperTypeForDataObject($dataobject);
                 return $dataobject;
             } else {
                 if (is_object($key) && $value !== null) {
@@ -189,12 +225,13 @@
                     } else {
                         // Set data-field
                         $dataobject->{$key} = $value;
+                        // The dataobject will serialize any Arrays, if there are any in the model
                         $dataobject->update();
                     }
                 }
             }
         }
-        
+
         public function field($fieldid) {
             // Load the field where this component is attached to
             $field = Wi3::inst()->model->factory("site_field")->set("id", $fieldid)->load();
@@ -204,7 +241,7 @@
                 return $field;
             }
         }
- 
+
     }
 
 ?>
