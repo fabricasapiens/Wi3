@@ -7,7 +7,8 @@
 
         // Model
         public static $model = Array(
-            "amount" => Array("type" => "number", "showoneditscreen" => false),
+            "amount" => Array("type" => "number"),
+            "elements" => Array("type" => "array"),
             "entertimestamp" => Array("type" => "text", "showoneditscreen" => false),
             "edittimestamp" => Array("type" => "text", "showoneditscreen" => false)
         );
@@ -32,17 +33,16 @@
 			$dataobject = $this->fielddata($field);
 
 			// Amount of fields
-			$amount = $dataobject->amount;
-			if (!is_integer($amount)) {
+			$amount = intval($dataobject->amount);
+			if (!is_integer($amount) || empty($amount)) {
 				$amount = 1;
 			}
 
-			// The html that is to be repeated
-			// That html is embedded in the field
-			$html = pq($pqfield)->html();
+        	// Get elements
+        	$elements = $dataobject->elements;
 
 			// Render
-			$returnhtml = $this->view("render")->set("html", $html)->set("amount", $amount)->render();
+			$returnhtml = $this->view("render")->set("renderedinadminarea", $renderedinadminarea)->set("pqfield", $pqfield)->set("elements", $elements)->set("amount", $amount)->render();
 			return $returnhtml;
         }
     }
