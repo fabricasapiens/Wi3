@@ -9,32 +9,32 @@ class Model_Site_Array extends Sprig Implements Iterator
     public $_db = "site";
     public $_originalarray= NULL;
     public $_updatedarray = array();
-    
+
     protected function _init()
 	{
         // Overrule the names of the Roles and User_Token model to the Site_... version
 		$this->_fields = array(
             '_id' => new Sprig_Field_Auto,
-            
+
            '_refclass' => new Sprig_Field_Char(array(
 				'empty'  => TRUE, // Default FALSE
 			)),
             '_refid' => new Sprig_Field_Char(array(
 				'empty'  => TRUE, // Default FALSE
 			)),
-            
+
             '_name' => new Sprig_Field_Char(array(
 				'empty'  => TRUE, // Default FALSE
 			)),
-            
+
             '_arraydatas' => new Sprig_Field_HasMany(array(
                 'model' => 'Site_Arraydata',
-                'foreign_key' => 'site_array_id' // Tells which column in the "model" should have the same value as $this->pk(). 
+                'foreign_key' => 'site_array_id' // Tells which column in the "model" should have the same value as $this->pk().
             )),
-            
+
 		);
 	}
-    
+
     public function __SET($key, $val)
     {
         if (substr($key, 0,1) == "_")
@@ -48,9 +48,9 @@ class Model_Site_Array extends Sprig Implements Iterator
             $this->_updatedarray[$key] = $val;
         }
     }
-    
+
     public function __GET($key)
-    {   
+    {
         if (substr($key, 0,1) == "_")
         {
             // Internal value
@@ -62,14 +62,14 @@ class Model_Site_Array extends Sprig Implements Iterator
             return $this->_updatedarray[$key];
         }
     }
-    
+
     public function load(Database_Query_Builder_Select $query = NULL, $limit = 1)
     {
-        parent::load($query, $limit); // Load the array as a Sprig object 
+        parent::load($query, $limit); // Load the array as a Sprig object
         $this->loadarraydata(); // Load the associated arraydata
         return $this;
     }
-    
+
     public function loadarraydata()
     {
         // We can only load arraydata if we are loaded ourselves
@@ -86,7 +86,7 @@ class Model_Site_Array extends Sprig Implements Iterator
             }
         }
     }
-    
+
     public function create()
     {
         // first, simply create the array as usual
@@ -98,12 +98,16 @@ class Model_Site_Array extends Sprig Implements Iterator
         }
         return $this;
     }
-    
+
     public function update()
     {
         $this->loadarraydata(); // Make sure that existing arraydata is loaded
         foreach($this->_updatedarray as $key => $val)
         {
+        	// If $val is an Array, serialize it
+        	if (is_array($val)) {
+        		$val = serialize($val);
+        	}
             // Search for an existing arraydata with this key, if it exists
             if (isset($this->_originalarray[$key]))
             {
@@ -128,10 +132,10 @@ class Model_Site_Array extends Sprig Implements Iterator
         }
         return $this;
     }
-    
-    public function delete(Database_Query_Builder_Delete $query = NULL) 
+
+    public function delete(Database_Query_Builder_Delete $query = NULL)
     {
-        
+
         if (!$query)
 		{
 			// remove all the arraydata that belongs to this object
@@ -146,34 +150,34 @@ class Model_Site_Array extends Sprig Implements Iterator
 		{
 			parent::delete($query);
 		}
-        
+
     }
-    
+
     public function setname($name)
     {
         $this->__SET("_name", $name);
         return $this;
     }
-    
+
     public function setref($object)
     {
         $this->__SET("_refclass",get_class($object));
         $this->__SET("_refid",$object->{$object->pk()}); // It is assumed that any object has an its primary key available through $obj->pk()
         return $this;
     }
-    
-    
+
+
     // Iterator functions
     public function __UNSET($key) {
         //unset the key-value pair
         unset($this->_updatedarray[$key]);
     }
-    
+
     public function __ISSET($key) {
         //return the isset of the key-value pair
        return isset($this->_updatedarray[$key]);
     }
-    
+
     //Iterator functions
     public function rewind() {
         $this->loadarraydata(); // Ensure that array data is loaded, so that there is an array to loop over
@@ -200,5 +204,5 @@ class Model_Site_Array extends Sprig Implements Iterator
         $var = $this->current() !== false;
         return $var;
     }
-    
+
 }
