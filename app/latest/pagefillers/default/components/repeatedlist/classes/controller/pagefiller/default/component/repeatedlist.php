@@ -9,7 +9,7 @@
 
 		// Actions
 		// All actions by default require admin-rights
-        public function action_increaseamount() {
+        public function action_addattop() {
         	$fieldid = $_POST["fieldid"];
         	$field = Wi3::inst()->model->factory("site_field")->set("id", $fieldid)->load();
 
@@ -17,26 +17,45 @@
 
         	// Add element
         	$elements = $dataobject->elements;
-        	$elements[] = "anyvalue";
+        	$newid = Wi3::inst()->date_now();
+        	array_unshift($elements, $newid);
 
         	$this->fielddata($field, "elements", $elements);
         }
-        public function action_decreaseamount() {
+
+        public function action_addafter() {
         	$fieldid = $_POST["fieldid"];
         	$field = Wi3::inst()->model->factory("site_field")->set("id", $fieldid)->load();
 
         	$dataobject = $this->fielddata($field);
 
-			// Amount of fields
-			$amount = intval($dataobject->amount);
-			if (!is_integer($amount) || empty($amount)) {
-				$amount = 1;
-			}
+        	// Find reference index
+        	$elements = $dataobject->elements;
+        	$index = $_POST["index"];
+        	$arrayIndex = array_search($index, $elements);
 
-			// Decrease amount
-			$amount--;
+        	// Add element after that index
+        	$newid = Wi3::inst()->date_now();
+			array_splice($elements, $arrayIndex+1, 0, $newid);
 
-        	$this->fielddata($field, "amount", $amount);
+        	$this->fielddata($field, "elements", $elements);
+        }
+
+        public function action_remove() {
+        	$fieldid = $_POST["fieldid"];
+        	$field = Wi3::inst()->model->factory("site_field")->set("id", $fieldid)->load();
+
+        	$dataobject = $this->fielddata($field);
+
+        	// Find reference index
+        	$elements = $dataobject->elements;
+        	$index = $_POST["index"];
+        	$arrayIndex = array_search($index, $elements);
+
+        	// Remove element at that index
+			unset($elements[$arrayIndex]);
+
+        	$this->fielddata($field, "elements", $elements);
         }
 
         // Non-action functions stemming from the use of the Base class
