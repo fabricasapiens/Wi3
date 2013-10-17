@@ -26,7 +26,7 @@
             echo json_encode(
                 Array(
                     "scriptsbefore" => Array(
-                        "0" => "$(wi3.popup.getDOM()).fadeOut(100,function() { $(this).html('Bericht succesvol verzonden!').fadeIn(); } );"
+                        "0" => "wi3.popup.show('Bericht succesvol verzonden!');"
                     )
                 )
             );
