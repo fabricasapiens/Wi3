@@ -455,7 +455,7 @@ $.fn.simpleTree = function(opt){
 		};
 		TREE.moveNodeToFolder = function(node)
 		{
-		    console.log(node[0].className);
+		    //console.log(node[0].className);
 			if(!TREE.option.docToFolderConvert && node[0].className.indexOf('doc')!=-1)
 			{
 				return true;
@@ -482,6 +482,7 @@ $.fn.simpleTree = function(opt){
 			// Drop dragNode before targetNode and take its previous line with him
 			$(node).before(dragNode_source);
 			$(dragNode_source).before(line);
+			//console.log(dragNode_source);
 			node.className = node.className.replace('-over','');
 			// Check how many nodes remain in the original location of dragNode
 			var nodeSize = $('>ul >li', parent).not('.line, .line-last').filter(':visible').size();
@@ -519,11 +520,11 @@ $.fn.simpleTree = function(opt){
 			// TREE.setTreeNodes(temp_node, false);
 			// Along with the cleanup actions few lines below
 			var temp_node = $("<span>").html('<li class="doc" id="'+id+'"><span>'+text+'</span></li>');
-			TREE.setTreeNodes(temp_node, false);
-			temp_node = temp_node.children();
+			TREE.setTreeNodes(temp_node, false); // adds a <li line> and a <li lastline> around our <li doc>
+			temp_node = temp_node.children(); // three <li> elements
 			$("ul", this).first().append(temp_node);
 			dragNode_destination = (TREE.getSelected().attr("id") ? TREE.getSelected() : ROOT); //TREE.getSelected();
-			dragNode_source = $(temp_node);
+			dragNode_source = $(temp_node); //.first().next(); // Get our <li doc>
 			TREE.moveNodeToFolder(dragNode_destination);
 			// Clean up, since somehow, the resulting DOM gets structured like this "line-last" - "doc-last" - "line-last" - "line-last"
 			$(dragNode_source.get(0)).attr("class",'line');
