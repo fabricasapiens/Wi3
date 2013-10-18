@@ -69,8 +69,8 @@ $(function() {
 			var val = $(component).val().toLowerCase();
 			if (val.length) {
 				var results = [];
-				for(index in wi3.pagefiller.default.simpleblogsearch.searchdata.pages) {
-					var d = wi3.pagefiller.default.simpleblogsearch.searchdata.pages[index];
+				for(index in wi3.pagefiller["default"].simpleblogsearch.searchdata.pages) {
+					var d = wi3.pagefiller["default"].simpleblogsearch.searchdata.pages[index];
 					var title = d.title.toLowerCase();
 					if (title.indexOf(val) !== -1) {
 						// more to the beginning is better
@@ -78,8 +78,8 @@ $(function() {
 						results.push({type:"page", id:index, score:score});
 					}
 				}
-				for(index in wi3.pagefiller.default.simpleblogsearch.searchdata.articles) {
-					var d = wi3.pagefiller.default.simpleblogsearch.searchdata.articles[index];
+				for(index in wi3.pagefiller["default"].simpleblogsearch.searchdata.articles) {
+					var d = wi3.pagefiller["default"].simpleblogsearch.searchdata.articles[index];
 					var title = d.title.toLowerCase();
 					if (title.indexOf(val) !== -1) {
 						// more to the beginning is better
@@ -112,9 +112,9 @@ $(function() {
 						break;
 					}
 					if (results[index].type == "page") {
-						var result = wi3.pagefiller.default.simpleblogsearch.searchdata.pages[results[index].id];
+						var result = wi3.pagefiller["default"].simpleblogsearch.searchdata.pages[results[index].id];
 					} else {
-						var result = wi3.pagefiller.default.simpleblogsearch.searchdata.articles[results[index].id];
+						var result = wi3.pagefiller["default"].simpleblogsearch.searchdata.articles[results[index].id];
 					}
 					var a = $("<div></div>").html("<a href='" + result.url + "'>" + result.title + "</a>");
 					$(component).next("div").find(".wi3_pagefiller_default_component_simpleblogsearch_result").append(a);

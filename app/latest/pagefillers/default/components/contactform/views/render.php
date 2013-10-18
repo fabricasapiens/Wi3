@@ -11,6 +11,6 @@
 	echo "<input name='emailaddress' type='email' placeholder='emailadres' style='width: 100%;'/>";
 	echo "<input name='subject' placeholder='onderwerp' style='width: 100%;'/>";
 	echo "<textarea name='message' placeholder='bericht' style='width: 100%; height: 300px;'/>";
-	echo "<button onclick='wi3.pagefiller.default.component.contacform.submit(this);'>Verzenden</button>";
+	echo "<button onclick='wi3.pagefiller[\"default\"].component.contacform.submit(this);'>Verzenden</button>";
 
 ?>
