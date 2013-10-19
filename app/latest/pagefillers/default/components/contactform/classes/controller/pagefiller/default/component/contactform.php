@@ -9,7 +9,7 @@
 
         public function before()
         {
-            Wi3::inst()->acl->grant("*", $this, "action_submit");
+            Wi3::inst()->acl->grant("*", $this, "submit");
             parent::before();
         }
 		
