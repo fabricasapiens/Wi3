@@ -141,7 +141,7 @@ wi3.makeExist = function(dotstring) {
     var parts = dotstring.split(".");
     var workerstring = "";
     for(part in parts) {
-        workerstring += (workerstring.length > 0 ? "." : "") + parts[part];
+        workerstring += (workerstring.length > 0 ? "['" : "") + parts[part] + (workerstring.length > 0 ? "']" : "");
         //if this is not an object, create it
         if (typeof(eval(workerstring)) != "object") {
             eval(workerstring + " = { };");
