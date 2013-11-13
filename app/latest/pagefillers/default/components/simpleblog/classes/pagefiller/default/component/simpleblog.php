@@ -17,7 +17,7 @@
             {
                 // Create an article 
                 $articleid = Wi3::inst()->date_now();
-                $articles->
+                //$articles->
             }
         
             // Load the image that is associated with this field 
