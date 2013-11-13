@@ -34,7 +34,7 @@
     // E.g. if a user selected a piece of text and creates a link, we take the selected text and create a pqfield out of that
     if (!isset($pqfield)) {
         $document = phpQuery::newDocument("<cms type='field'>" . $_POST["selectiontext"] . "</cms>");
-        $pqfield = pq($document)->find("cms[type=field]")->first();
+        $pqfield = pq($document)->find("cms[type=field]")->slice(0,1);
     }
 
     // Render the field, in which the field can also change the style options
