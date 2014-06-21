@@ -14,19 +14,23 @@ More specifically, these are the intended use-cases
 - **Developers** can easily write 'components' like a webshop, gallery or maybe fancy 3D rotating page title that can easily be dropped onto a page. Well-working components are planned to be sold in an in-cms component-store.
 
 ### License ###
-The Wi3 CMS is free and open source, and is meant to be like that for all future. 
+The Wi3 CMS is licensed under the BSD license.
 
-In order to support the community with funded dedicated development, we employ a dual-license approach for Wi3.
+The included Kohana framework is also licensed under the BSD license.
 
-#### Non-commercial license ####
-The Wi3 CMS is licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License](http://creativecommons.org/licenses/by-nc-sa/3.0/). Most importantly, this implies that anyone is free to share and remix the Wi3 CMS, but that the CMS cannot be used for commercial purposes. 
+### License text for Wi3 ###
+Copyright (c) 2010-2013, Fabrica Sapiens
+All rights reserved.
 
-#### Commercial license ####
-For commercial use of the Wi3 CMS, please contact us at wi3@fabricasapiens.nl and indicate how you are planning to use Wi3. We will make you a competitive offer.
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
-### Contributions ###
-Contributions are more than welcome! To guarantee compliance with the dual-license approach, you are required to explicitly state that the code you provide falls under the [Creative Commons
-Attribution 3.0 Unported License](http://creativecommons.org/licenses/by/3.0/). Active contributors that sign a contributors-agreement can gain direct Git access to the code and can receive commercial licences for free.
+1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+
+3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 Installation
 ========
